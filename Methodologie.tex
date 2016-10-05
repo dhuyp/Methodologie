@@ -1180,6 +1180,23 @@ Header always set Public-Key-Pins "pin-sha256=b64hash=; max-age=2592000"
 \subsection{Durcissement}
 
 \chapter{Audit de code}
+\section{Méthodologie générale}
+\FIXME{Yassim}
+Le code doit ressembler à ça.\\
+Description de ce qu'il faut regarder\\
+Type de vulnérabilité associées\\
+	Description de la Vuln\\
+	Proposition de correction en code\\
+\begin{Config}{csharp}{AntiCSRF - Génération de Token à partir du Viewstate}
+protected override OnInit(EventArgs e) {
+	base.OnInit(e);
+	if (User.Identity.IsAuthenticated)
+		ViewStateUserKey=Session.SessionID; }
+\end{Config}	
+
+\section{Audit de code de service web}
+\subsection{Gestion des entrées utilisateurs}
+
 
 \appendix
 \chapter{Cryptographie}
