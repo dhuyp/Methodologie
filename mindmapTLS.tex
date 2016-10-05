@@ -1,0 +1,345 @@
+\newsavebox{\mindmapTLS}
+
+\begin{lrbox}{\mindmapTLS}%
+\scalebox{0.40}{
+\begin{tikzpicture}[ every annotation/.style = {draw, fill = white, font = \Large}]
+  \path[mindmap,concept color=Cerulean,text=white,
+    every node/.style={concept},
+    root/.style    = {concept color=Cerulean,
+      font=\LARGE\bfseries,text width=10em},
+    good/.style    = {concept color=green!40!black},
+    bad/.style    = {concept color=red!60!black},
+    medium/.style    = {concept color=Cerulean},
+    deprecated/.style    = {concept color=orange},
+    level 1 concept/.append style={font=\Large\bfseries,
+      sibling angle=45,text width=7em,
+    level distance=30em,inner sep=0pt},
+    level 2 concept/.append style={sibling angle=36, font=\small\bfseries,level distance=10em,text width=5.5em},
+    level 3 concept/.append style={sibling angle=36, font=\footnotesize\bfseries,level distance=8em,text width=4em},
+    level 4 concept/.append style={sibling angle=45, font=\scriptsize\bfseries,level distance=5em,text width=3em},
+    level 5 concept/.append style={sibling angle=45, font=\tiny\bfseries,level distance=4em,text width=3em}
+  ]
+
+  node[root] {TLS} [clockwise from=0]
+    child[good] {% Famille TLS_RSA, TLS_RSA_PSK se trouve en bloc de fin car ajouté plus tard
+      node {\underline{\textit{RSA}}} [clockwise from=160]
+        child[bad] { node{NULL}}
+        child[bad] { node [concept](RSARC4){RC4\\128}}
+        child[deprecated] { node [concept](RSA3DES){3DES-EDE}[clockwise from=60]
+          child { node [concept]{CBC}
+            child { node [concept]{SHA}}
+          }
+        }
+        child[deprecated] { node [concept]{AES\\128}[clockwise from=60]
+          child { node [concept]{CBC}[clockwise from=82]
+            child { node [concept]{SHA}}
+            child { node [concept]{SHA256}}
+          }
+         child { node [concept]{GCM}[clockwise from=40]
+            child { node [concept]{SHA256}}
+          }
+        }
+        child[good] { node [concept] {AES\\256}[clockwise from=30]
+          child[medium] { node [concept]{CBC}[clockwise from=40]
+            child[deprecated] { node [concept]{SHA}}
+            child { node [concept]{SHA256}}
+          }
+         child { node [concept]{GCM}[clockwise from=0]
+            child { node [concept]{SHA384}}
+          }
+        }
+        child[deprecated] { node [concept]{CAMELLIA\\128}[clockwise from=350]
+          child { node [concept]{CBC}[clockwise from=0]
+            child { node [concept](RSACAM128SHA){SHA}}
+          }
+        }
+        child[medium] { node [concept]{CAMELLIA\\256}[clockwise from=350]
+          child { node [concept]{CBC}
+            child[deprecated] { node [concept](RSACAM256SHA){SHA}}
+          }
+        }
+        child[deprecated] { node [concept] {SEED}[clockwise from=340]
+          child { node [concept]{CBC}[clockwise from=350]
+            child { node [concept](RSASEEDSHA){SHA}}
+          }
+        }
+        child[bad] { node [concept](RSAIDEA){IDEA}}
+        child[bad] { node [concept](RSADES){DES}}
+    }%Famille des Diffie-Hellman et Elliptique Curve Diffie-Hellman
+    child[medium,sibling angle=50] {
+      node[concept] {\underline{DH}}
+        [clockwise from=350]
+        child[good] { node [concept](DHRSA){\textit{RSA}}[clockwise from=130]       
+            child[bad] { node [concept](DHDES){DES}}
+            child [deprecated]{ node [concept](DH3DES){3DES\\EDE}[clockwise from=140]
+              child { node [concept]{CBC}[clockwise from=210]
+                child { node [concept]{SHA}}
+            }}
+            child[deprecated,sibling angle=36] { node [concept](DHCAMELLIA128){\tiny CAMELLIA\\128}[clockwise from=0]
+              child { node [concept]{CBC}
+                child { node [concept]{SHA}}
+              }
+            }
+            child { node [concept](DHCAMELLIA256){\tiny CAMELLIA\\256}[clockwise from=0]
+              child { node [concept]{CBC}
+                child[deprecated] { node [concept]{SHA}}
+              }
+            }
+            child[deprecated] { node [concept](DHSEED){SEED}[clockwise from=15]
+              child { node [concept]{CBC}[clockwise from=3]
+                child { node [concept]{SHA}}
+              }
+            }
+            child[deprecated] { node [concept](DHAES128){AES\\128}[clockwise from=4]
+              child { node [concept]{CBC}[clockwise from=20]
+                child { node [concept]{SHA}}
+                child { node [concept]{SHA256}}
+              }
+              child { node [concept]{GCM}[clockwise from=340]
+                child { node [concept]{SHA256}}
+              }
+            }
+            child[good] { node [concept](DHAES256){AES\\256}[clockwise from=320]
+              child[medium] { node [concept]{CBC}[clockwise from=340]
+                child[deprecated] { node [concept]{SHA}}
+                child { node [concept]{SHA256}}
+              }
+              child { node [concept]{GCM}[clockwise from=300]
+                child { node [concept]{SHA384}}
+              }
+            }
+          }
+        child[good,sibling angle=60] { node [concept](DHDSS){\textit{DSS}}}
+        child[bad,sibling angle=122] { node [concept](DHRSAEXPORT) {\textit{RSA\\EXPORT}} }
+        child[bad,sibling angle=60] { node{\textit{Anon}} }
+    }% Diffie Hellman Ephemeral: pour des raisons pratiques ce noeud est repointé vers RSA, DSS et RSA_EXPORT plutôt que de reproduire à l'identique
+    child[good,sibling angle=38] {
+      node[concept](DHE) {\underline{DHE}}
+        [counterclockwise from=275]
+        child[good] { node [concept](DHEPSK){\textit{PSK}}[clockwise from=50]
+            child[bad] { node [concept]{RC4\\128}}
+            child[bad] { node [concept]{NULL}}
+            child [deprecated]{ node [concept]{3DES\\EDE}[clockwise from=320]
+              child { node [concept]{CBC}[clockwise from=340]
+                child { node [concept]{SHA}}
+            }}
+            child[deprecated] { node [concept]{AES\\128}[clockwise from=340]
+              child { node [concept]{CBC}[clockwise from=340]
+                child { node [concept]{SHA}}
+                child { node [concept]{SHA256}}
+              }
+              child { node [concept]{GCM}[clockwise from=300]
+                child { node [concept]{SHA256}}
+              }
+            }
+            child[good] { node [concept]{AES\\256}[clockwise from=290]
+              child[medium] { node [concept]{CBC}[clockwise from=300]
+                child[deprecated] { node [concept]{SHA}}
+                child { node [concept]{SHA384}}
+              }
+              child { node [concept]{GCM}[clockwise from=260]
+                child { node [concept]{SHA384}}
+              }
+            }
+        }
+    }
+    child[good,sibling angle=46] {% L'arbre ECDH/ECDHE est mieux équilibré permettant une meilleure lecture des liens
+      node[concept] (ECDHE){\underline{ECDHE}}
+        [clockwise from=355]
+        child[good,sibling angle=50] { node [concept](ECDHRSA){\textit{RSA}}[clockwise from=0]
+            child[good] { node [concept](ECDHAES256){AES\\256}[counterclockwise from=320]
+              child[medium] { node [concept]{CBC}[counterclockwise from=240]
+                child[deprecated] { node [concept]{SHA}}
+                child { node [concept]{SHA384}}
+              }
+              child { node [concept]{GCM}[clockwise from=300]
+                child { node [concept]{SHA384}}
+              }
+            }
+            child[bad] { node [concept](ECDHNULL){NULL}}
+            child[level distance=18em] { node [concept](ECDHCHACHA20){\scriptsize CHACHA20}[counterclockwise from=280]% CHACHA20
+              child { node [concept]{\tiny POLY1305}[counterclockwise from=340]
+                child{node [concept]{SHA256}}
+              }
+            }
+          }
+        child[good,sibling angle=75] { node [concept](ECDHECDSA){\textit{ECDSA}}[counterclockwise from=270]
+            child [deprecated]{ node [concept](ECDH3DES){3DES\\EDE}[clockwise from=270]
+              child { node [concept]{CBC}[clockwise from=270]
+                child { node [concept]{SHA}}
+            }}
+           child[deprecated] { node [concept](ECDHAES128){AES\\128}[clockwise from=310]
+              child { node [concept]{CBC}[clockwise from=310]
+                child { node [concept]{SHA}}
+                child { node [concept](ECDHECDSASHA256){SHA256}}
+              }
+              child { node [concept]{GCM}[clockwise from=270]
+                child { node [concept]{SHA256}}
+              }
+            }
+            child[bad] { node [concept](ECDHRC4){RC4\\128}}
+        }
+        child[good,sibling angle=55] { node [concept](ECDHPSK){\textit{PSK}}[clockwise from=270]
+            child [deprecated]{ node [concept]{3DES\\EDE}[counterclockwise from=270]
+              child { node [concept]{CBC}[clockwise from=270]
+                child { node [concept]{SHA}}
+            }}
+            child[deprecated] { node [concept]{AES\\128}[clockwise from=270]
+              child { node [concept]{CBC}[clockwise from=280]
+                child { node [concept]{SHA}}
+                child { node [concept]{SHA256}}
+              }
+              child { node [concept]{GCM}[clockwise from=230]
+                child { node [concept]{SHA256}}
+              }
+            }
+            child[good] { node [concept]{AES\\256}[clockwise from=210]
+              child[medium] { node [concept]{CBC}[clockwise from=270]
+                child[deprecated] { node [concept]{SHA}}
+                child { node [concept](ECDHPSKAES256SHA384){SHA384}}
+              }
+              child { node [concept]{GCM}[clockwise from=210]
+                child { node [concept]{SHA384}}
+              }
+            }
+            child[bad] { node [concept]{RC4\\128}}
+            child[bad] { node [concept]{NULL}}
+        }
+    }
+    child[medium,sibling angle=39] {
+      node[concept] (ECDH) {\underline{ECDH}} [counterclockwise from=220]
+        child[bad] { node [concept](ECDHANON){\textit{Anon}}}
+    }
+    child[medium,sibling angle=39] {%PSK doit il être noté comme deprecated? Je ne pense pas mais un changement se tiendrait
+      node[concept] (PSK){\underline{\textit{PSK}}} [clockwise from=240]
+            child [deprecated]{ node [concept]{3DES\\EDE}[clockwise from=260]
+              child { node [concept]{CBC}[clockwise from=250]
+                child { node [concept]{SHA}}
+            }}
+            child[deprecated] { node [concept]{AES\\128}[clockwise from=270]
+              child { node [concept]{CBC}[counterclockwise from=210]
+                child { node [concept]{SHA}}
+                child { node [concept]{SHA256}}
+              }
+              child { node [concept]{GCM}[clockwise from=200]
+                child { node [concept]{SHA256}}
+              }
+            }
+            child[good] { node [concept]{AES\\256}[counterclockwise from=190]
+              child[medium] { node [concept]{CBC}[clockwise from=210]
+                child[deprecated] { node [concept]{SHA}}
+                child { node [concept]{SHA384}}
+              }
+              child { node [concept]{GCM}[clockwise from=220]
+                child { node [concept]{SHA384}}
+            }
+         }
+            child[good] { node [concept]{\scriptsize CHACHA20}[counterclockwise from=200]
+              child { node [concept]{\tiny POLY1305}[counterclockwise from=175]
+                child{node [concept]{SHA256}}
+              }
+            }
+            child[bad] { node [concept]{RC4\\128}}
+            child[bad,sibling angle=45] { node [concept]{NULL}}
+    }
+    child[deprecated,sibling angle=37] {% SRP utilise SHA-1 donc deprecated
+          node[concept] {\underline{\textit{SRP\_SHA}}} [clockwise from=160]
+            child { node [concept](SRP3DES){3DES\\EDE}[clockwise from=205]
+              child { node [concept]{CBC}[clockwise from=220]
+                child { node [concept](SRPSHA){SHA}}
+            }}
+            child{ node [concept](SRPAES128){AES\\128}[clockwise from=190]
+              child { node [concept]{CBC}[clockwise from=210]
+                child { node [concept]{SHA}}
+            }}
+            child{ node [concept](SRPAES256){AES\\256}[clockwise from=150]
+              child { node [concept]{CBC}[clockwise from=210]
+                child { node [concept]{SHA}}
+            }}
+            child[sibling angle=40] { node [concept](SRPRSA) {\textit{RSA}}}
+            child[sibling angle=40] { node [concept](SRPDSS) {\textit{DSS}}}
+    }
+    child[bad,sibling angle=36.7] {
+      node[concept] {\underline{NULL}}
+    }
+    child[deprecated,sibling angle=34] {
+      node[concept](KRB5) {\underline{\textit{KRB5}}}[clockwise from=135]
+        child[bad] { node [concept]{IDEA}}
+            child { node [concept]{3DES\\EDE}[clockwise from=165]
+              child { node [concept]{CBC}[clockwise from=180]
+                child { node [concept]{SHA}}}}
+        child[bad] { node [concept](KRB5DES){DES}}
+        child[bad] { node [concept]{RC4}}
+    }
+    child[bad,sibling angle=33] {
+      node[concept](ANYEXPORT) {(ANY)\\\underline{EXPORT}}
+    }
+    child[sibling angle=31.5] {
+      node[concept] {\underline{RSA}}[counterclockwise from=20]
+      	child{node [concept]{\textit{PSK}}
+            child[deprecated] { node [concept]{AES\\128}[clockwise from=5]
+              child { node [concept]{CBC}[clockwise from=5]
+                child { node [concept](RSAPSKSHA2){SHA}}
+                child { node [concept]{SHA256}}
+              }
+              child { node [concept]{GCM}[clockwise from=325]
+                child { node [concept]{SHA256}}
+              }
+            }
+            child[good] { node [concept]{AES\\256}[clockwise from=45]
+              child { node [concept]{CBC}[clockwise from=45]
+                child[deprecated] { node [concept](RSAPSKSHA){SHA}}
+                child { node [concept]{SHA384}}
+              }
+              child { node [concept]{GCM}[clockwise from=0]
+                child { node [concept]{SHA384}}
+              }
+            }
+            child[bad] { node [concept]{RC4\\128}}
+            child[good, level distance=16em] { node [concept]{\scriptsize CHACHA20}[counterclockwise from=10]
+              child { node [concept]{\tiny POLY1305}[counterclockwise from=350]
+                child{node [concept]{SHA256}}
+              }
+            }
+            child[bad] { node [concept]{NULL}}
+	}
+    };
+
+  
+%Lien ajouté en fond pour les interaction supplémentaires
+  \begin{pgfonlayer}{background}
+      \path [outer color = white, inner color = blue!10]
+      (-60em,-60em) rectangle (80em,40em);%Dégradé de couleurs pour le fond
+    \path (DHE) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (DHRSAEXPORT);
+    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (DH3DES);
+    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (DHSEED);
+    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (DHCAMELLIA128);
+    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (DHAES128);
+    \path (ECDHECDSA) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (ECDHNULL);
+    \path (ECDHRSA) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (ECDHRC4);
+    \path (ECDHRSA) to[circle connection bar switch color=from (green!40!black) to (orange)] (ECDHAES128);
+    \path (ECDHRSA) to[circle connection bar switch color=from (green!40!black) to (orange)] (ECDH3DES);
+    \path (ECDH) to[circle connection bar switch color=from (Cerulean) to (green!40!black) ] (ECDHECDSA);
+    \path (ECDH) to[circle connection bar switch color=from (Cerulean) to (green!40!black) ] (ECDHRSA);
+    \fill [circle connection bar]
+      (DHE) edge[fill=green!40!black, color=green!40!black] (DHRSA)
+      (DHE) edge[fill=green!40!black, color=green!40!black] (DHDSS)
+      (DHDSS) edge[fill=green!40!black, color=green!40!black] (DHAES256)
+      (DHDSS) edge[fill=green!40!black, color=green!40!black] (DHCAMELLIA256)
+      (ECDHECDSA) edge[fill=green!40!black, color=green!40!black] (ECDHAES256)
+      (ECDHECDSA) edge[fill=green!40!black, color=green!40!black] (ECDHCHACHA20)
+      (ECDHPSK) edge[fill=green!40!black, color=green!40!black] (ECDHCHACHA20)
+      (DHEPSK) edge[fill=green!40!black, color=green!40!black] (ECDHCHACHA20)
+      (SRPRSA) edge[fill=orange, color=orange] (SRPAES128)
+      (SRPRSA) edge[fill=orange, color=orange] (SRPAES256)
+      (SRPRSA) edge[fill=orange, color=orange] (SRP3DES)
+      (SRPDSS) edge[fill=orange, color=orange] (SRPAES128)
+      (SRPDSS) edge[fill=orange, color=orange] (SRPAES256)
+      (SRPDSS) edge[fill=orange, color=orange] (SRP3DES)
+      ;
+  \end{pgfonlayer}
+\end{tikzpicture}
+}
+\end{lrbox}
+
+\usebox{\mindmapTLS}

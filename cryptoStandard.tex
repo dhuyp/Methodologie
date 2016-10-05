@@ -1,0 +1,44 @@
+%Recommandations de l'ANSSI
+% http://www.ssi.gouv.fr/administration/guide/cryptographie-les-regles-du-rgs/
+\newcommand{\refAnnexeB}{\footnote{2015: \url{http://www.ssi.gouv.fr/uploads/2015/01/RGS_v-2-0_B1.pdf}}}
+
+%% ZnZ
+\newcommand{\ZnZnAnssi}{3072\refAnnexeB}
+\newcommand{\ZnZeAnssi}{$2^{16}$ bits\refAnnexeB}
+\newcommand{\ZnZdAnssi}{3072\refAnnexeB}
+\newcommand{\DHrecosizeAnssi}{\ZnZnAnssi}
+
+%% ECC et ECDH
+\newcommand{\ECDHrecosizeAnssi}{P-256\refAnnexeB}
+
+%Recommandation du NIST
+%http://csrc.nist.gov/publications/PubsSPs.html
+%% Diffie-Hellman
+\newcommand{\DHrecosizeNIST}{2048\footnote{2013: \url{http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Ar2.pdf}}}
+\newcommand{\ECDHrecosizeNIST}{P-512\footnote{2013: \url{http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Ar2.pdf}}}
+
+%% ECC
+\newcommand{\ECCNIST}{$\mathbb{F}_p$: P-192, P-224, P-256, P-384, P-521; $\mathbb{F}_{2^m}$: K-163, B-163, K-233, B-233, K-283, B-283, K-409, B-409, K-571, B-571 \footnote{2013: Annexe B \url{http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf}}}
+\newcommand{\ECCrecoNIST}{P-192, P-224, P-256, P-384, P-521\footnote{2013: Annexe B: \url{http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf}}}
+
+%Recommandation de la NSA Suite B TS - CNSA
+%https://www.iad.gov/iad/library/ia-guidance/ia-solutions-for-classified/algorithm-guidance/assets/public/upload/Commercial-National-Security-Algorithm-CNSA-Suite-Factsheet.pdf
+%https://www.iad.gov/iad/programs/iad-initiatives/cnsa-suite.cfm
+%% Diffie-Hellman
+\newcommand{\DHrecosizeCNSA}{3072\footnote{2016: \url{https://www.iad.gov/iad/programs/iad-initiatives/cnsa-suite.cfm} basée sur la RFC 3526}}
+\newcommand{\ECDHrecosizeCNSA}{P-384\footnote{2016: \url{https://www.iad.gov/iad/programs/iad-initiatives/cnsa-suite.cfm} basée sur la RFC 3526}}
+
+
+% General
+%%SEC2-v2 ECC
+\newcommand{\ECCSECG}{$\mathbb{F}_p$: secp192, secp224, secp256, secp384, secp521; $\mathbb{F}_{2^m}$: sect163, sect233, sect239,sect283, sect409, sect571\footnote{2010: \url{http://www.secg.org/sec2-v2.pdf}}}
+
+%%Brainpool Standard https://tools.ietf.org/html/rfc5639
+\newcommand{\ECCBP}{brainpoolP160, brainpoolP192, brainpoolP224, brainpoolP256, brainpoolP320, brainpoolP384, brainpoolP512\footnote{2010: \url{https://tools.ietf.org/html/rfc5639}}}
+%% Curve25519
+
+
+% Recommandation afférentes à Diffie-Hellman et à Elleptic-Curve Diffie-Hellman
+\newcommand{\DHminsize}{2048 }
+\newcommand{\DHrecosize}{4096 }
+

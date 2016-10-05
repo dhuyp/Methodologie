@@ -1,0 +1,39 @@
+\usepackage{makeidx}
+
+%% Commande \tool
+%% Cette commande permet d'afficher un pseudo encart de ligne de commande en inline
+%% La commande \tool*{} affiche le prompt
+\newcommand{\toolindex}[1]{\index{Outils@Outils!#1}}
+\DeclareTotalTCBox{\tool}{ s O{1} v O{>} }
+{verbatim,colupper=white,colback=black!75!white,colframe=black}
+{\IfBooleanTF{#1}{\IfEq{#2}{0}{}{\textcolor{red}{\ttfamily\bfseries #4}\IfEq{#2}{2}{\textcolor{Purple}{\ttfamily\bfseries >}}{\IfEq{#2}{3}{\textcolor{Plum}{\ttfamily\bfseries >}}{}} }}{\toolindex{#3}}%
+\lstinline[language=sh,keywordstyle=\color{blue!35!white}\bfseries]^#3^}
+
+\DeclareTotalTCBox{\msf}{ v o v }
+{verbatim,colupper=white,colback=black!75!white,colframe=black}
+{\footnotesize msf \IfValueT{#2}{#1(\textcolor{red}{\ttfamily\bfseries{#2}})\toolindex{metasploit!#2}}> %
+\lstinline[language=sh,keywordstyle=\bfseries,basicstyle=\footnotesize\color{green!35!white}]^#3^}
+\DeclareTotalTCBox{\sql}{ v }{verbatim,colupper=white,colback=black!75!white,colframe=black}
+{\textcolor{red}{\ttfamily\bfseries SQL> }\lstinline[language=SQL,keywordstyle=\color{blue!35!white}\bfseries]^#1^}
+\DeclareTotalTCBox{\payloadhtml}{ v }
+{verbatim,colupper=white,colback=black!75!white,colframe=black}
+{\lstinline[language=HTML,keywordstyle=\color{blue!35!white}\bfseries]^#1^}
+
+%% Exemple code et exemple commande
+%% Encart Jaune Vert
+\newtcblisting{Console}[1]{listing engine=minted,minted style=colorful,minted language=shell,colback=GreenYellow!5!white,colframe=GreenYellow!75!black,listing only,title={\smallpencil  Exemple: #1},minted options={fontsize=\scriptsize}}
+\newtcblisting{Config}[2]{listing engine=minted,minted style=colorful,minted language=#1,colback=GreenYellow!5!white,colframe=GreenYellow!75!black,listing only,title={\smallpencil  Exemple: #2},minted options={fontsize=\scriptsize,linenos,numbersep=3mm},left=5mm,enhanced,overlay={\begin{tcbclipinterior}\fill[GreenYellow!90!black] (frame.south west) rectangle ([xshift=5mm] frame.north west);\end{tcbclipinterior}}}
+\newtcolorbox{FlagConsole}[1]{colback=GreenYellow!1!white,colframe=GreenYellow!85!black,title={\smallpencil Exemple: #1}}
+\newtcolorbox{LongFlagConsole}[1]{enforce breakable,pad at break*=0mm,colback=GreenYellow!1!white,colframe=GreenYellow!85!black,title={\smallpencil Exemple: #1}}
+\DeclareTotalTColorBox{\Schematics}{ O{} +m +m}{colback=GreenYellow!1!white,colframe=GreenYellow!85!black,sidebyside,code={\sbox{\SchematicsBox}{#2}},lefthand width=\wd\SchematicsBox,title={\smallpencil Exemple: #1}}{\usebox{\SchematicsBox}\tcblower#3}
+%\newtcolorbox{Schematic}[1]{tikz upper,colback=GreenYellow!1!white,colframe=GreenYellow!85!black,title={\smallpencil Exemple: #1}}
+
+%% Encart Récapitulatif et Définition
+\newtcolorbox{Recap}[2]{colback=blue!0!white,colframe=blue!75!black,sidebyside, title={ \Pointinghand #2 \index{#1}}}
+\newtcolorbox{Recap_2}[2]{colback=blue!0!white,colframe=blue!75!black,beamer, title={ \Pointinghand #2 \index{#1}}}
+\newtcolorbox{Define}[1]{colback=blue!5!white,colframe=blue!75!black, title={ \Pointinghand Définition \index{#1}}}
+\newtcolorbox{Pre}{colback=blue!5!white,colframe=blue!75!black, title={ \Pointinghand Prérequis}}
+
+%% Encart avertissement
+\newtcolorbox{Warning}{colback=yellow!5!white,colframe=yellow!75!black, title={ \eye Attention}}
+\newtcolorbox{Stop}{colback=red!5!white,colframe=red!75!black, title={ \Stopsign Important}}

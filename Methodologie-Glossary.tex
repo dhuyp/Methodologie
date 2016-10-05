@@ -1,0 +1,110 @@
+\usepackage{savesym}
+\savesymbol{iiint}
+\savesymbol{iint}
+\usepackage[toc,acronym]{glossaries}
+\restoresymbol{TXF}{iiint}
+\restoresymbol{TXF}{iint}
+\usepackage{xparse}
+
+% makeindex.exe -s Methodologie.ist -t Methodologie.glg -o Methodologie.gls Methodologie.glo
+% makeindex.exe -s Methodologie.ist -t Methodologie.alg -o Methodologie.acr Methodologie.acn
+% https://en.wikibooks.org/wiki/LaTeX/Glossary#Defining_acronyms
+\DeclareDocumentCommand{\newdualentry}{ O{} O{} m m m m } {
+  \newglossaryentry{gls-#3}{name={#4},text={#4\glsadd{#3}},
+    description={#6},#1
+  }
+  \makeglossaries
+  \newacronym[see={[Glossaire:]{gls-#3}},#2]{#3}{#4}{#5\glsadd{gls-#3}}
+}
+
+%Général
+\newacronym{URL}{URL}{Uniform Ressource Locator}
+
+%Sécurité web
+\newacronym{XSS}{XSS}{Cross-Site Scripting}
+\newacronym{CSRF}{CSRF}{Cross-Site Request Forgery}
+\newacronym{CORS}{CORS}{Cross-Origin Ressource Sharing}
+\newacronym{HTTP}{HTTP}{HyperText Transfer Protocol}
+\newacronym{HTTPS}{HTTPS}{HyperText Transfer Protocol Secure}
+\newacronym{DNS}{DNS}{Domain Name System}
+\newacronym{CMS}{CMS}{Content Management System}
+\newacronym{SQL}{SQL}{Structured Query Language}
+\newglossaryentry{dorks}
+{
+  name={dorks},
+  description={Commande spécifique à un moteur de recherche permettant d'obtenir des informations appartenant au \textit{Deep Web}, c'est-à-dire non visibles aisément par la navigation standard: adresse IP, fichiers PDF...}
+}
+
+%Architecture
+\newacronym{SGDB}{SGDB}{Système de Gestion de Base de données}
+\newacronym{ACL}{ACL}{Access Control List}
+\newacronym{DMZ}{DMZ}{DeMilitarized Zone}
+\newacronym{IDS}{IDS}{Intrusion Detection System}
+\newacronym{IPS}{IPS}{Intrusion Prevention System}
+\newacronym{WAF}{WAF}{Web Application Firewall}
+\newacronym{NAT}{NAT}{Network Address Translationl}
+\newglossaryentry{WiFi}
+{
+  name={Wi-Fi},
+  description={Norme de transmission basée sur la IEEE 802.11b et décrivant une utilisation du \gls{WLAN}}
+}
+\newdualentry{WLAN}{WLAN}{Wireless LAN}{Utilisation d'onde radio pour connecter les terminaux d'un réseau, par abus de langage désigné sous le terme de \gls{WiFi}}
+\newdualentry{VLAN}{VLAN}{Virtual LAN}{Technologie permettant de créer des sous-réseau au sein d'un même \gls{LAN} ou d'assurer une qualité de service. Cette technologie est basée sur la norme 802.1Q}
+\newdualentry{LAN}{LAN}{Local Area Network}{Système d'information limité à un lieu géographique en opposition à \gls{WAN}} 
+\newacronym{WAN}{WAN}{Wide Area Network}
+
+%Configuration
+\newacronym{JSON}{JSON}{JavaScript Object Notation}
+\newacronym{RBAC}{RBAC}{Role-Based Acces Control}
+
+%Cryptographie
+%%algorithmes
+\newacronym{RSA}{RSA}{Rivest Shamir Adleman}
+\newacronym{DES}{DES}{Data Encryption Standard}
+\newacronym{3DES}{3DES}{Triple Data Encryption Algorithm}
+\newacronym{AES}{AES}{Advanced Encryption Standard}
+\newacronym{SHA}{SHA}{Secure Hash Algorithm}
+
+%%mode de chiffrement
+\newacronym{ECB}{ECB}{Electronic CodeBook}
+\newacronym{CBC}{CBC}{Cipher Block Chaining}
+\newacronym{PCBC}{PCBC}{Propagating Cipher Block Chaining/Plaintext-Cipher Block Chaining}
+\newacronym{CFB}{CFB}{Cipher FeedBack}
+\newacronym{OFB}{OFB}{Output FeedBack}
+\newacronym{CTR}{CTR}{Counter Mode}
+\newacronym{GCM}{GCM}{Galois-Counter Mode}
+\newacronym{CCM}{CCM}{Counter with CBC-MAC}
+
+%%Institut et autorité
+\newdualentry{NIST} % label
+  {NIST}            % abbreviation
+  {National Institute of Standards and Technology}  % long form
+  {Institut gouvernemental américain adressant les recommandations de normes concernant l'informatique (voir aussi \gls{FIPS}, \gls{IETF}, \gls{IEEE} et \gls{RFC}) } % description
+\newdualentry{IETF}{IETF}{Internet Engineering Task Force}{Groupe informel définissant les standards d'Internet à l'aide de \gls{RFC} (voir aussi \gls{IEEE})} 
+\newdualentry{IEEE}{IEEE}{Institute of Electrical and Electronics Engineers}{Association d'informatique normalisant notamment les réseaux à travers les normes 802.X mais aussi POSIX}
+\newdualentry{RFC}{RFC}{Request for Comments}{Descriptions des aspects techniques des technologies d'Internet. Il ne s'agit pas toujours de normes à part entière mais de référentiels} 
+\newdualentry{FIPS}{FIPS}{Federal Information Processing Standards}{Standards définis par le \gls{NIST} décrivant notamment l'usage d'AES, DES ou les courbes élliptiques}
+\newdualentry{SECG}{SECG}{Standards for Efficient Cryptography Group}{Consortium pour la standardisation de la cryptographie fondé par Certicom en 1998 incluant notamment le \gls{NIST} et Visa}
+\newdualentry{NSA}{NSA}{National Security Agency}{Organisation gouvernementale américaine pour la collecte de renseignements à l'étranger et la sécurisation des communications gouvernementales. La NSA fournit notamment des recommandations en cryptographie (le CNSA) pour les contractuels du gouvernement américain}
+\newdualentry{ANSSI}{ANSSI}{Agence Nationale de la Sécurité des Systèmes d'Information}{Service du gouvernement français dépendant du Ministère de la Défense et se positionnant en autorité sur la sécurité des Systèmes d'Informations de la France}
+
+%% Concept mathématiques
+\newglossaryentry{ZnZ}
+{
+  name={\ensuremath{\mathbb{Z}/n\mathbb{Z}}},
+  description={Groupe fini cyclique d'ordre n, dans le contexte de la cryptographie, n est le produit de deux premiers. On utilise $\mathbb{Z}/p\mathbb{Z}$ pour les groupes cycliques premiers, il s'agit alors d'un corps premier fini},
+  sort=ZnZ
+}
+
+%% Protocole et Famille
+\newacronym{DH}{DH}{Diffie-Hellman}
+\newacronym{DHE}{DHE}{Diffie-Hellman Ephemeral}
+\newacronym{PQC}{PQC}{Post-Quantum Cryptography}
+\newacronym{ECDH}{ECDH}{Eliptic Curve Diffie-Hellman}
+\newacronym{ECC}{ECC}{Eliptic Curve Cryptography}
+\newacronym{SSL}{SSL}{Secure Sockets Layer}
+\newacronym{TLS}{TLS}{Transport Layer Security}
+
+
+\glsresetall
+\makeglossaries
