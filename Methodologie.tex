@@ -1195,8 +1195,44 @@ protected override OnInit(EventArgs e) {
 \end{Config}	
 
 \section{Audit de code de service web}
-\subsection{Gestion des entrées utilisateurs}
+\subsection{Gestion des entrées utilisateurs: Cross-Site Scripting}
+\begin{Define}{XSS}
+Une \gls{XSS} est une attaque consistant à injecter un code HTML, Javascript ou VB au sein d'une page web, visant à le faire exécuter par le navigateur du client de sorte d'induire un comportement anormal ou d'exploiter une vulnérabilité du-dit navigateur.\\Une XSS peut être:\begin{itemize}
+\item \textbf{Réfléchie}(\textit{Volatil}): Une XSS réfléchie est une XSS apparaissant dans un contexte particulier et temporaire avec, par exemple, une requête présente dans les données envoyées via POST ou GET. Elle s'exécute seulement après la requête et est fournie par le serveur.
+\item \textbf{Stockée} (\textit{Stored}): Une XSS stockée est une XSS archivée sur le site au sein d'une base de données ou insérée dans le code source. Elle s'exécute à chaque chargement de la page et est fournie par le serveur.
+\item \textbf{Locale} (\textit{DOM based XSS}): Une XSS locale est une XSS déclenchée purement côté car chargée par le code côté client (information au sein de l'URL). Ce type d'attaque est invisible côté serveur et du à un manque de traitement côté client. Elle s'exécute seulement après la requête craftée et est fournie par le client.
+\end{itemize}
+\end{Define}
 
+Pour lutter contre les XSS de type stockée et réfléchie, il est nécessaire d'envisager deux approches: \textbf{filtrage} des entrées, \textbf{assainissement} des sorties.
+
+\subsubsection{Filtrage des entrées par REGEX}
+En .NET, la librairie \textbf{System.Text.RegularExpressions} permet d'effectuer un filtrage par identité régulière. Il est, par exemple, possible de n'autoriser que les caractères alphabétiques. La recommandation optimale est d'autoriser les caractères légitimes uniquement, comme par exemple les signes de ponctuation ou les apostrophes pour un texte. Ce simple contrôle peut se faire côté .NET ou ASP.NET et devrait participer à la défense en profondeur.
+\begin{Config}{csharp}{.NET: Filtrage en entrée - REGEX}
+using System.Text.RegularExpressions;
+//Filtrage des caractères alphabétiques et symboles présent dans un nom
+	if(!Regex.IsMatch(sender.name, @"^[\p{L} \.\-\']+$"))
+		throw new ApllicationException("Input not allowed");
+\end{Config}	
+\MarginPar{\textbf{.NET/ASP.NET}: Filtrage en entrée - REGEX}{0cm}Il est possible de réaliser ce type de filtrage avec ASP.NET en utilisant la  fonctionnalité \textbf{asp:RegularExpressionValidator}
+\begin{Config}{aspx-cs}{ASP.NET: Filtrage en entrée - REGEX}
+<form id="form1" runat="server">
+	<asp:TextBox ID="Month" runat="server"/>
+	<asp:RegularExpressionValidator
+		ID="regexpDate" runat="server" ErrorMessage="Month-Year"
+		ControlToValidate="Month" ValidationExpression="^\d{2}-\d{4}$" />
+</form>
+\end{Config}
+Ces deux fonctions sont présentes nativement au sein des framework ASP.NET et .NET.
+
+En Java, ....
+
+En PHP, ....
+
+\subsubsection{Filtrage des entrées via une librairie dédiée}
+En .NET, il est possible de filtrer les entrées saisies à l'aide de la classe \textbf{HtmlSanitizer}, cette classe n'est pas native Windows.\\
+Il est possible de l'utiliser en utilisant la commande \tool{nuGet} suivante:\\
+\tool*{Install-Package HtmlSanitizer}[PM>]
 
 \appendix
 \chapter{Cryptographie}
