@@ -1233,6 +1233,13 @@ En PHP, ....
 En .NET, il est possible de filtrer les entrées saisies à l'aide de la classe \textbf{HtmlSanitizer}, cette classe n'est pas native Windows.\\
 Il est possible de l'utiliser en utilisant la commande \tool{nuGet} suivante:\\
 \tool*{Install-Package HtmlSanitizer}[PM>]
+\begin{Config}{csharp}{.NET: Filtrage en entrée - Librairie dédiée}
+using Ganss.XSS;
+	var input =sender.name;
+	var sanitizer = new HtmlSanitizer();
+	field.Text=sanitize.Sanitize(input);
+\end{Config}	
+
 
 \appendix
 \chapter{Cryptographie}
