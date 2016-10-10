@@ -91,9 +91,11 @@
 De nombreuses solutions existent pouvant réaliser les mêmes taches voir mieux que les outils ci-dessous, cependant ce guide apporte une approche basée sur le raisonnement plutôt que sur une liste exhaustive d'outils.
 \end{Warning}
 \vfill
-\begin{tabular}{|p{2cm} | p{4cm} | p{8cm}|}
+\begin{tabular}{|p{2cm} | p{6cm} | p{6cm}|}
 	\hline
 	Version & Auteur & Notes de version\\
+	\hline
+	\textbf{\today} & Yassim Derrouiche (Java, PHP) \& Pierre d'Huy (.NET) & Ajout de l'audit de code\\
 	\hline
 	\textbf{\today} & Pierre d'Huy & Ajout de l'audit de configuration\\
 	\hline
@@ -1256,16 +1258,18 @@ En Java, ....
 En PHP, ....
 
 \subsubsection{Filtrage des entrées via une librairie dédiée}
-En .NET, il est possible de filtrer les entrées saisies à l'aide de la classe \textbf{HtmlSanitizer}, cette classe n'est pas native Windows.\\
+\MarginPar{\textbf{.NET/ASP.NET}: Filtrage en entrée - Librairie dédiée}{0cm}En .NET, il est possible de filtrer les entrées saisies à l'aide de la classe \textbf{HtmlSanitizer}, cette classe n'est pas native Windows.\\
 Il est possible de l'utiliser en utilisant la commande \tool{nuGet} suivante:\\
 \tool*{Install-Package HtmlSanitizer}[PM>]
 \begin{Config}{csharp}{.NET: Filtrage en entrée - Librairie dédiée}
 using Ganss.XSS;
+
 	var input =sender.name;
 	var sanitizer = new HtmlSanitizer();
 	field.Text=sanitize.Sanitize(input);
 \end{Config}	
 
+<<<<<<< HEAD
 En Java EE (Entreprise Edition), la classe PreparedStatement représente une instruction SQL précompilée qui peut être exécuté plusieurs fois sans avoir à être recompiler pour chaque exécution.
 L’utilisation de cet objet permet de se prémunir contre l’injection d’instructions SQL par des attaquants.
 Il est cependant important d’être prudent lors de l’usage de cet classe. En effet, sa mauvaise utilisation rend l’application toujours vulnérable aux injections SQL.
@@ -1290,6 +1294,51 @@ ResultSet rs = stmt.executeQuery();
 \end{Config}	
 
 Ce code est vulnérable aux injections SQL car il utilise des requêtes dynamiques pour concaténer des données malveillantes à la requête elle-même. 
+=======
+\subsubsection{Assainissement en sortie via un encodage HTML}
+L'encodage HTML permet l'affichage de caractères spéciaux HTML sans causer d'injection au sein du code.\\
+Par exemple, \\
+\indent \payloadhtml{<script>alert('blah');</script>}\\
+sera converti en:\\
+\indent \payloadhtml{&lt;script&gt;alert('blah');&lt;/script&gt;}\\
+
+En .NET, il est possible de réaliser cela avec la fonction \textbf{AntiXssEncoder.HtmlEncode} de la librairie Windows \textbf{System.Web.Security.AntiXss}.
+\begin{Config}{csharp}{.NET: Assainissement en sortie via un encodage HTML}
+using System.Web.Security.AntiXss;
+
+	var input=sender.name;
+	field.Text= AntiXssEncoder.HtmlEncode(input, true);
+
+\end{Config}	
+
+Ce comportement est géré nativement en ASP.NET via l'utilisation de blocs de code incorporé (\textit{embedded code blocks}). Ces blocs échappent automatiquement le code en faisant appel à la librairie définie dans la variable \textbf{encoderType} du \textbf{web.config}. Par défaut la librairie utilisée est \textit{Server.HtmlEncode}.\\
+\begin{Config}{aspx-cs}{ASP.NET: Assainissement en sortie via un encodage HTML}
+	//Deux examples d'implémentation de blocs en ASP.NET/Razor
+	@sender.name
+	
+	<%:sender.name %>
+\end{Config}
+\begin{Config}{xml}{web.config: Assainissement en sortie via un encodage HTML}
+<configuration>
+	<system.web>
+		<compilation debug=''false'' targetFramework="4.5'" />
+		<httpRuntime targetFramework="4.5" 
+			encoderType="System.Web.security.AntiXss.AntiXssEncoder"/>
+	</system.web>
+</configuration>
+\end{Config}
+
+\subsection{Gestion des entrées utilisateurs: Injection de code}
+\begin{Define}{Injection de code}
+Une injection de code est une attaque consistant à injecter du code au sein d'une entrée utilisateur afin d'exécuter un code du côté du serveur. \`A l'inverse des injections XSS, ce type d'attaque vise le serveur afin de lire des données, d'exécuter des commandes à distance ou à rebondir vers des serveurs internes.\\
+Ce type d'attaque se divise en trois catégories:\begin{itemize}
+\item Injection en base de données
+\item Injection de code brut
+\item Injection XPath
+\end{itemize}
+\end{Define}
+
+>>>>>>> c5a94b0a982587f124d3fc1cbfed7821d642abd5
 
 \appendix
 \chapter{Cryptographie}
