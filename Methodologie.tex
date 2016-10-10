@@ -1295,7 +1295,7 @@ Ce comportement est géré nativement en ASP.NET via l'utilisation de blocs de c
 \begin{Config}{xml}{web.config: Assainissement en sortie via un encodage HTML}
 <configuration>
 	<system.web>
-		<compilation debug=''false'' targetFramework="4.5'" />
+		<compilation debug="false" targetFramework="4.5" />
 		<httpRuntime targetFramework="4.5" 
 			encoderType="System.Web.security.AntiXss.AntiXssEncoder"/>
 	</system.web>
@@ -1306,8 +1306,8 @@ Ce comportement est géré nativement en ASP.NET via l'utilisation de blocs de c
 \begin{Define}{Injection de code}
 Une injection de code est une attaque consistant à injecter du code au sein d'une entrée utilisateur afin d'exécuter un code du côté du serveur. \`A l'inverse des injections XSS, ce type d'attaque vise le serveur afin de lire des données, d'exécuter des commandes à distance ou à rebondir vers des serveurs internes.\\
 Ce type d'attaque se divise en trois catégories:\begin{itemize}
-\item Injection en base de données
-\item Injection de code brut
+\item Injection en base de données: Ce type d'injection utilise le mauvais traitement d'entrée utilisateur pour faire exécuter du code par une base de données. Ce code peut permettre de faire fuir des données, d'injecter d'autres données, ou même d'injecter du code en cas de mauvaise configuration du \gls{SGDB}. Le code injecté s'exécutera dans le même contexte que la \gls{SGDB}.
+\item Injection de code brut: Ce type d'injection est possible lors de l'exploitation direct d'une entrée utilisateur via une commande système.
 \item Injection XPath
 \end{itemize}
 \end{Define}
