@@ -1266,6 +1266,30 @@ using Ganss.XSS;
 	field.Text=sanitize.Sanitize(input);
 \end{Config}	
 
+En Java EE (Entreprise Edition), la classe PreparedStatement représente une instruction SQL précompilée qui peut être exécuté plusieurs fois sans avoir à être recompiler pour chaque exécution.
+L’utilisation de cet objet permet de se prémunir contre l’injection d’instructions SQL par des attaquants.
+Il est cependant important d’être prudent lors de l’usage de cet classe. En effet, sa mauvaise utilisation rend l’application toujours vulnérable aux injections SQL.
+Ci-dessous deux exemples d’utilisation de PreparedStatement :
+
+\begin{Config}{java}{Java EE: Usage sécurisé }
+uPreparedStatement stmt = connection.prepareStatement("SELECT * FROM users WHERE userid=? AND password=?");
+stmt.setString(1, userid);
+stmt.setString(2, password);
+ResultSet rs = stmt.executeQuery();
+
+\end{Config}	
+
+Ce code n’est pas vulnérable aux injections SQL car il utilise correctement les requêtes paramétrées. En utilisant la classe PreparedStatement de Java en liant les variables (avec les points d'interrogation) aux méthodes « setString » correspondantes, les  Injections SQL peuvent être facilement évitée.
+
+\begin{Config}{java}{Java EE: Usage vulnérable }
+
+String query = "SELECT * FROM users WHERE userid ='"+ userid + "'" + " AND password='" + password + "'";
+PreparedStatement stmt = connection.prepareStatement(query);
+ResultSet rs = stmt.executeQuery();
+
+\end{Config}	
+
+Ce code est vulnérable aux injections SQL car il utilise des requêtes dynamiques pour concaténer des données malveillantes à la requête elle-même. 
 
 \appendix
 \chapter{Cryptographie}
