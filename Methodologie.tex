@@ -1183,12 +1183,38 @@ Header always set Public-Key-Pins "pin-sha256=b64hash=; max-age=2592000"
 
 \chapter{Audit de code}
 \section{Méthodologie générale}
-\FIXME{Yassim}
-Le code doit ressembler à ça.\\
-Description de ce qu'il faut regarder\\
-Type de vulnérabilité associées\\
-	Description de la Vuln\\
-	Proposition de correction en code\\
+
+\begin{Define}{XSS}
+Un audit de code ou revue de code vise à parcourir le code développé à la recherche de vulnérabilités. Cela permet également de vérifier que les contrôles de sécurité appropriés
+sont présents, qu'ils fonctionnent comme prévu, et qu'ils ont été invoqués aux bons endroits.
+L’audit de code est une bonne pratique permettant de trouver des vulnérabilités dans le code d’une application avant sa mise en production. Il y a plusieurs méthodes permettant d’évaluer la sécurité d’une application au niveau du code et il est recommandé d’en effectuer plusieurs pour avoir une évaluation la plus exacte possible du niveau de sécurité de l’application.
+\end{Define}
+\begin{Pre}
+Il est important de disposer de plusieurs informations avant de commencer un audit de code :
+\item - Nombre de lignes de code : permettant d’estimer la charge de travail approximative
+\item - Technologies utilisées : Afin de se focaliser sur certaines vérifications en particulier
+\item - Les différents points d’entrée de l’application au niveau du code
+\end{Pre}
+Un audit de code se déroule en trois étapes :
+
+
+\item[\textbf{S}]cope: 
+Dans cette étape, le consultant doit identifier à l’aide des informations du client les points d’entrée de l’application dans le code ainsi que les différentes classes faisant parties du périmètre à auditer. Le consultant doit également prendre connaissance du contexte métier de l’application afin de se focaliser sur les parties sensibles de l’application et établir les risques potentiels susceptibles de porter atteinte au client.
+La définition du contexte devrait fournir au consultant les informations suivantes :
+\itemÉtablir l'importance de l’application au sein l'entreprise ou de l’entité concernée
+\itemÉtablir les limites du périmètre de l’application concernée
+\itemÉtablir les risques potentiels et les contrôles possibles liée au contexte métier du client
+\item[\textbf{A}]nalyse: 
+Cette étape consiste à  utiliser les éléments de l’étape précédente pour se concentré sur les parties importante du code de l’application à contrôler. Les vérifications à effectuer par le consultant sont différentes selon le langage de programmation utilisé. Le consultant doit vérifier le niveau de sécurité du code de l’application sur deux aspects :
+Aspect technique :
+ Il s’agit de vérifier le respect des bonnes pratiques en matière de développement spécifiques aux langages 						  employés au sein de l’application. 
+Aspect fonctionnel :
+ Il s’agit de vérifier la bonne implémentation des fonctionnalités spécifiques de l’application ainsi que le respect 					des bonnes pratiques associées.
+Si les différentes vérifications effectuées par le consultant mettent en lumière une ou plusieurs vulnérabilités, le consultant doit fournir des recommandations permettant de corriger ces vulnérabilités  et de respecter les bonnes pratiques en matière de développement sécurisé.
+
+\item[\textbf{F}]ormalisation: 
+
+Cette étape conclut l’audit de code et permet de rassembler les éléments constatés pour produire un rapport qui sera fournis au client.
 \begin{Config}{csharp}{AntiCSRF - Génération de Token à partir du Viewstate}
 protected override OnInit(EventArgs e) {
 	base.OnInit(e);
