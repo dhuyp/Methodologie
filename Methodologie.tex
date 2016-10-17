@@ -91,9 +91,11 @@
 De nombreuses solutions existent pouvant réaliser les mêmes taches voir mieux que les outils ci-dessous, cependant ce guide apporte une approche basée sur le raisonnement plutôt que sur une liste exhaustive d'outils.
 \end{Warning}
 \vfill
-\begin{tabular}{|p{2cm} | p{4cm} | p{8cm}|}
+\begin{tabular}{|p{2cm} | p{6cm} | p{6cm}|}
 	\hline
 	Version & Auteur & Notes de version\\
+	\hline
+	\textbf{\today} & Yassim Derrouiche (Java, PHP) \& Pierre d'Huy (.NET) & Ajout de l'audit de code\\
 	\hline
 	\textbf{\today} & Pierre d'Huy & Ajout de l'audit de configuration\\
 	\hline
@@ -105,22 +107,20 @@ De nombreuses solutions existent pouvant réaliser les mêmes taches voir mieux 
 \tableofcontents
 \mainmatter
 \chapter*{Définition du contexte d'audit}
-\begin{Pre}La méthodologie d'audit est basée sur le processus de l'ISO 19011. Cette norme inclut un certain nombre de définition tel qu'audit, critère d'audit, preuves d'audit, constatations d'audit et conclusion d'audit.\end{Pre}
 \begin{Define}{Audit}
+La méthodologie d'audit est basée sur le processus de l'ISO 19011. Cette méthodologie doit être adaptée à la taille de l'entreprise auditée et au type d'audit.\\
 Un audit est un processus méthodique, indépendant et documenté réalisé par une \textbf{équipe d'audit} permettant d'obtenir des \textbf{preuves d'audit} et de les évaluer vis-à-vis de \textbf{critères d'audit} afin de dresser des \textbf{constatations d'audit} (conformité ou non-conformité) qui, une fois ramenées aux objectifs de l'audit, permettront de dresser des \textbf{conclusions d'audit}.
 \end{Define}
 \begin{Warning}
 Durant l'audit, les preuves d'audit doivent être soigneusement conservées. Cependant, à l'issue de l'audit, elles doivent être détruites et un procès verbale confirmant la destruction devra être signé par l'audité et le responsable de l'équipe d'audit.
 \end{Warning}
-Une équipe d'audit se constitue des auditeurs réalisant l'audit assistés si nécessaire par des \textbf{experts techniques}. Elle peut être accompagnée d'un \textbf{observateur} ne réalisant ni ne participant à l'audit mais nommé par une partie intéressée ou par un \textbf{guide} assistant le processus d'audit et nommé par l'audité.\newline\newline
+Une équipe d'audit est constituée par les auditeurs réalisant l'audit assistés si nécessaire par des \textbf{experts techniques}. Elle peut être accompagnée d'un \textbf{observateur} ne réalisant ni ne participant à l'audit mais nommé par une partie intéressée ou par un \textbf{guide} assistant le processus d'audit et nommé par l'audité.\newline\newline
 Un audit doit être le résultat d'un programme suivant le schéma Plan Do Check Act, c'est-à-dire que le programme respecte un cycle admettant la correction des objectifs au cours de la réalisation de l'audit. \begin{enumerate}
 \item Définition des ressources
 \item Réalisation de l'audit
 \item Constatation d'audit
 \item Conclusion d'audit ou redéfinition des objectifs
 \end{enumerate}
-
-
 
 \chapter{Test d'intrusion}
 \begin{Pre}Le consultant doit disposer d'une feuille d'autorisation en bonne et due forme signée. Sur cette feuille d'autorisation doit figurer le périmètre précis du test d'intrusion sous la forme d'une adresse réticulaire (\gls{URL}), un domaine, d'une adresse IP ou d'un range d'adresse IP. Le consultant devra vérifier l'appartenance de ces IPs au client avant d'y mener des tests offensifs (dans le Scope).\end{Pre}
@@ -1198,6 +1198,156 @@ Header always set Public-Key-Pins "pin-sha256=b64hash=; max-age=2592000"
 \subsection{Durcissement}
 
 \chapter{Audit de code}
+\section{Méthodologie générale}
+
+\begin{Define}{XSS}
+Un audit de code ou revue de code vise à parcourir le code développé à la recherche de vulnérabilités. Cela permet également de vérifier que les contrôles de sécurité appropriés
+sont présents, qu'ils fonctionnent comme prévu, et qu'ils ont été invoqués aux bons endroits.
+L’audit de code est une bonne pratique permettant de trouver des vulnérabilités dans le code d’une application avant sa mise en production. Il y a plusieurs méthodes permettant d’évaluer la sécurité d’une application au niveau du code et il est recommandé d’en effectuer plusieurs pour avoir une évaluation la plus exacte possible du niveau de sécurité de l’application.
+\end{Define}
+\begin{Pre}
+Il est important de disposer de plusieurs informations avant de commencer un audit de code :\begin{itemize}
+\item Nombre de lignes de code : permettant d’estimer la charge de travail approximative
+\item Technologies utilisées : Afin de se focaliser sur certaines vérifications en particulier
+\item Les différents points d’entrée de l’application au niveau du code
+\end{itemize}
+\end{Pre}
+Un audit de code se déroule en trois étapes :\begin{itemize}
+\item[\textbf{S}]cope: 
+Dans cette étape, le consultant doit identifier à l’aide des informations du client les points d’entrée de l’application dans le code ainsi que les différentes classes faisant parties du périmètre à auditer. Le consultant doit également prendre connaissance du contexte métier de l’application afin de se focaliser sur les parties sensibles de l’application et établir les risques potentiels susceptibles de porter atteinte au client.
+La définition du contexte devrait fournir au consultant les informations suivantes :\begin{itemize}
+\item Établir l'importance de l’application au sein l'entreprise ou de l’entité concernée
+\item Établir les limites du périmètre de l’application concernée
+\item Établir les risques potentiels et les contrôles possibles liée au contexte métier du client
+\end{itemize}
+\item[\textbf{A}]nalyse: 
+Cette étape consiste à  utiliser les éléments de l’étape précédente pour se concentré sur les parties importante du code de l’application à contrôler. Les vérifications à effectuer par le consultant sont différentes selon le langage de programmation utilisé. Le consultant doit vérifier le niveau de sécurité du code de l’application sur deux aspects :\begin{itemize}
+\item Aspect technique :
+ Il s’agit de vérifier le respect des bonnes pratiques en matière de développement spécifiques aux langages employés au sein de l’application. 
+\item Aspect fonctionnel :
+ Il s’agit de vérifier la bonne implémentation des fonctionnalités spécifiques de l’application ainsi que le respect 					des bonnes pratiques associées.
+\end{itemize}
+Si les différentes vérifications effectuées par le consultant mettent en lumière une ou plusieurs vulnérabilités, le consultant doit fournir des recommandations permettant de corriger ces vulnérabilités  et de respecter les bonnes pratiques en matière de développement sécurisé.
+\item[\textbf{F}]ormalisation: Cette étape conclut l’audit de code et permet de rassembler les éléments constatés pour produire un rapport qui sera fournis au client.
+\end{itemize}
+
+\section{Audit de code de service web}
+\subsection{Gestion des entrées utilisateurs: Cross-Site Scripting}
+\begin{Define}{XSS}
+Une \gls{XSS} est une attaque consistant à injecter un code HTML, Javascript ou VB au sein d'une page web, visant à le faire exécuter par le navigateur du client de sorte d'induire un comportement anormal ou d'exploiter une vulnérabilité du-dit navigateur.\\Une XSS peut être:\begin{itemize}
+\item \textbf{Réfléchie}(\textit{Volatil}): Une XSS réfléchie est une XSS apparaissant dans un contexte particulier et temporaire avec, par exemple, une requête présente dans les données envoyées via POST ou GET. Elle s'exécute seulement après la requête et est fournie par le serveur.
+\item \textbf{Stockée} (\textit{Stored}): Une XSS stockée est une XSS archivée sur le site au sein d'une base de données ou insérée dans le code source. Elle s'exécute à chaque chargement de la page et est fournie par le serveur.
+\item \textbf{Locale} (\textit{DOM based XSS}): Une XSS locale est une XSS déclenchée purement côté car chargée par le code côté client (information au sein de l'URL). Ce type d'attaque est invisible côté serveur et du à un manque de traitement côté client. Elle s'exécute seulement après la requête craftée et est fournie par le client.
+\end{itemize}
+\end{Define}
+
+Pour lutter contre les XSS de type stockée et réfléchie, il est nécessaire d'envisager deux approches: \textbf{filtrage} des entrées, \textbf{assainissement} des sorties.
+
+\subsubsection{Filtrage des entrées par REGEX}
+En .NET, la librairie \textbf{System.Text.RegularExpressions} permet d'effectuer un filtrage par identité régulière. Il est, par exemple, possible de n'autoriser que les caractères alphabétiques. La recommandation optimale est d'autoriser les caractères légitimes uniquement, comme par exemple les signes de ponctuation ou les apostrophes pour un texte. Ce simple contrôle peut se faire côté .NET ou ASP.NET et devrait participer à la défense en profondeur.
+\begin{Config}{csharp}{.NET: Filtrage en entrée - REGEX}
+using System.Text.RegularExpressions;
+//Filtrage des caractères alphabétiques et symboles présent dans un nom
+	if(!Regex.IsMatch(sender.name, @"^[\p{L} \.\-\']+$"))
+		throw new ApllicationException("Input not allowed");
+\end{Config}	
+\MarginPar{\textbf{.NET/ASP.NET}: Filtrage en entrée - REGEX}{0cm}Il est possible de réaliser ce type de filtrage avec ASP.NET en utilisant la  fonctionnalité \textbf{asp:RegularExpressionValidator}
+\begin{Config}{aspx-cs}{ASP.NET: Filtrage en entrée - REGEX}
+<form id="form1" runat="server">
+	<asp:TextBox ID="Month" runat="server"/>
+	<asp:RegularExpressionValidator
+		ID="regexpDate" runat="server" ErrorMessage="Month-Year"
+		ControlToValidate="Month" ValidationExpression="^\d{2}-\d{4}$" />
+</form>
+\end{Config}
+Ces deux fonctions sont présentes nativement au sein des framework ASP.NET et .NET.
+
+En Java, ....
+
+En PHP, ....
+
+\subsubsection{Filtrage des entrées via une librairie dédiée}
+\MarginPar{\textbf{.NET/ASP.NET}: Filtrage en entrée - Librairie dédiée}{0cm}En .NET, il est possible de filtrer les entrées saisies à l'aide de la classe \textbf{HtmlSanitizer}, cette classe n'est pas native Windows.\\
+Il est possible de l'utiliser en utilisant la commande \tool{nuGet} suivante:\\
+\tool*{Install-Package HtmlSanitizer}[PM>]
+\begin{Config}{csharp}{.NET: Filtrage en entrée - Librairie dédiée}
+using Ganss.XSS;
+
+	var input =sender.name;
+	var sanitizer = new HtmlSanitizer();
+	field.Text=sanitize.Sanitize(input);
+\end{Config}	
+
+<<<<<<< HEAD
+En Java EE (Entreprise Edition), la classe PreparedStatement représente une instruction SQL précompilée qui peut être exécuté plusieurs fois sans avoir à être recompiler pour chaque exécution.
+L’utilisation de cet objet permet de se prémunir contre l’injection d’instructions SQL par des attaquants.
+Il est cependant important d’être prudent lors de l’usage de cet classe. En effet, sa mauvaise utilisation rend l’application toujours vulnérable aux injections SQL.
+Ci-dessous deux exemples d’utilisation de PreparedStatement :
+
+\begin{Config}{java}{Java EE: Usage sécurisé }
+uPreparedStatement stmt = connection.prepareStatement("SELECT * FROM users WHERE userid=? AND password=?");
+stmt.setString(1, userid);
+stmt.setString(2, password);
+ResultSet rs = stmt.executeQuery();
+
+\end{Config}	
+
+Ce code n’est pas vulnérable aux injections SQL car il utilise correctement les requêtes paramétrées. En utilisant la classe PreparedStatement de Java en liant les variables (avec les points d'interrogation) aux méthodes « setString » correspondantes, les  Injections SQL peuvent être facilement évitée.
+
+\begin{Config}{java}{Java EE: Usage vulnérable }
+
+String query = "SELECT * FROM users WHERE userid ='"+ userid + "'" + " AND password='" + password + "'";
+PreparedStatement stmt = connection.prepareStatement(query);
+ResultSet rs = stmt.executeQuery();
+
+\end{Config}	
+
+Ce code est vulnérable aux injections SQL car il utilise des requêtes dynamiques pour concaténer des données malveillantes à la requête elle-même. 
+=======
+\subsubsection{Assainissement en sortie via un encodage HTML}
+L'encodage HTML permet l'affichage de caractères spéciaux HTML sans causer d'injection au sein du code.\\
+Par exemple, \\
+\indent \payloadhtml{<script>alert('blah');</script>}\\
+sera converti en:\\
+\indent \payloadhtml{&lt;script&gt;alert('blah');&lt;/script&gt;}\\
+
+En .NET, il est possible de réaliser cela avec la fonction \textbf{AntiXssEncoder.HtmlEncode} de la librairie Windows \textbf{System.Web.Security.AntiXss}.
+\begin{Config}{csharp}{.NET: Assainissement en sortie via un encodage HTML}
+using System.Web.Security.AntiXss;
+
+	var input=sender.name;
+	field.Text= AntiXssEncoder.HtmlEncode(input, true);
+
+\end{Config}	
+
+Ce comportement est géré nativement en ASP.NET via l'utilisation de blocs de code incorporé (\textit{embedded code blocks}). Ces blocs échappent automatiquement le code en faisant appel à la librairie définie dans la variable \textbf{encoderType} du \textbf{web.config}. Par défaut la librairie utilisée est \textit{Server.HtmlEncode}.\\
+\begin{Config}{aspx-cs}{ASP.NET: Assainissement en sortie via un encodage HTML}
+	//Deux examples d'implémentation de blocs en ASP.NET/Razor
+	@sender.name
+	
+	<%:sender.name %>
+\end{Config}
+\begin{Config}{xml}{web.config: Assainissement en sortie via un encodage HTML}
+<configuration>
+	<system.web>
+		<compilation debug="false" targetFramework="4.5" />
+		<httpRuntime targetFramework="4.5" 
+			encoderType="System.Web.security.AntiXss.AntiXssEncoder"/>
+	</system.web>
+</configuration>
+\end{Config}
+
+\subsection{Gestion des entrées utilisateurs: Injection de code}
+\begin{Define}{Injection de code}
+Une injection de code est une attaque consistant à injecter du code au sein d'une entrée utilisateur afin d'exécuter un code du côté du serveur. \`A l'inverse des injections XSS, ce type d'attaque vise le serveur afin de lire des données, d'exécuter des commandes à distance ou à rebondir vers des serveurs internes.\\
+Ce type d'attaque se divise en trois catégories:\begin{itemize}
+\item Injection en base de données: Ce type d'injection utilise le mauvais traitement d'entrée utilisateur pour faire exécuter du code par une base de données. Ce code peut permettre de faire fuir des données, d'injecter d'autres données, ou même d'injecter du code en cas de mauvaise configuration du \gls{SGDB}. Le code injecté s'exécutera dans le même contexte que la \gls{SGDB}.
+\item Injection de code brut: Ce type d'injection est possible lors de l'exploitation direct d'une entrée utilisateur via une commande système.
+\item Injection XPath
+\end{itemize}
+\end{Define}
+
+>>>>>>> c5a94b0a982587f124d3fc1cbfed7821d642abd5
 
 \appendix
 \chapter{Cryptographie}
