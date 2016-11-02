@@ -1202,44 +1202,33 @@ Header always set Public-Key-Pins "pin-sha256=b64hash=; max-age=2592000"
 \chapter{Audit de code}
 \section{Méthodologie générale}
 
-\begin{Define}{XSS}
-Un audit de code ou revue de code vise à parcourir le code développé à la recherche de vulnérabilités. Cela permet également de vérifier que les contrôles de sécurité appropriés
-sont présents, qu'ils fonctionnent comme prévu, et qu'ils ont été invoqués aux bons endroits.
+\begin{Define}{Audit de code}
+Un audit de code ou revue de code vise à parcourir le code développé à la recherche de vulnérabilités. Cela permet également de vérifier que les contrôles de sécurité appropriés sont présents, qu'ils fonctionnent comme prévu, et qu'ils ont été utilisés aux bons endroits.\\
 L’audit de code est une bonne pratique permettant de trouver des vulnérabilités dans le code d’une application avant sa mise en production. Il y a plusieurs méthodes permettant d’évaluer la sécurité d’une application au niveau du code et il est recommandé d’en effectuer plusieurs pour avoir une évaluation la plus exacte possible du niveau de sécurité de l’application.
 \end{Define}
 \begin{Pre}
-Il est important de disposer de plusieurs informations avant de commencer un audit de code :\begin{itemize}
-\item Nombre de lignes de code : permettant d’estimer la charge de travail approximative
-\item Technologies utilisées : Afin de se focaliser sur certaines vérifications en particulier
-\item Les différents points d’entrée de l’application au niveau du code
+Il est important de disposer de plusieurs informations avant de répondre à un appel d'offre d'audit de code :\begin{itemize}
+\item \textbf{Nombre de lignes de code} (LOC) : permet d’estimer la charge de travail
+\item \textbf{Technologies utilisées} : permet d'évaluer les points spécifiques
+\item \textbf{Points critiques} (\textit{Optionnel}): permet au client de préciser ses zones à risques
 \end{itemize}
 \end{Pre}
 Un audit de code se déroule en trois étapes :\begin{itemize}
 \item[\textbf{S}]cope: 
-Dans cette étape, le consultant doit identifier à l’aide des informations du client les points d’entrée de l’application dans le code ainsi que les différentes classes faisant parties du périmètre à auditer. Le consultant doit également prendre connaissance du contexte métier de l’application afin de se focaliser sur les parties sensibles de l’application et établir les risques potentiels susceptibles de porter atteinte au client.
-La définition du contexte devrait fournir au consultant les informations suivantes :\begin{itemize}
-\item Établir l'importance de l’application au sein l'entreprise ou de l’entité concernée
-\item Établir les limites du périmètre de l’application concernée
-\item Établir les risques potentiels et les contrôles possibles liée au contexte métier du client
-\end{itemize}
+Dans cette étape, le consultant doit identifier à l’aide des informations du client les points d'étude dans le code. Le consultant doit également prendre connaissance du contexte métier de l’application afin de se focaliser sur ses parties sensibles.
 \item[\textbf{A}]nalyse: 
-Cette étape consiste à  utiliser les éléments de l’étape précédente pour se concentré sur les parties importante du code de l’application à contrôler. Les vérifications à effectuer par le consultant sont différentes selon le langage de programmation utilisé. Le consultant doit vérifier le niveau de sécurité du code de l’application sur deux aspects :\begin{itemize}
-\item Aspect technique :
- Il s’agit de vérifier le respect des bonnes pratiques en matière de développement spécifiques aux langages employés au sein de l’application. 
-\item Aspect fonctionnel :
- Il s’agit de vérifier la bonne implémentation des fonctionnalités spécifiques de l’application ainsi que le respect 					des bonnes pratiques associées.
-\end{itemize}
-Si les différentes vérifications effectuées par le consultant mettent en lumière une ou plusieurs vulnérabilités, le consultant doit fournir des recommandations permettant de corriger ces vulnérabilités  et de respecter les bonnes pratiques en matière de développement sécurisé.
-\item[\textbf{F}]ormalisation: Cette étape conclut l’audit de code et permet de rassembler les éléments constatés pour produire un rapport qui sera fournis au client.
+Cette étape permet d'étudier le code fourni et de réaliser des constatations d'audit en adéquation avec les critères d'audit.
+\item[\textbf{U}]sage (\textit{optionnel}): Le client peut demander une application pratique des vulnérabilités découvertes.
+\item[\textbf{F}]ormalisation: Cette étape conclut l’audit de code et permet de rassembler les éléments constatés pour produire un rapport qui sera fourni au client.
 \end{itemize}
 
 \section{Audit de code de service web}
 \subsection{Gestion des entrées utilisateurs: Cross-Site Scripting}
-\begin{Define}{XSS}
+\begin{Define}{Vulnérabilités!XSS}
 Une \gls{XSS} est une attaque consistant à injecter un code HTML, Javascript ou VB au sein d'une page web, visant à le faire exécuter par le navigateur du client de sorte d'induire un comportement anormal ou d'exploiter une vulnérabilité du-dit navigateur.\\Une XSS peut être:\begin{itemize}
 \item \textbf{Réfléchie}(\textit{Volatil}): Une XSS réfléchie est une XSS apparaissant dans un contexte particulier et temporaire avec, par exemple, une requête présente dans les données envoyées via POST ou GET. Elle s'exécute seulement après la requête et est fournie par le serveur.
 \item \textbf{Stockée} (\textit{Stored}): Une XSS stockée est une XSS archivée sur le site au sein d'une base de données ou insérée dans le code source. Elle s'exécute à chaque chargement de la page et est fournie par le serveur.
-\item \textbf{Locale} (\textit{DOM based XSS}): Une XSS locale est une XSS déclenchée purement côté car chargée par le code côté client (information au sein de l'URL). Ce type d'attaque est invisible côté serveur et du à un manque de traitement côté client. Elle s'exécute seulement après la requête craftée et est fournie par le client.
+\item \textbf{Locale} (\textit{DOM based XSS}): Une XSS locale est une XSS déclenchée purement côté navigateur car chargée par le code côté client (information au sein de l'URL). Ce type d'attaque est invisible côté serveur et du à un manque de traitement côté client. Elle s'exécute seulement après la requête craftée et est fournie par le client.
 \end{itemize}
 \end{Define}
 
@@ -1266,7 +1255,14 @@ Ces deux fonctions sont présentes nativement au sein des framework ASP.NET et .
 
 En Java, ....
 
-En PHP, ....
+En PHP, la librairie PCRE assure la gestion des \gls{REGEX}.\MarginPar{\textbf{PHP}: Filtrage en entrée - REGEX}{0cm} Cette librairie est présente nativement depuis PHP 4.0.
+\begin{Config}{php}{PHP: Filtrage en entrée - REGEX}
+<?php
+	$str = $_POST['year'];
+	preg_match('/\d{2,4}/', $str, $matches);
+	if($matches){echo "$str"}
+?>
+\end{Config}
 
 \subsubsection{Filtrage des entrées via une librairie dédiée}
 \MarginPar{\textbf{.NET/ASP.NET}: Filtrage en entrée - Librairie dédiée}{0cm}En .NET, il est possible de filtrer les entrées saisies à l'aide de la classe \textbf{HtmlSanitizer}, cette classe n'est pas native Windows.\\
@@ -1280,32 +1276,6 @@ using Ganss.XSS;
 	field.Text=sanitize.Sanitize(input);
 \end{Config}	
 
-<<<<<<< HEAD
-En Java EE (Entreprise Edition), la classe PreparedStatement représente une instruction SQL précompilée qui peut être exécuté plusieurs fois sans avoir à être recompiler pour chaque exécution.
-L’utilisation de cet objet permet de se prémunir contre l’injection d’instructions SQL par des attaquants.
-Il est cependant important d’être prudent lors de l’usage de cet classe. En effet, sa mauvaise utilisation rend l’application toujours vulnérable aux injections SQL.
-Ci-dessous deux exemples d’utilisation de PreparedStatement :
-
-\begin{Config}{java}{Java EE: Usage sécurisé }
-uPreparedStatement stmt = connection.prepareStatement("SELECT * FROM users WHERE userid=? AND password=?");
-stmt.setString(1, userid);
-stmt.setString(2, password);
-ResultSet rs = stmt.executeQuery();
-
-\end{Config}	
-
-Ce code n’est pas vulnérable aux injections SQL car il utilise correctement les requêtes paramétrées. En utilisant la classe PreparedStatement de Java en liant les variables (avec les points d'interrogation) aux méthodes « setString » correspondantes, les  Injections SQL peuvent être facilement évitée.
-
-\begin{Config}{java}{Java EE: Usage vulnérable }
-
-String query = "SELECT * FROM users WHERE userid ='"+ userid + "'" + " AND password='" + password + "'";
-PreparedStatement stmt = connection.prepareStatement(query);
-ResultSet rs = stmt.executeQuery();
-
-\end{Config}	
-
-Ce code est vulnérable aux injections SQL car il utilise des requêtes dynamiques pour concaténer des données malveillantes à la requête elle-même. 
-=======
 \subsubsection{Assainissement en sortie via un encodage HTML}
 L'encodage HTML permet l'affichage de caractères spéciaux HTML sans causer d'injection au sein du code.\\
 Par exemple, \\
@@ -1313,7 +1283,7 @@ Par exemple, \\
 sera converti en:\\
 \indent \payloadhtml{&lt;script&gt;alert('blah');&lt;/script&gt;}\\
 
-En .NET, il est possible de réaliser cela avec la fonction \textbf{AntiXssEncoder.HtmlEncode} de la librairie Windows \textbf{System.Web.Security.AntiXss}.
+En .NET, il est possible de réaliser cela avec la fonction \textbf{AntiXssEncoder.HtmlEncode} de la librairie Windows \textbf{System.Web.Security.AntiXss}.\MarginPar{\textbf{.NET}: Assainissement en sortie - REGEX}{0cm}
 \begin{Config}{csharp}{.NET: Assainissement en sortie via un encodage HTML}
 using System.Web.Security.AntiXss;
 
@@ -1329,6 +1299,7 @@ Ce comportement est géré nativement en ASP.NET via l'utilisation de blocs de c
 	
 	<%:sender.name %>
 \end{Config}
+\MarginPar{\textbf{ASP.NET}: Assainissement en sortie - REGEX}{0cm}
 \begin{Config}{xml}{web.config: Assainissement en sortie via un encodage HTML}
 <configuration>
 	<system.web>
@@ -1349,7 +1320,33 @@ Ce type d'attaque se divise en trois catégories:\begin{itemize}
 \end{itemize}
 \end{Define}
 
->>>>>>> c5a94b0a982587f124d3fc1cbfed7821d642abd5
+\subsubsection{Utilisation de Prepared Statement}
+Avec \gls{J2EE}, la classe PreparedStatement représente une instruction SQL précompilée qui peut être exécuté plusieurs fois sans avoir à être recompiler pour chaque exécution.
+L’utilisation de cet objet permet de se prémunir contre l’injection d’instructions SQL par des attaquants.
+Il est cependant important d’être prudent lors de l’usage de cet classe. En effet, sa mauvaise utilisation rend l’application toujours vulnérable aux injections SQL.\\
+Ci-dessous deux exemples d’utilisation de PreparedStatement :
+
+\begin{Config}{java}{Java EE: Prepared Statement}
+uPreparedStatement stmt = 
+	connection.prepareStatement("SELECT * FROM users WHERE userid=? AND password=?");
+stmt.setString(1, userid);
+stmt.setString(2, password);
+ResultSet rs = stmt.executeQuery();
+
+\end{Config}	
+
+\MarginPar{\textbf{Java}: Prepared Statement}{0cm} Ce code n’est pas vulnérable aux injections SQL car il utilise correctement les requêtes paramétrées. En utilisant la classe PreparedStatement de Java en liant les variables (avec les points d'interrogation) aux méthodes « setString » correspondantes, les  Injections SQL peuvent être facilement évitée.
+
+\begin{Config}{java}{Java EE: Prepared Statement vulnérable}
+
+String query = 
+	"SELECT * FROM users WHERE userid ='"+ userid + "'" + " AND password='" + password + "'";
+PreparedStatement stmt = connection.prepareStatement(query);
+ResultSet rs = stmt.executeQuery();
+
+\end{Config}	
+
+Ce code est vulnérable aux injections SQL car il utilise des requêtes dynamiques pour concaténer des données malveillantes à la requête elle-même. 
 
 \appendix
 \chapter{Cryptographie}
