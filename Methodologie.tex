@@ -1278,7 +1278,6 @@ using Ganss.XSS;
 	field.Text=sanitize.Sanitize(input);
 \end{Config}	
 
-<<<<<<< HEAD
 En Java EE (Entreprise Edition), la classe PreparedStatement représente une instruction SQL précompilée qui peut être exécuté plusieurs fois sans avoir à être recompiler pour chaque exécution.
 L’utilisation de cet objet permet de se prémunir contre l’injection d’instructions SQL par des attaquants.
 Il est cependant important d’être prudent lors de l’usage de cet classe. En effet, sa mauvaise utilisation rend l’application toujours vulnérable aux injections SQL.
@@ -1303,7 +1302,7 @@ ResultSet rs = stmt.executeQuery();
 \end{Config}	
 
 Ce code est vulnérable aux injections SQL car il utilise des requêtes dynamiques pour concaténer des données malveillantes à la requête elle-même. 
-=======
+
 \subsubsection{Assainissement en sortie via un encodage HTML}
 L'encodage HTML permet l'affichage de caractères spéciaux HTML sans causer d'injection au sein du code.\\
 Par exemple, \\
@@ -1347,11 +1346,24 @@ Ce type d'attaque se divise en trois catégories:\begin{itemize}
 \end{itemize}
 \end{Define}
 
->>>>>>> c5a94b0a982587f124d3fc1cbfed7821d642abd5
 
 \appendix
 \chapter{Cryptographie}
 \section{Cryptographie symétrique}
+\subsection{Principes}
+\begin{Define}{Cryptographie symétrique}
+La cryptographie symétrique repose sur un système à clefs partagées garantissant la confidentialité de la communication. Le secret du chiffré repose entièrement sur le secret de la clef.
+\end{Define}
+La cryptographie symétrique repose sur la confidentialité parfaite de Shannon défini en 1949:\begin{itemize}
+\item \`A un texte chiffré donné la probabilité d'associer un clair donné doit être égale à la probabilité d'associer n'importe quel clair soit $P(M|C) = P(C)$.
+\item \textbf{Réciproquement}: \`A un texte clair donné la probabilité d'associer un chiffré donné doit être égale à la probabilité d'associer n'importe quel chiffré soit $P(C|M) = P(M)$.
+\end{itemize}
+
+\subsection{Chiffrement par bloc}
+Le chiffrement par bloc est une méthode de chiffrement consistant à chiffrer des blocs de taille fixe (définie par l'algorithme). Ce type de chiffrement est le seul utilisé dans le cadre des connexions TLS à l'exception de RC4 qui est considéré comme déprécié. \\
+De nombreuses attaques ont été publiés contre les chiffrement par blocs de 64 bits qui impacte notamment l'implémentation 3DES et DES. Un attaquant ayant connaissance de suffisamment de ciphertext sera en mesure de déterminer le plaintext en partant de la connaissance d'un bloc de plaintext. Depuis 2000, le standard requiert une taille de bloc de 128 bits.
+\subsubsection{Réseau de Feistel}
+\subsection{Chiffrement par flot}
 \section{Cryptographie asymétrique}
 \subsection{Principes}
 \begin{Define}{Cryptographie asymétrique}
