@@ -1361,8 +1361,19 @@ La cryptographie symétrique repose sur la confidentialité parfaite de Shannon 
 
 \subsection{Chiffrement par bloc}
 Le chiffrement par bloc est une méthode de chiffrement consistant à chiffrer des blocs de taille fixe (définie par l'algorithme). Ce type de chiffrement est le seul utilisé dans le cadre des connexions TLS à l'exception de RC4 qui est considéré comme déprécié. \\
-De nombreuses attaques ont été publiés contre les chiffrement par blocs de 64 bits qui impacte notamment l'implémentation 3DES et DES. Un attaquant ayant connaissance de suffisamment de ciphertext sera en mesure de déterminer le plaintext en partant de la connaissance d'un bloc de plaintext. Depuis 2000, le standard requiert une taille de bloc de 128 bits.
+De nombreuses attaques ont été publiés contre les chiffrement par blocs de 64 bits qui impacte notamment l'implémentation 3DES et DES. Un attaquant ayant connaissance de suffisamment de ciphertext sera en mesure de déterminer le plaintext en partant de la connaissance d'un bloc de plaintext. Depuis 2000, le standard requiert une taille de bloc de 128 bits.\\
+
+
 \subsubsection{Réseau de Feistel}
+\begin{Define}{Réseau de Feistel}
+Les réseaux de Fesitel sont utilisés par de nombreux systèmes de chiffrement par bloc (DES, Camelia, Blowfish, Kasumi...). Ce type de système consiste en une dérivation du bloc en plusieurs tours. De sorte que, $C=L||R$, F la fonction de transformation et K la clef du tour,\\
+$\left\{
+\begin{array}{l}
+  R_i \rightarrow L_{i+1} \\
+  L_i \oplus F(R_{i}, K_{i})\rightarrow R_{i+1}
+\end{array}
+\right.$\\
+\end{Define}
 \subsection{Chiffrement par flot}
 \section{Cryptographie asymétrique}
 \subsection{Principes}
