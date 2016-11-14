@@ -1253,9 +1253,26 @@ using System.Text.RegularExpressions;
 \end{Config}
 Ces deux fonctions sont présentes nativement au sein des framework ASP.NET et .NET.
 
-En Java, ....
+\textbf{En Java}, Afin d’utiliser les expressions régulières en Java,  il faut utiliser les classes Pattern et Matcher appartenant au package java.util.regex.
 
-En PHP, la librairie PCRE assure la gestion des \gls{REGEX}.\MarginPar{\textbf{PHP}: Filtrage en entrée - REGEX}{0cm} Cette librairie est présente nativement depuis PHP 4.0.
+\textbf{La classe Pattern :}
+
+La première étape est de définir le motif que l'on veut utiliser et créer une instance de la classe Pattern avec ce motif. 
+La classe Pattern dispose pas de constructeur, on obtient une instance de la classe grâce à la méthode compile appartenant à la classe Pattern qui prend comme seul et unique paramètre le motif sous forme d'un objet String.
+
+\begin{Config}{Java}{JEE: Filtrage en entrée - REGEX}
+Pattern pattern = Pattern.compile ("^\\w+@[a-z]+\\.[a-z]{2,4}$");
+\end{Config}
+
+\textbf{La classe Matcher :}
+
+Une fois que le motif est compilé, il faut créer un objet de type Matcher pour interroger des chaines de caractères. La classe Matcher ne propose pas de constructeur non plus, on crée une instance de cette classe grâce à la méthode matcher de la classe Pattern. Cette méthode prend comme unique paramètre la chaine cible que l'on souhaite interroger.
+
+\begin{Config}{Java}{JEE: Filtrage en entrée - REGEX}
+Matcher matcher = pattern.matcher ("toto@gmail.com");
+\end{Config}
+
+\textbf{En PHP}, la librairie PCRE assure la gestion des \gls{REGEX}.\MarginPar{\textbf{PHP}: Filtrage en entrée - REGEX}{0cm} Cette librairie est présente nativement depuis PHP 4.0.
 \begin{Config}{php}{PHP: Filtrage en entrée - REGEX}
 <?php
 	$str = $_POST['year'];
@@ -1320,8 +1337,8 @@ Ce type d'attaque se divise en trois catégories:\begin{itemize}
 \end{itemize}
 \end{Define}
 
-\subsubsection{Utilisation de Prepared Statement}
-Avec \gls{J2EE}, la classe PreparedStatement représente une instruction SQL précompilée qui peut être exécuté plusieurs fois sans avoir à être recompiler pour chaque exécution.
+\subsubsection{Java: Utilisation de Prepared Statement}
+Avec \gls{J2EE}, la classe \textbf{PreparedStatement} représente une instruction SQL précompilée qui peut être exécuté plusieurs fois sans avoir à être recompiler pour chaque exécution.
 L’utilisation de cet objet permet de se prémunir contre l’injection d’instructions SQL par des attaquants.
 Il est cependant important d’être prudent lors de l’usage de cet classe. En effet, sa mauvaise utilisation rend l’application toujours vulnérable aux injections SQL.\\
 Ci-dessous deux exemples d’utilisation de PreparedStatement :
@@ -1347,6 +1364,42 @@ ResultSet rs = stmt.executeQuery();
 \end{Config}	
 
 Ce code est vulnérable aux injections SQL car il utilise des requêtes dynamiques pour concaténer des données malveillantes à la requête elle-même. 
+\subsubsection{PHP: Utilisation de l'API Php Data Object (PDO)}
+
+De même qu’en Java, il existe en PHP la classe \textbf{PDOStatement} permet de créer et d’exécuter des instructions SQL précompilées.
+La méthode \textit{prepare} de la classe PDOStatement sert à créer une instruction qui sera ensuite exécuter avec la méthode \textit{execute}.
+Prototype des deux méthodes:
+
+\begin{Config}{php}{PHP: Méthodes prepare et execute}
+public PDOStatement PDO::prepare ( string $statement [, array $driver_options = array() ] )
+public bool PDOStatement::execute ([ array $input_parameters ] )
+\end{Config}
+
+Une requête SQL crée par la méthode \textit{prepare} peut contenir des paramètres nommés ( :name) ou des points d’interrogation qui seront ensuite remplacés par les paramètres désirés à l’exécution de la requête.
+\textbf{Il est important de lier ces paramètres aux entrées utilisateur et de ne pas utiliser les entrées utilisateur directement dans la requête}, ce qui rendrait l’utilisation des instructions précompilées inutile.
+
+Requête SQL avec paramètres nommés:
+\begin{Config}{php}{PHP: Création d'une requête précompilée}
+<?php
+/* Execute a prepared statement by passing an array of values */
+$sql = 'SELECT name, colour, calories
+    FROM fruit
+    WHERE calories < :calories AND colour = :colour';
+$sth->execute(array(':calories' => 150, ':colour' => 'red'));
+
+?>
+\end{Config}
+
+Requête SQL avec points d’interrogations :
+\begin{Config}{php}{PHP: Création création d'une requête précompilée}
+<?php
+/* Execute a prepared statement by passing an array of values */
+$sth = $dbh->prepare('SELECT name, colour, calories
+    FROM fruit
+    WHERE calories < ? AND colour = ?');
+$sth->execute(array(150, 'red'));
+?>
+\end{Config}
 
 \appendix
 \chapter{Cryptographie}
