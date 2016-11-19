@@ -1200,58 +1200,49 @@ Header always set Public-Key-Pins "pin-sha256=b64hash=; max-age=2592000"
 \chapter{Audit de code}
 \section{Méthodologie générale}
 
-\begin{Define}{XSS}
-Un audit de code ou revue de code vise à parcourir le code développé à la recherche de vulnérabilités. Cela permet également de vérifier que les contrôles de sécurité appropriés
-sont présents, qu'ils fonctionnent comme prévu, et qu'ils ont été invoqués aux bons endroits.
+\begin{Define}{Audit de code}
+Un audit de code ou revue de code vise à parcourir le code développé à la recherche de vulnérabilités. Cela permet également de vérifier que les contrôles de sécurité appropriés sont présents, qu'ils fonctionnent comme prévu, et qu'ils ont été utilisés aux bons endroits.\\
 L’audit de code est une bonne pratique permettant de trouver des vulnérabilités dans le code d’une application avant sa mise en production. Il y a plusieurs méthodes permettant d’évaluer la sécurité d’une application au niveau du code et il est recommandé d’en effectuer plusieurs pour avoir une évaluation la plus exacte possible du niveau de sécurité de l’application.
 \end{Define}
 \begin{Pre}
-Il est important de disposer de plusieurs informations avant de commencer un audit de code :\begin{itemize}
-\item Nombre de lignes de code : permettant d’estimer la charge de travail approximative
-\item Technologies utilisées : Afin de se focaliser sur certaines vérifications en particulier
-\item Les différents points d’entrée de l’application au niveau du code
+Il est important de disposer de plusieurs informations avant de répondre à un appel d'offre d'audit de code :\begin{itemize}
+\item \textbf{Nombre de lignes de code} (LOC) : permet d’estimer la charge de travail
+\item \textbf{Technologies utilisées} : permet d'évaluer les points spécifiques
+\item \textbf{Points critiques} (\textit{Optionnel}): permet au client de préciser ses zones à risques
 \end{itemize}
 \end{Pre}
 Un audit de code se déroule en trois étapes :\begin{itemize}
 \item[\textbf{S}]cope: 
-Dans cette étape, le consultant doit identifier à l’aide des informations du client les points d’entrée de l’application dans le code ainsi que les différentes classes faisant parties du périmètre à auditer. Le consultant doit également prendre connaissance du contexte métier de l’application afin de se focaliser sur les parties sensibles de l’application et établir les risques potentiels susceptibles de porter atteinte au client.
-La définition du contexte devrait fournir au consultant les informations suivantes :\begin{itemize}
-\item Établir l'importance de l’application au sein l'entreprise ou de l’entité concernée
-\item Établir les limites du périmètre de l’application concernée
-\item Établir les risques potentiels et les contrôles possibles liée au contexte métier du client
-\end{itemize}
+Dans cette étape, le consultant doit identifier à l’aide des informations du client les points d'étude dans le code. Le consultant doit également prendre connaissance du contexte métier de l’application afin de se focaliser sur ses parties sensibles.
 \item[\textbf{A}]nalyse: 
-Cette étape consiste à  utiliser les éléments de l’étape précédente pour se concentré sur les parties importante du code de l’application à contrôler. Les vérifications à effectuer par le consultant sont différentes selon le langage de programmation utilisé. Le consultant doit vérifier le niveau de sécurité du code de l’application sur deux aspects :\begin{itemize}
-\item Aspect technique :
- Il s’agit de vérifier le respect des bonnes pratiques en matière de développement spécifiques aux langages employés au sein de l’application. 
-\item Aspect fonctionnel :
- Il s’agit de vérifier la bonne implémentation des fonctionnalités spécifiques de l’application ainsi que le respect 					des bonnes pratiques associées.
-\end{itemize}
-Si les différentes vérifications effectuées par le consultant mettent en lumière une ou plusieurs vulnérabilités, le consultant doit fournir des recommandations permettant de corriger ces vulnérabilités  et de respecter les bonnes pratiques en matière de développement sécurisé.
-\item[\textbf{F}]ormalisation: Cette étape conclut l’audit de code et permet de rassembler les éléments constatés pour produire un rapport qui sera fournis au client.
+Cette étape permet d'étudier le code fourni et de réaliser des constatations d'audit en adéquation avec les critères d'audit.
+\item[\textbf{U}]sage (\textit{optionnel}): Le client peut demander une application pratique des vulnérabilités découvertes.
+\item[\textbf{F}]ormalisation: Cette étape conclut l’audit de code et permet de rassembler les éléments constatés pour produire un rapport qui sera fourni au client.
 \end{itemize}
 
 \section{Audit de code de service web}
 \subsection{Gestion des entrées utilisateurs: Cross-Site Scripting}
-\begin{Define}{XSS}
+\begin{Define}{Vulnérabilités!XSS}
 Une \gls{XSS} est une attaque consistant à injecter un code HTML, Javascript ou VB au sein d'une page web, visant à le faire exécuter par le navigateur du client de sorte d'induire un comportement anormal ou d'exploiter une vulnérabilité du-dit navigateur.\\Une XSS peut être:\begin{itemize}
 \item \textbf{Réfléchie}(\textit{Volatil}): Une XSS réfléchie est une XSS apparaissant dans un contexte particulier et temporaire avec, par exemple, une requête présente dans les données envoyées via POST ou GET. Elle s'exécute seulement après la requête et est fournie par le serveur.
 \item \textbf{Stockée} (\textit{Stored}): Une XSS stockée est une XSS archivée sur le site au sein d'une base de données ou insérée dans le code source. Elle s'exécute à chaque chargement de la page et est fournie par le serveur.
-\item \textbf{Locale} (\textit{DOM based XSS}): Une XSS locale est une XSS déclenchée purement côté car chargée par le code côté client (information au sein de l'URL). Ce type d'attaque est invisible côté serveur et du à un manque de traitement côté client. Elle s'exécute seulement après la requête craftée et est fournie par le client.
+\item \textbf{Locale} (\textit{DOM based XSS}): Une XSS locale est une XSS déclenchée purement côté navigateur car chargée par le code côté client (information au sein de l'URL). Ce type d'attaque est invisible côté serveur et du à un manque de traitement côté client. Elle s'exécute seulement après la requête craftée et est fournie par le client.
 \end{itemize}
 \end{Define}
 
 Pour lutter contre les XSS de type stockée et réfléchie, il est nécessaire d'envisager deux approches: \textbf{filtrage} des entrées, \textbf{assainissement} des sorties.
 
 \subsubsection{Filtrage des entrées par REGEX}
-En .NET, la librairie \textbf{System.Text.RegularExpressions} permet d'effectuer un filtrage par identité régulière. Il est, par exemple, possible de n'autoriser que les caractères alphabétiques. La recommandation optimale est d'autoriser les caractères légitimes uniquement, comme par exemple les signes de ponctuation ou les apostrophes pour un texte. Ce simple contrôle peut se faire côté .NET ou ASP.NET et devrait participer à la défense en profondeur.
+En .NET, la librairie \textbf{System.Text.RegularExpressions} permet d'effectuer un filtrage par \gls{REGEX}. Il est, par exemple, possible de n'autoriser que les caractères alphabétiques. La recommandation optimale est d'autoriser les caractères légitimes uniquement, comme par exemple les signes de ponctuation ou les apostrophes pour un texte. Ce simple contrôle peut se faire côté .NET ou ASP.NET et devrait participer à la défense en profondeur.
+
 \begin{Config}{csharp}{.NET: Filtrage en entrée - REGEX}
 using System.Text.RegularExpressions;
 //Filtrage des caractères alphabétiques et symboles présent dans un nom
 	if(!Regex.IsMatch(sender.name, @"^[\p{L} \.\-\']+$"))
 		throw new ApllicationException("Input not allowed");
 \end{Config}	
-\MarginPar{\textbf{.NET/ASP.NET}: Filtrage en entrée - REGEX}{0cm}Il est possible de réaliser ce type de filtrage avec ASP.NET en utilisant la  fonctionnalité \textbf{asp:RegularExpressionValidator}
+
+\MarginPar{\textbf{.NET/ASP.NET}: Filtrage en entrée - REGEX}{0cm}Il est possible de réaliser ce type de filtrage avec ASP.NET en utilisant la  fonctionnalité \textit{asp:RegularExpressionValidator}
 \begin{Config}{aspx-cs}{ASP.NET: Filtrage en entrée - REGEX}
 <form id="form1" runat="server">
 	<asp:TextBox ID="Month" runat="server"/>
@@ -1260,11 +1251,25 @@ using System.Text.RegularExpressions;
 		ControlToValidate="Month" ValidationExpression="^\d{2}-\d{4}$" />
 </form>
 \end{Config}
-Ces deux fonctions sont présentes nativement au sein des framework ASP.NET et .NET.
 
-En Java, ....
+Ces deux fonctions sont présentes nativement au sein des frameworks ASP.NET et .NET.\newline\newline
+En \gls{J2EE}, pour utiliser les \gls{REGEX},  il faut utiliser les classes \textit{Pattern} et \textit{Matcher} appartenant au package \textbf{java.util.regex}.\\
+La première étape est de définir le motif que l'on veut utiliser et créer une instance de la classe \textit{Pattern}\MarginPar{\textbf{Java}: Filtrage en entrée - REGEX}{0cm} correspondante.
+Une fois le motif compilé, la méthode \textit{Matcher} de la classe \textit{Pattern} permet d'interroger des chaines de caractères. 
+\begin{Config}{Java}{Java EE: Filtrage en entrée - REGEX}
+Pattern pattern = Pattern.compile ("^\\w+@[a-z]+\\.[a-z]{2,4}$");
+Matcher matcher = pattern.matcher ("test@example.com");
+\end{Config}\newline\newline
 
-En PHP, ....
+En PHP, la librairie PCRE assure la gestion des \gls{REGEX}.\MarginPar{\textbf{PHP}: Filtrage en entrée - REGEX}{0cm} Cette librairie est présente nativement depuis PHP 4.0.
+\begin{Config}{php}{PHP: Filtrage en entrée - REGEX}
+<?php
+	$str = $_POST['year'];
+	preg_match('/\d{2,4}/', $str, $matches);
+	if($matches){echo "$str"}
+?>
+\end{Config}
+
 
 \subsubsection{Filtrage des entrées via une librairie dédiée}
 \MarginPar{\textbf{.NET/ASP.NET}: Filtrage en entrée - Librairie dédiée}{0cm}En .NET, il est possible de filtrer les entrées saisies à l'aide de la classe \textbf{HtmlSanitizer}, cette classe n'est pas native Windows.\\
@@ -1273,37 +1278,11 @@ Il est possible de l'utiliser en utilisant la commande \tool{nuGet} suivante:\\
 \begin{Config}{csharp}{.NET: Filtrage en entrée - Librairie dédiée}
 using Ganss.XSS;
 
-	var input =sender.name;
+	var input=sender.name;
 	var sanitizer = new HtmlSanitizer();
 	field.Text=sanitize.Sanitize(input);
 \end{Config}	
 
-<<<<<<< HEAD
-En Java EE (Entreprise Edition), la classe PreparedStatement représente une instruction SQL précompilée qui peut être exécuté plusieurs fois sans avoir à être recompiler pour chaque exécution.
-L’utilisation de cet objet permet de se prémunir contre l’injection d’instructions SQL par des attaquants.
-Il est cependant important d’être prudent lors de l’usage de cet classe. En effet, sa mauvaise utilisation rend l’application toujours vulnérable aux injections SQL.
-Ci-dessous deux exemples d’utilisation de PreparedStatement :
-
-\begin{Config}{java}{Java EE: Usage sécurisé }
-uPreparedStatement stmt = connection.prepareStatement("SELECT * FROM users WHERE userid=? AND password=?");
-stmt.setString(1, userid);
-stmt.setString(2, password);
-ResultSet rs = stmt.executeQuery();
-
-\end{Config}	
-
-Ce code n’est pas vulnérable aux injections SQL car il utilise correctement les requêtes paramétrées. En utilisant la classe PreparedStatement de Java en liant les variables (avec les points d'interrogation) aux méthodes « setString » correspondantes, les  Injections SQL peuvent être facilement évitée.
-
-\begin{Config}{java}{Java EE: Usage vulnérable }
-
-String query = "SELECT * FROM users WHERE userid ='"+ userid + "'" + " AND password='" + password + "'";
-PreparedStatement stmt = connection.prepareStatement(query);
-ResultSet rs = stmt.executeQuery();
-
-\end{Config}	
-
-Ce code est vulnérable aux injections SQL car il utilise des requêtes dynamiques pour concaténer des données malveillantes à la requête elle-même. 
-=======
 \subsubsection{Assainissement en sortie via un encodage HTML}
 L'encodage HTML permet l'affichage de caractères spéciaux HTML sans causer d'injection au sein du code.\\
 Par exemple, \\
@@ -1311,7 +1290,8 @@ Par exemple, \\
 sera converti en:\\
 \indent \payloadhtml{&lt;script&gt;alert('blah');&lt;/script&gt;}\\
 
-En .NET, il est possible de réaliser cela avec la fonction \textbf{AntiXssEncoder.HtmlEncode} de la librairie Windows \textbf{System.Web.Security.AntiXss}.
+
+En .NET, il est possible de réaliser cela avec la fonction \textbf{AntiXssEncoder.HtmlEncode} de la librairie Windows \textbf{System.Web.Security.AntiXss}.\MarginPar{\textbf{.NET}: Assainissement en sortie - REGEX}{0cm}
 \begin{Config}{csharp}{.NET: Assainissement en sortie via un encodage HTML}
 using System.Web.Security.AntiXss;
 
@@ -1327,6 +1307,7 @@ Ce comportement est géré nativement en ASP.NET via l'utilisation de blocs de c
 	
 	<%:sender.name %>
 \end{Config}
+\MarginPar{\textbf{ASP.NET}: Assainissement en sortie - REGEX}{0cm}
 \begin{Config}{xml}{web.config: Assainissement en sortie via un encodage HTML}
 <configuration>
 	<system.web>
@@ -1347,7 +1328,118 @@ Ce type d'attaque se divise en trois catégories:\begin{itemize}
 \end{itemize}
 \end{Define}
 
->>>>>>> c5a94b0a982587f124d3fc1cbfed7821d642abd5
+\subsubsection{Utilisation de Prepared Statements contre les injections en Base de données}
+\begin{Warning}
+Dans le cas des \textit{Prepared Statements}, le code utilise une requête préparée (potentiellement dynamiquement) et insère les paramètres dans la requête a posteriori via des fonctions spécifiques. \textbf{Il est important de lier ces paramètres aux entrées utilisateur et de ne pas utiliser les entrées utilisateur directement dans la requête}, ce qui rendrait l’utilisation des \textit{Prepared Statements} inutile.
+\end{Warning}
+
+Il est possible d'utiliser deux bibliothèques en .NET pour gérer les Prepared Statements: \textbf{SqlCommand} et \textbf{OlebCommand}. Ces librairies se distinguent sur le typage différent, par l'utilisation de driver de SGDB différents et par l'utilisation de paramètres nommés pour le premier.
+\begin{Config}{csharp}{.NET: Prepared Statements avec paramètres nommés (SQLCommand)}
+string cmd="SELECT * FROM users WHERE userid=@login AND password=@pass";
+SqlCommand c = new SqlCommand(cmd, connection);
+c.Parameters.Add("@login", SqlDbType.Int);
+c.Parameters["@login"].Value = userID;
+c.Parameters.Add("@pass", SqlDbType.Int);
+c.Parameters["@pass"].Value = password;
+SqlDataReader reader = command.ExecuteReader();
+\end{Config}	
+\MarginPar{\textbf{.NET}: Prepared Statement}{0cm}La bibliothèque \textit{OleDbCommand} ne supporte pas les paramètres nommés, cependant il est possible de les nommer pour la facilité d'usage. Les noms seront associés dans l'ordre d'apparition de la requête.
+\begin{Config}{csharp}{.NET: Prepared Statements avec marqueurs (OleDbCommand)}
+string cmd="SELECT * FROM users WHERE userid=? AND password=?";
+OleDblCommand c = new SqlCommand(cmd, connection);
+c.Parameters.Add("@p2", SqlDbType.Int);
+c.Parameters["@p2"].Value = userID;
+c.Parameters.Add("@p1", SqlDbType.Int);
+c.Parameters["@p1"].Value = password;
+OleDbDataReader reader = command.ExecuteReader();
+\end{Config}	\newline\newline
+Avec \gls{J2EE}, la classe \textbf{PreparedStatement} représente une instruction SQL précompilée qui peut être exécuté plusieurs fois sans avoir à être recompiler pour chaque exécution.
+L’utilisation de cet objet permet de se prémunir contre l’injection d’instructions SQL par des attaquants.
+Il est cependant important d’être prudent lors de l’usage de cet classe. En effet, sa mauvaise utilisation rend l’application toujours vulnérable aux injections SQL.\\
+
+\begin{Config}{java}{Java EE: Prepared Statement}
+uPreparedStatement stmt = 
+	connection.prepareStatement("SELECT * FROM users WHERE userid=? AND password=?");
+stmt.setString(1, userid);
+stmt.setString(2, password);
+ResultSet rs = stmt.executeQuery();
+\end{Config}	
+
+\MarginPar{\textbf{Java}: Prepared Statement}{0cm} Ce code n’est pas vulnérable aux injections SQL car il utilise correctement les requêtes paramétrées. En utilisant la classe PreparedStatement de Java en liant les variables (avec les points d'interrogation) aux méthodes \textit{setString} correspondantes, les  injections SQL peuvent être facilement évitée.
+
+\begin{Config}{java}{Java EE: Prepared Statement vulnérable}
+
+String query = 
+	"SELECT * FROM users WHERE userid ='"+ userid + "'" + " AND password='" + password + "'";
+PreparedStatement stmt = connection.prepareStatement(query);
+ResultSet rs = stmt.executeQuery();
+
+\end{Config}	
+
+Ce code est vulnérable aux injections SQL car il utilise des requêtes dynamiques pour concaténer des données malveillantes à la requête elle-même. \newline\newline
+
+
+En PHP, la classe \textbf{PDOStatement}, disponible depuis PHP 5.0, permet de créer et d’exécuter des instructions SQL paramétrées.\MarginPar{\textbf{PHP}: Prepared Statement}{0cm}
+La méthode \textit{prepare} de la classe PDOStatement sert à créer une instruction qui sera ensuite exécuter avec la méthode \textit{execute}.
+
+Une requête SQL crée par la méthode \textit{prepare} peut contenir des paramètres nommés ( :name) ou des marqueurs (?) qui seront ensuite remplacés par les paramètres désirés à l’exécution de la requête.
+
+\begin{Config}{php}{PHP: Prepared Statement avec paramètres nommés}
+<?php
+/* Execute a prepared statement by passing an array of values */
+$sql = 'SELECT name, colour, calories
+    FROM fruit
+    WHERE calories < :calories AND colour = :colour';
+$sth->execute(array(':calories' => 150, ':colour' => 'red'));
+$result = $sth->fetchAll();
+?>
+\end{Config}
+
+\begin{Config}{php}{PHP: Prepared Statement avec marqueurs}
+<?php
+/* Execute a prepared statement by passing an array of values */
+$sth = $dbh->prepare('SELECT name, colour, calories
+    FROM fruit
+    WHERE calories < ? AND colour = ?');
+$sth->execute(array(150, 'red'));
+$result = $sth->fetchAll();
+?>
+\end{Config}
+
+\subsubsection{Utilisation de mapping objet-relationnel}
+Les \textbf{\gls{ORM} Frameworks} permettent de gérer les requêtes sous la forme de méthodes d'objet. Ces frameworks permettent donc, entre autres, de paramétrer les requêtes.\\
+.NET propose la solution Entity Framework qui permet à l'utilisateur de gérer les requêtes suivants deux méthodes: \textit{EntitySQL} et \textit{Link-To-Entities}.
+EntitySQL implémente \gls{EDM}. Ce modèle permet de traiter les données en sortie comme un objet. En utilisant \textbf{EntityCommand}, il est possible de paramétrer les requêtes avec la méthode \textit{Parameteters}.
+\begin{Config}{csharp}{.NET: Prepared Statements avec EntitySQL}
+    string esqlQuery =
+        @"SELECT VALUE Contact FROM AdventureWorksEntities.Contacts 
+                    AS Contact WHERE Contact.LastName = @ln AND
+                    Contact.FirstName = @fn";
+
+    using (EntityCommand cmd = new EntityCommand(esqlQuery, conn))
+    {
+        EntityParameter param1 = new EntityParameter();
+        param1.ParameterName = "ln";
+        param1.Value = "Adams";
+        EntityParameter param2 = new EntityParameter();
+        param2.ParameterName = "fn";
+        param2.Value = "Frances";
+
+        cmd.Parameters.Add(param1);
+        cmd.Parameters.Add(param2);
+
+        using (DbDataReader rdr = cmd.ExecuteReader(CommandBehavior.SequentialAccess))
+        {
+            // Iterate through the collection of Contact items.
+            while (rdr.Read())
+            {
+                Console.WriteLine(rdr["FirstName"]);
+                Console.WriteLine(rdr["LastName"]);
+            }
+        }
+    }
+\end{Config}	
+
 
 \appendix
 \chapter{Cryptographie}

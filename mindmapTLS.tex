@@ -23,20 +23,20 @@
   node[root] {TLS} [clockwise from=0]
     child[good] {% Famille TLS_RSA, TLS_RSA_PSK se trouve en bloc de fin car ajouté plus tard
       node {\underline{\textit{RSA}}} [clockwise from=160]
-        child[bad] { node{NULL}}
+        child[bad] { node [concept](RSANULL){NULL}}
         child[bad] { node [concept](RSARC4){RC4\\128}}
         child[deprecated] { node [concept](RSA3DES){3DES-EDE}[clockwise from=60]
           child { node [concept]{CBC}
             child { node [concept]{SHA}}
           }
         }
-        child[deprecated] { node [concept]{AES\\128}[clockwise from=60]
+        child[medium] { node [concept]{AES\\128}[clockwise from=60]
           child { node [concept]{CBC}[clockwise from=82]
-            child { node [concept]{SHA}}
+            child[deprecated] { node [concept]{SHA}}
             child { node [concept]{SHA256}}
           }
          child { node [concept]{GCM}[clockwise from=40]
-            child { node [concept]{SHA256}}
+            child { node [concept](RSAAES128SHA256){SHA256}}
           }
         }
         child[good] { node [concept] {AES\\256}[clockwise from=30]
@@ -48,13 +48,13 @@
             child { node [concept]{SHA384}}
           }
         }
-        child[deprecated] { node [concept]{CAMELLIA\\128}[clockwise from=350]
+        child[medium] { node [concept]{CAMELLIA\\128}[clockwise from=350]
           child { node [concept]{CBC}[clockwise from=0]
             child { node [concept](RSACAM128SHA){SHA}}
           }
         }
-        child[medium] { node [concept]{CAMELLIA\\256}[clockwise from=350]
-          child { node [concept]{CBC}
+        child[good] { node [concept]{CAMELLIA\\256}[clockwise from=350]
+          child[medium] { node [concept]{CBC}
             child[deprecated] { node [concept](RSACAM256SHA){SHA}}
           }
         }
@@ -75,14 +75,14 @@
               child { node [concept]{CBC}[clockwise from=210]
                 child { node [concept]{SHA}}
             }}
-            child[deprecated,sibling angle=36] { node [concept](DHCAMELLIA128){\tiny CAMELLIA\\128}[clockwise from=0]
+            child[medium,sibling angle=36] { node [concept](DHCAMELLIA128){\tiny CAMELLIA\\128}[clockwise from=0]
               child { node [concept]{CBC}
-                child { node [concept]{SHA}}
+                child[deprecated] { node [concept]{SHA}}
               }
             }
             child { node [concept](DHCAMELLIA256){\tiny CAMELLIA\\256}[clockwise from=0]
-              child { node [concept]{CBC}
-                child[deprecated] { node [concept]{SHA}}
+              child[medium] { node [concept]{CBC}
+                child[deprecated] { node [concept](CAMELLIA256SHA){SHA}}
               }
             }
             child[deprecated] { node [concept](DHSEED){SEED}[clockwise from=15]
@@ -90,9 +90,9 @@
                 child { node [concept]{SHA}}
               }
             }
-            child[deprecated] { node [concept](DHAES128){AES\\128}[clockwise from=4]
+            child[medium] { node [concept](DHAES128){AES\\128}[clockwise from=4]
               child { node [concept]{CBC}[clockwise from=20]
-                child { node [concept]{SHA}}
+                child[deprecated] { node [concept]{SHA}}
                 child { node [concept]{SHA256}}
               }
               child { node [concept]{GCM}[clockwise from=340]
@@ -105,7 +105,7 @@
                 child { node [concept]{SHA256}}
               }
               child { node [concept]{GCM}[clockwise from=300]
-                child { node [concept]{SHA384}}
+                child { node [concept](DHAES256GCMSHA384){SHA384}}
               }
             }
           }
@@ -117,15 +117,15 @@
       node[concept](DHE) {\underline{DHE}}
         [counterclockwise from=275]
         child[good] { node [concept](DHEPSK){\textit{PSK}}[clockwise from=50]
-            child[bad] { node [concept]{RC4\\128}}
+            child[bad] { node [concept](DHERC4){RC4\\128}}
             child[bad] { node [concept]{NULL}}
             child [deprecated]{ node [concept]{3DES\\EDE}[clockwise from=320]
               child { node [concept]{CBC}[clockwise from=340]
                 child { node [concept]{SHA}}
             }}
-            child[deprecated] { node [concept]{AES\\128}[clockwise from=340]
+            child[medium] { node [concept]{AES\\128}[clockwise from=340]
               child { node [concept]{CBC}[clockwise from=340]
-                child { node [concept]{SHA}}
+                child[deprecated] { node [concept](AES128SHA){SHA}}
                 child { node [concept]{SHA256}}
               }
               child { node [concept]{GCM}[clockwise from=300]
@@ -168,13 +168,13 @@
               child { node [concept]{CBC}[clockwise from=270]
                 child { node [concept]{SHA}}
             }}
-           child[deprecated] { node [concept](ECDHAES128){AES\\128}[clockwise from=310]
-              child { node [concept]{CBC}[clockwise from=310]
-                child { node [concept]{SHA}}
-                child { node [concept](ECDHECDSASHA256){SHA256}}
-              }
-              child { node [concept]{GCM}[clockwise from=270]
+           child[medium] { node [concept](ECDHAES128){AES\\128}[clockwise from=310]
+              child { node [concept]{GCM}[clockwise from=310]
                 child { node [concept]{SHA256}}
+              }
+              child { node [concept]{CBC}[clockwise from=310]
+                child { node [concept](ECDHECDSASHA256){SHA256}}
+                child[deprecated] { node [concept]{SHA}}
               }
             }
             child[bad] { node [concept](ECDHRC4){RC4\\128}}
@@ -184,9 +184,9 @@
               child { node [concept]{CBC}[clockwise from=270]
                 child { node [concept]{SHA}}
             }}
-            child[deprecated] { node [concept]{AES\\128}[clockwise from=270]
+            child[medium] { node [concept]{AES\\128}[clockwise from=270]
               child { node [concept]{CBC}[clockwise from=280]
-                child { node [concept]{SHA}}
+                child[deprecated] { node [concept]{SHA}}
                 child { node [concept]{SHA256}}
               }
               child { node [concept]{GCM}[clockwise from=230]
@@ -216,9 +216,9 @@
               child { node [concept]{CBC}[clockwise from=250]
                 child { node [concept]{SHA}}
             }}
-            child[deprecated] { node [concept]{AES\\128}[clockwise from=270]
+            child[medium] { node [concept]{AES\\128}[clockwise from=270]
               child { node [concept]{CBC}[counterclockwise from=210]
-                child { node [concept]{SHA}}
+                child[deprecated] { node [concept]{SHA}}
                 child { node [concept]{SHA256}}
               }
               child { node [concept]{GCM}[clockwise from=200]
@@ -277,9 +277,9 @@
     child[sibling angle=31.5] {
       node[concept] {\underline{RSA}}[counterclockwise from=20]
       	child{node [concept]{\textit{PSK}}
-            child[deprecated] { node [concept]{AES\\128}[clockwise from=5]
+            child[medium] { node [concept]{AES\\128}[clockwise from=5]
               child { node [concept]{CBC}[clockwise from=5]
-                child { node [concept](RSAPSKSHA2){SHA}}
+                child[deprecated] { node [concept](RSAPSKSHA2){SHA}}
                 child { node [concept]{SHA256}}
               }
               child { node [concept]{GCM}[clockwise from=325]
@@ -287,7 +287,7 @@
               }
             }
             child[good] { node [concept]{AES\\256}[clockwise from=45]
-              child { node [concept]{CBC}[clockwise from=45]
+              child[medium] { node [concept]{CBC}[clockwise from=45]
                 child[deprecated] { node [concept](RSAPSKSHA){SHA}}
                 child { node [concept]{SHA384}}
               }
@@ -311,13 +311,15 @@
       \path [outer color = white, inner color = blue!10]
       (-60em,-60em) rectangle (80em,40em);%Dégradé de couleurs pour le fond
     \path (DHE) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (DHRSAEXPORT);
-    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (DH3DES);
-    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (DHSEED);
-    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (DHCAMELLIA128);
-    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (DHAES128);
+    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (DHERC4);
+    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (DHDES);
+    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (orange)] (DH3DES);
+    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (orange)] (DHSEED);
+    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (Cerulean)] (DHCAMELLIA128);
+    \path (DHDSS) to[circle connection bar switch color=from (green!40!black) to (Cerulean)] (DHAES128);
     \path (ECDHECDSA) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (ECDHNULL);
     \path (ECDHRSA) to[circle connection bar switch color=from (green!40!black) to (red!60!black)] (ECDHRC4);
-    \path (ECDHRSA) to[circle connection bar switch color=from (green!40!black) to (orange)] (ECDHAES128);
+    \path (ECDHRSA) to[circle connection bar switch color=from (green!40!black) to (Cerulean)] (ECDHAES128);
     \path (ECDHRSA) to[circle connection bar switch color=from (green!40!black) to (orange)] (ECDH3DES);
     \path (ECDH) to[circle connection bar switch color=from (Cerulean) to (green!40!black) ] (ECDHECDSA);
     \path (ECDH) to[circle connection bar switch color=from (Cerulean) to (green!40!black) ] (ECDHRSA);
