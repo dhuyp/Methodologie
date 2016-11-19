@@ -1235,14 +1235,14 @@ Une \gls{XSS} est une attaque consistant à injecter un code HTML, Javascript ou
 Pour lutter contre les XSS de type stockée et réfléchie, il est nécessaire d'envisager deux approches: \textbf{filtrage} des entrées, \textbf{assainissement} des sorties.
 
 \subsubsection{Filtrage des entrées par REGEX}
-En .NET, la librairie \textbf{System.Text.RegularExpressions} permet d'effectuer un filtrage par identité régulière. Il est, par exemple, possible de n'autoriser que les caractères alphabétiques. La recommandation optimale est d'autoriser les caractères légitimes uniquement, comme par exemple les signes de ponctuation ou les apostrophes pour un texte. Ce simple contrôle peut se faire côté .NET ou ASP.NET et devrait participer à la défense en profondeur.
+En .NET, la librairie \textbf{System.Text.RegularExpressions} permet d'effectuer un filtrage par \gls{REGEX}. Il est, par exemple, possible de n'autoriser que les caractères alphabétiques. La recommandation optimale est d'autoriser les caractères légitimes uniquement, comme par exemple les signes de ponctuation ou les apostrophes pour un texte. Ce simple contrôle peut se faire côté .NET ou ASP.NET et devrait participer à la défense en profondeur.
 \begin{Config}{csharp}{.NET: Filtrage en entrée - REGEX}
 using System.Text.RegularExpressions;
 //Filtrage des caractères alphabétiques et symboles présent dans un nom
 	if(!Regex.IsMatch(sender.name, @"^[\p{L} \.\-\']+$"))
 		throw new ApllicationException("Input not allowed");
 \end{Config}	
-\MarginPar{\textbf{.NET/ASP.NET}: Filtrage en entrée - REGEX}{0cm}Il est possible de réaliser ce type de filtrage avec ASP.NET en utilisant la  fonctionnalité \textbf{asp:RegularExpressionValidator}
+\MarginPar{\textbf{.NET/ASP.NET}: Filtrage en entrée - REGEX}{0cm}Il est possible de réaliser ce type de filtrage avec ASP.NET en utilisant la  fonctionnalité \textit{asp:RegularExpressionValidator}
 \begin{Config}{aspx-cs}{ASP.NET: Filtrage en entrée - REGEX}
 <form id="form1" runat="server">
 	<asp:TextBox ID="Month" runat="server"/>
@@ -1251,28 +1251,18 @@ using System.Text.RegularExpressions;
 		ControlToValidate="Month" ValidationExpression="^\d{2}-\d{4}$" />
 </form>
 \end{Config}
-Ces deux fonctions sont présentes nativement au sein des framework ASP.NET et .NET.
+Ces deux fonctions sont présentes nativement au sein des frameworks ASP.NET et .NET.\newline\newline
+En \gls{J2EE}, afin d’utiliser les expressions régulières en Java,  il faut utiliser les classes \textit{Pattern} et \textit{Matcher} appartenant au package \textbf{java.util.regex}.\\
+La première étape est de définir le motif que l'on veut utiliser et créer une instance de la classe \textit{Pattern}\MarginPar{\textbf{Java}: Filtrage en entrée - REGEX}{0cm} avec ce motif. La classe Pattern dispose pas de constructeur, on obtient une instance de la classe grâce à la méthode compile appartenant à la classe Pattern qui prend comme seul et unique paramètre le motif sous forme d'un objet String.\\
+% Beaucoup trop long, on cherche le bon outil pas nécessairement de détailler l'UML...
+Une fois que le motif est compilé, il faut créer un objet de type Matcher pour interroger des chaines de caractères. La classe \textit{Matcher} ne propose pas de constructeur non plus, on crée une instance de cette classe grâce à la méthode matcher de la classe Pattern. Cette méthode prend comme unique paramètre la chaine cible que l'on souhaite interroger.
 
-\textbf{En Java}, Afin d’utiliser les expressions régulières en Java,  il faut utiliser les classes Pattern et Matcher appartenant au package java.util.regex.
-
-\textbf{La classe Pattern :}
-
-La première étape est de définir le motif que l'on veut utiliser et créer une instance de la classe Pattern avec ce motif. 
-La classe Pattern dispose pas de constructeur, on obtient une instance de la classe grâce à la méthode compile appartenant à la classe Pattern qui prend comme seul et unique paramètre le motif sous forme d'un objet String.
-
-\begin{Config}{Java}{JEE: Filtrage en entrée - REGEX}
+\begin{Config}{Java}{Java EE: Filtrage en entrée - REGEX}
 Pattern pattern = Pattern.compile ("^\\w+@[a-z]+\\.[a-z]{2,4}$");
-\end{Config}
-
-\textbf{La classe Matcher :}
-
-Une fois que le motif est compilé, il faut créer un objet de type Matcher pour interroger des chaines de caractères. La classe Matcher ne propose pas de constructeur non plus, on crée une instance de cette classe grâce à la méthode matcher de la classe Pattern. Cette méthode prend comme unique paramètre la chaine cible que l'on souhaite interroger.
-
-\begin{Config}{Java}{JEE: Filtrage en entrée - REGEX}
 Matcher matcher = pattern.matcher ("toto@gmail.com");
-\end{Config}
+\end{Config}\newline\newline
 
-\textbf{En PHP}, la librairie PCRE assure la gestion des \gls{REGEX}.\MarginPar{\textbf{PHP}: Filtrage en entrée - REGEX}{0cm} Cette librairie est présente nativement depuis PHP 4.0.
+En PHP, la librairie PCRE assure la gestion des \gls{REGEX}.\MarginPar{\textbf{PHP}: Filtrage en entrée - REGEX}{0cm} Cette librairie est présente nativement depuis PHP 4.0.
 \begin{Config}{php}{PHP: Filtrage en entrée - REGEX}
 <?php
 	$str = $_POST['year'];
@@ -1288,7 +1278,7 @@ Il est possible de l'utiliser en utilisant la commande \tool{nuGet} suivante:\\
 \begin{Config}{csharp}{.NET: Filtrage en entrée - Librairie dédiée}
 using Ganss.XSS;
 
-	var input =sender.name;
+	var input=sender.name;
 	var sanitizer = new HtmlSanitizer();
 	field.Text=sanitize.Sanitize(input);
 \end{Config}	
@@ -1337,11 +1327,13 @@ Ce type d'attaque se divise en trois catégories:\begin{itemize}
 \end{itemize}
 \end{Define}
 
-\subsubsection{Java: Utilisation de Prepared Statement}
+\subsubsection{Utilisation de Prepared Statements}
+\begin{Warning}
+Dans le cas des \textit{Prepared Statements}, le code utilise une requête préparée (potentiellement dynamiquement) et insère les paramètres dans la requête a posteriori via des fonctions spécifiques. \textbf{Il est important de lier ces paramètres aux entrées utilisateur et de ne pas utiliser les entrées utilisateur directement dans la requête}, ce qui rendrait l’utilisation des \textit{Prepared Statements} inutile.
+\end{Warning}
 Avec \gls{J2EE}, la classe \textbf{PreparedStatement} représente une instruction SQL précompilée qui peut être exécuté plusieurs fois sans avoir à être recompiler pour chaque exécution.
 L’utilisation de cet objet permet de se prémunir contre l’injection d’instructions SQL par des attaquants.
 Il est cependant important d’être prudent lors de l’usage de cet classe. En effet, sa mauvaise utilisation rend l’application toujours vulnérable aux injections SQL.\\
-Ci-dessous deux exemples d’utilisation de PreparedStatement :
 
 \begin{Config}{java}{Java EE: Prepared Statement}
 uPreparedStatement stmt = 
@@ -1352,7 +1344,7 @@ ResultSet rs = stmt.executeQuery();
 
 \end{Config}	
 
-\MarginPar{\textbf{Java}: Prepared Statement}{0cm} Ce code n’est pas vulnérable aux injections SQL car il utilise correctement les requêtes paramétrées. En utilisant la classe PreparedStatement de Java en liant les variables (avec les points d'interrogation) aux méthodes « setString » correspondantes, les  Injections SQL peuvent être facilement évitée.
+\MarginPar{\textbf{Java}: Prepared Statement}{0cm} Ce code n’est pas vulnérable aux injections SQL car il utilise correctement les requêtes paramétrées. En utilisant la classe PreparedStatement de Java en liant les variables (avec les points d'interrogation) aux méthodes \textit{setString} correspondantes, les  injections SQL peuvent être facilement évitée.
 
 \begin{Config}{java}{Java EE: Prepared Statement vulnérable}
 
@@ -1363,41 +1355,33 @@ ResultSet rs = stmt.executeQuery();
 
 \end{Config}	
 
-Ce code est vulnérable aux injections SQL car il utilise des requêtes dynamiques pour concaténer des données malveillantes à la requête elle-même. 
-\subsubsection{PHP: Utilisation de l'API Php Data Object (PDO)}
+Ce code est vulnérable aux injections SQL car il utilise des requêtes dynamiques pour concaténer des données malveillantes à la requête elle-même. \newline\newline
 
-De même qu’en Java, il existe en PHP la classe \textbf{PDOStatement} permet de créer et d’exécuter des instructions SQL précompilées.
+
+En PHP, la classe \textbf{PDOStatement}, disponible depuis PHP 5.0, permet de créer et d’exécuter des instructions SQL paramétrées.\MarginPar{\textbf{PHP}: Prepared Statement}{0cm}
 La méthode \textit{prepare} de la classe PDOStatement sert à créer une instruction qui sera ensuite exécuter avec la méthode \textit{execute}.
-Prototype des deux méthodes:
 
-\begin{Config}{php}{PHP: Méthodes prepare et execute}
-public PDOStatement PDO::prepare ( string $statement [, array $driver_options = array() ] )
-public bool PDOStatement::execute ([ array $input_parameters ] )
-\end{Config}
+Une requête SQL crée par la méthode \textit{prepare} peut contenir des paramètres nommés ( :name) ou des marqueurs (?) qui seront ensuite remplacés par les paramètres désirés à l’exécution de la requête.
 
-Une requête SQL crée par la méthode \textit{prepare} peut contenir des paramètres nommés ( :name) ou des points d’interrogation qui seront ensuite remplacés par les paramètres désirés à l’exécution de la requête.
-\textbf{Il est important de lier ces paramètres aux entrées utilisateur et de ne pas utiliser les entrées utilisateur directement dans la requête}, ce qui rendrait l’utilisation des instructions précompilées inutile.
-
-Requête SQL avec paramètres nommés:
-\begin{Config}{php}{PHP: Création d'une requête précompilée}
+\begin{Config}{php}{PHP: Prepared Statement avec paramètres nommés}
 <?php
 /* Execute a prepared statement by passing an array of values */
 $sql = 'SELECT name, colour, calories
     FROM fruit
     WHERE calories < :calories AND colour = :colour';
 $sth->execute(array(':calories' => 150, ':colour' => 'red'));
-
+$result = $sth->fetchAll();
 ?>
 \end{Config}
 
-Requête SQL avec points d’interrogations :
-\begin{Config}{php}{PHP: Création création d'une requête précompilée}
+\begin{Config}{php}{PHP: Prepared Statement avec marqueurs}
 <?php
 /* Execute a prepared statement by passing an array of values */
 $sth = $dbh->prepare('SELECT name, colour, calories
     FROM fruit
     WHERE calories < ? AND colour = ?');
 $sth->execute(array(150, 'red'));
+$result = $sth->fetchAll();
 ?>
 \end{Config}
 
