@@ -1404,6 +1404,40 @@ $result = $sth->fetchAll();
 ?>
 \end{Config}
 
+\subsubsection{Utilisation de mapping objet-relationnel}
+Les \textbf{\gls{ORM} Frameworks} permettent de gérer les requêtes sous la forme de méthodes d'objet. Ces frameworks permettent donc, entre autres, de paramétrer les requêtes.\\
+.NET propose la solution Entity Framework qui permet à l'utilisateur de gérer les requêtes suivants deux méthodes: \textit{EntitySQL} et \textit{Link-To-Entities}.
+EntitySQL implémente \gls{EDM}. Ce modèle permet de traiter les données en sortie comme un objet. En utilisant \textbf{EntityCommand}, il est possible de paramétrer les requêtes avec la méthode \textit{Parameteters}.
+\begin{Config}{csharp}{.NET: Prepared Statements avec EntitySQL}
+    string esqlQuery =
+        @"SELECT VALUE Contact FROM AdventureWorksEntities.Contacts 
+                    AS Contact WHERE Contact.LastName = @ln AND
+                    Contact.FirstName = @fn";
+
+    using (EntityCommand cmd = new EntityCommand(esqlQuery, conn))
+    {
+        EntityParameter param1 = new EntityParameter();
+        param1.ParameterName = "ln";
+        param1.Value = "Adams";
+        EntityParameter param2 = new EntityParameter();
+        param2.ParameterName = "fn";
+        param2.Value = "Frances";
+
+        cmd.Parameters.Add(param1);
+        cmd.Parameters.Add(param2);
+
+        using (DbDataReader rdr = cmd.ExecuteReader(CommandBehavior.SequentialAccess))
+        {
+            // Iterate through the collection of Contact items.
+            while (rdr.Read())
+            {
+                Console.WriteLine(rdr["FirstName"]);
+                Console.WriteLine(rdr["LastName"]);
+            }
+        }
+    }
+\end{Config}	
+
 \appendix
 \chapter{Cryptographie}
 \section{Cryptographie symétrique}
