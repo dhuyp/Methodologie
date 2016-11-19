@@ -13,3 +13,5 @@ Ce document à pour vocation d'être clair et lisible. Pour cela il est nécessa
 	- Les annexes peuvent contenir une approche plus technique des points et ne sont pas nécessairement afférentes aux processus d'audit
 - Le choix des technologies abordées s'appuie sur l'expérience et la portabilité de ces choix
 - Le choix des recommandations s'appuie sur l'expérience et la connaissance des standards.
+- La mise en plage doit être facile à appréhender par l'usage des MarginNote, cette fonction doit permettre de retrouver facilement un contenu intéressant à partir d'une première lecture.
+- L'édition doit utiliser si possible des éléments de référenciation (index, glossaire, titre) et considérer la possibilité d'une inclusion dans une liste en index.
