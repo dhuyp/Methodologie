@@ -1252,14 +1252,13 @@ using System.Text.RegularExpressions;
 </form>
 \end{Config}
 Ces deux fonctions sont présentes nativement au sein des frameworks ASP.NET et .NET.\newline\newline
-En \gls{J2EE}, afin d’utiliser les expressions régulières en Java,  il faut utiliser les classes \textit{Pattern} et \textit{Matcher} appartenant au package \textbf{java.util.regex}.\\
-La première étape est de définir le motif que l'on veut utiliser et créer une instance de la classe \textit{Pattern}\MarginPar{\textbf{Java}: Filtrage en entrée - REGEX}{0cm} avec ce motif. La classe Pattern dispose pas de constructeur, on obtient une instance de la classe grâce à la méthode compile appartenant à la classe Pattern qui prend comme seul et unique paramètre le motif sous forme d'un objet String.\\
+En \gls{J2EE}, pour utiliser les \gls{REGEX},  il faut utiliser les classes \textit{Pattern} et \textit{Matcher} appartenant au package \textbf{java.util.regex}.\\
+La première étape est de définir le motif que l'on veut utiliser et créer une instance de la classe \textit{Pattern}\MarginPar{\textbf{Java}: Filtrage en entrée - REGEX}{0cm} correspondante.
 % Beaucoup trop long, on cherche le bon outil pas nécessairement de détailler l'UML...
-Une fois que le motif est compilé, il faut créer un objet de type Matcher pour interroger des chaines de caractères. La classe \textit{Matcher} ne propose pas de constructeur non plus, on crée une instance de cette classe grâce à la méthode matcher de la classe Pattern. Cette méthode prend comme unique paramètre la chaine cible que l'on souhaite interroger.
-
+Une fois le motif compilé, la méthode \textit{Matcher} de la classe \textit{Pattern} permet d'interroger des chaines de caractères. 
 \begin{Config}{Java}{Java EE: Filtrage en entrée - REGEX}
 Pattern pattern = Pattern.compile ("^\\w+@[a-z]+\\.[a-z]{2,4}$");
-Matcher matcher = pattern.matcher ("toto@gmail.com");
+Matcher matcher = pattern.matcher ("test@example.com");
 \end{Config}\newline\newline
 
 En PHP, la librairie PCRE assure la gestion des \gls{REGEX}.\MarginPar{\textbf{PHP}: Filtrage en entrée - REGEX}{0cm} Cette librairie est présente nativement depuis PHP 4.0.
@@ -1327,10 +1326,31 @@ Ce type d'attaque se divise en trois catégories:\begin{itemize}
 \end{itemize}
 \end{Define}
 
-\subsubsection{Utilisation de Prepared Statements}
+\subsubsection{Utilisation de Prepared Statements contre les injections en Base de données}
 \begin{Warning}
 Dans le cas des \textit{Prepared Statements}, le code utilise une requête préparée (potentiellement dynamiquement) et insère les paramètres dans la requête a posteriori via des fonctions spécifiques. \textbf{Il est important de lier ces paramètres aux entrées utilisateur et de ne pas utiliser les entrées utilisateur directement dans la requête}, ce qui rendrait l’utilisation des \textit{Prepared Statements} inutile.
 \end{Warning}
+
+Il est possible d'utiliser deux bibliothèques en .NET pour gérer les Prepared Statements: \textbf{SqlCommand} et \textbf{OlebCommand}. Ces librairies se distinguent sur le typage différent, par l'utilisation de driver de SGDB différents et par l'utilisation de paramètres nommés pour le premier.
+\begin{Config}{csharp}{.NET: Prepared Statements avec paramètres nommés (SQLCommand)}
+string cmd="SELECT * FROM users WHERE userid=@login AND password=@pass";
+SqlCommand c = new SqlCommand(cmd, connection);
+c.Parameters.Add("@login", SqlDbType.Int);
+c.Parameters["@login"].Value = userID;
+c.Parameters.Add("@pass", SqlDbType.Int);
+c.Parameters["@pass"].Value = password;
+SqlDataReader reader = command.ExecuteReader();
+\end{Config}	
+\MarginPar{\textbf{.NET}: Prepared Statement}{0cm}La bibliothèque \textit{OleDbCommand} ne supporte pas les paramètres nommés, cependant il est possible de les nommer pour la facilité d'usage. Les noms seront associés dans l'ordre d'apparition de la requête.
+\begin{Config}{csharp}{.NET: Prepared Statements avec marqueurs (OleDbCommand)}
+string cmd="SELECT * FROM users WHERE userid=? AND password=?";
+OleDblCommand c = new SqlCommand(cmd, connection);
+c.Parameters.Add("@p2", SqlDbType.Int);
+c.Parameters["@p2"].Value = userID;
+c.Parameters.Add("@p1", SqlDbType.Int);
+c.Parameters["@p1"].Value = password;
+OleDbDataReader reader = command.ExecuteReader();
+\end{Config}	\newline\newline
 Avec \gls{J2EE}, la classe \textbf{PreparedStatement} représente une instruction SQL précompilée qui peut être exécuté plusieurs fois sans avoir à être recompiler pour chaque exécution.
 L’utilisation de cet objet permet de se prémunir contre l’injection d’instructions SQL par des attaquants.
 Il est cependant important d’être prudent lors de l’usage de cet classe. En effet, sa mauvaise utilisation rend l’application toujours vulnérable aux injections SQL.\\
@@ -1341,7 +1361,6 @@ uPreparedStatement stmt =
 stmt.setString(1, userid);
 stmt.setString(2, password);
 ResultSet rs = stmt.executeQuery();
-
 \end{Config}	
 
 \MarginPar{\textbf{Java}: Prepared Statement}{0cm} Ce code n’est pas vulnérable aux injections SQL car il utilise correctement les requêtes paramétrées. En utilisant la classe PreparedStatement de Java en liant les variables (avec les points d'interrogation) aux méthodes \textit{setString} correspondantes, les  injections SQL peuvent être facilement évitée.
