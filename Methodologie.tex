@@ -1440,15 +1440,63 @@ EntitySQL implémente \gls{EDM}. Ce modèle permet de traiter les données en so
     }
 \end{Config}	
 
-
 \appendix
 \chapter{Cryptographie}
 \section{Cryptographie symétrique}
+\subsection{Principes}
+\begin{Define}{Cryptographie symétrique}
+La cryptographie symétrique repose sur un système à clefs partagées garantissant la confidentialité de la communication. Le secret du chiffré repose entièrement sur le secret de la clef.
+\end{Define}
+La cryptographie symétrique repose sur le principe de la confidentialité parfaite de Shannon défini en 1949:\begin{itemize}
+\item \`A un texte chiffré donné la probabilité d'associer un clair donné doit être égale à la probabilité d'associer n'importe quel clair soit $P(M|C) = P(C)$.
+\item \textbf{Réciproquement}: \`A un texte clair donné la probabilité d'associer un chiffré donné doit être égale à la probabilité d'associer n'importe quel chiffré soit $P(C|M) = P(M)$.
+\end{itemize}
+
+\subsection{Chiffrement par bloc}
+\begin{Define}{Cryptographie symétrique!Chiffrement par bloc}
+Le chiffrement par bloc est une méthode de chiffrement consistant à chiffrer des blocs de taille fixe définie par l'algorithme. Ce chiffrement se fait en général en utilisant plusieurs tours (\textit{rounds}) de manière itérative durant lesquels le chiffré passe par des états internes (\textit{state}) intermédiaires avant d'être altéré par la sous-clef ou clef de tour.
+\end{Define}
+Ce type de chiffrement est le seul utilisé dans le cadre des connexions TLS à l'exception de RC4 qui est considéré comme déprécié. \\
+De nombreuses attaques ont été publiées contre les chiffrements par blocs de 64 bits qui impactent notamment l'implémentation Kasumi, 3DES et DES dont \textit{sweet32}\index{Cryptographie (attaque)!sweet32}. Un attaquant ayant connaissance de suffisamment de ciphertext sera en mesure de déterminer le plaintext en partant de la connaissance d'un bloc en clair. Depuis 2000, le standard initié par le concours AES requiert une taille de bloc de 128 bits. L'ANSSI recommande également une taille de bloc de \blockrecosizeAnssi bits.\\
+L'attaque de moindre complexité pour AES consiste en une attaque par brute-force, la difficulté de l'attaque est donc fonction de la taille de la clef avec une complexité cryptographique de 128 bits pour AES-128 et 256 bits pour AES-256. La complexité cryptographique de DES est de 80 pour 2DES (ou \textit{2TDEA}) soit une clef de 112 bits et 112 pour 3DES soit une clef de 168 bits. Cependant cette complexité est calculée basée sur la connaissance par l'attaquant d'un faible volume de correspondance de \textit{ciphertext} et \textit{plaintext} ($<2^40$). L'ANSSI recommande une solidité de clef supérieure à \solidityrecosizeAnssi.
+
+\begin{Define}{Cryptographie symétrique!key schedule}
+Les système de chiffrement par bloc reposent sur un algorithme de cadencement de clé (\textit{key schedule}) pour dériver la clef en sous-clefs utilisables aux états internes intermédiaires successifs. Le \textit{key schedule} est dépendant de l'algorithme de chiffrement utilisé.
+\end{Define}
+
+\subsubsection{Réseau de Feistel}
+\begin{Define}{Cryptographie!Réseau de Feistel}
+Les réseaux de Fesitel (\textit{Feistel cipher}) sont utilisés par de nombreux systèmes de chiffrement par bloc (DES, Camelia, Blowfish, Kasumi...). Ce type de système consiste en une dérivation du bloc en plusieurs tours. De sorte que, $C=L||R$, F la fonction de transformation et K la sous-clef du tour,\\
+$\left\{
+\begin{array}{l}
+  R_i \rightarrow L_{i+1} \\
+  L_i \oplus F(R_{i}, K_{i})\rightarrow R_{i+1}
+\end{array}
+\right.$\\
+Le déchiffrement s'effectue alors par (en fonction,\\
+$\left\{
+\begin{array}{l}
+  L_{i+1} \rightarrow R_{i} \\
+  R_{i+1} \oplus F(L_{i+1}, K_{i+1})\rightarrow L_{i}
+\end{array}
+\right.$\\
+\end{Define}
+\begin{Warning}
+Un réseau de Feistel où L et R sont de tailles différentes est appelé \textit{unbalanced}.
+\end{Warning}
+La clef de chiffrement pour chaque bloc est générée via un \textit{key schedule}. La génération de la sous-clef est primordiale pour garantir la sécurité du chiffrement.
+
+\subsubsection{Chiffrement par S-Box et P-Box}
+
+\subsection{Mode de chiffrement par blocs}
+
+\subsection{Chiffrement par flot}
+
 \section{Cryptographie asymétrique}
 \subsection{Principes}
 \begin{Define}{Cryptographie asymétrique}
 La cryptographie asymétrique repose sur un système à clefs publiques garantissant authenticité et confidentialité. Il existe deux types clefs dans ces systèmes:\begin{itemize}
-\item Une clef publique permettant de chiffrer les données accessible par tous les destinataires.
+\item Une clef publique permettant de chiffrer les données accessibles par tous les destinataires.
 \item Une clef privée permettant de déchiffrer les données chiffrées avec la clef publique.
 \end{itemize}
 La clef publique peut aussi servir à déchiffrer des données chiffrées avec la clef privée. La clef privée étant par essence, propre à un individu, cela permet d'authentifier un message.
@@ -1483,7 +1531,7 @@ Du fait de l'importance de ces paramètres, un certain nombre de courbes apparte
 \item le \gls{NIST} (\ECCNIST)
 \item le \gls{SECG}, groupe créé par Certicom en 1998 et dont les groupes sont approuvés par le \gls{NIST} (\ECCSECG)
 \item ECC Brainpool, groupe de travail essentiellement allemand constitué d'universités et d'entreprises privées (\ECCBP)
-\item Curve25519 proposée par Bernstein pour la réalisation d'un ECDH et d'une sécurité équivalente à P-256 \footnote{Curve25519 s'appuie sur un corps premier $\mathbb{F}_p$ avec $p=2^{255}-19$ et une courbe de Montgomery de type $y^2=x^3+486662x^2+x$ et un point de base égale à 9}.
+\item Curve25519 proposée par Bernstein pour la réalisation d'un ECDH et d'une sécurité équivalente à P-256 \footnote{Curve25519 s'appuie sur un corps premier $\mathbb{F}_p$ avec $p=2^{255}-19$, une courbe de Montgomery de type $y^2=x^3+486662x^2+x$ et un point de base égale à 9}.
 \end{itemize}
 Le problème de ce type de cryptographie est son manque de confiance due à la preuve mathématique\footnote{Cette thématique est abordé par le groupe ECC Brainpool dans \url{http://www.ecc-brainpool.org/download/Domain-parameters.pdf}}.\\
 Les recommandations d'usage sont:\begin{itemize}
