@@ -1349,6 +1349,15 @@ Ce type d'attaque se divise en trois catégories:\begin{itemize}
 
 \appendix
 \chapter{Cryptographie}
+\begin{Pre}
+L'\gls{EPC} fournit le tableau suivant pour l''évaluation du niveau de sécurité:\\
+\EPCarraysecuritybits\\
+Le niveau de sécurité requis aujourd'hui est à minima de 100 bits.
+%FIXME plus de détail
+\end{Pre}
+\begin{Stop}
+L'application de l'algorithme de Grover avec des ordinateurs quantiques réduirait les bits de sécurité de moitié pour les algorithmes de chiffrements symétriques. L'application de l'algorithme de Shor rendra l'évaluation de RSA et ECC négligeable.
+\end{Stop}
 \section{Cryptographie symétrique}
 \subsection{Principes}
 \begin{Define}{Cryptographie symétrique}
@@ -1365,14 +1374,14 @@ Le chiffrement par bloc est une méthode de chiffrement consistant à chiffrer d
 \end{Define}
 Ce type de chiffrement est le seul utilisé dans le cadre des connexions TLS à l'exception de RC4 qui est considéré comme déprécié. \\
 De nombreuses attaques ont été publiées contre les chiffrements par blocs de 64 bits qui impactent notamment l'implémentation Kasumi, 3DES et DES dont \textit{sweet32}\index{Cryptographie (attaque)!sweet32}. Un attaquant ayant connaissance de suffisamment de ciphertext sera en mesure de déterminer le plaintext en partant de la connaissance d'un bloc en clair. Depuis 2000, le standard initié par le concours AES requiert une taille de bloc de 128 bits. L'ANSSI recommande également une taille de bloc de \blockrecosizeAnssi bits.\\
-L'attaque de moindre complexité pour AES consiste en une attaque par brute-force, la difficulté de l'attaque est donc fonction de la taille de la clef avec une complexité cryptographique de 128 bits pour AES-128 et 256 bits pour AES-256. La complexité cryptographique de DES est de 80 pour 2DES (ou \textit{2TDEA}) soit une clef de 112 bits et 112 pour 3DES soit une clef de 168 bits. Cependant cette complexité est calculée basée sur la connaissance par l'attaquant d'un faible volume de correspondance de \textit{ciphertext} et \textit{plaintext} ($<2^{40}$). L'ANSSI recommande une solidité de clef supérieure à \solidityrecosizeAnssi.
+L'attaque de moindre complexité pour AES consiste en une attaque par brute-force, la difficulté de l'attaque est donc fonction de la taille de la clef avec une complexité cryptographique de 128 bits pour AES-128 et 256 bits pour AES-256. La complexité cryptographique de DES est de 80 pour 2DES (ou \textit{2TDEA}) soit une clef de 112 bits et 112 pour 3DES soit une clef de 168 bits. Cependant cette complexité est calculée basée sur la connaissance par l'attaquant d'un faible volume de correspondance de \textit{ciphertext} et \textit{plaintext} ($<2^{40}$). L'ANSSI recommande une solidité de clef supérieure à \solidityrecosizeAnssi bits.
 
 \begin{Define}{Cryptographie symétrique!key schedule}
 Les système de chiffrement par bloc reposent sur un algorithme de cadencement de clé (\textit{key schedule}) pour dériver la clef en sous-clefs utilisables aux états internes intermédiaires successifs. Le \textit{key schedule} est dépendant de l'algorithme de chiffrement utilisé.
 \end{Define}
 
 \subsubsection{Réseau de Feistel}
-\begin{Define}{Cryptographie!Réseau de Feistel}
+\begin{Define}{Cryptographie Symétrique!Réseau de Feistel}
 Les réseaux de Fesitel (\textit{Feistel cipher}) sont utilisés par de nombreux systèmes de chiffrement par bloc (DES, Camelia, Blowfish, Kasumi...). Ce type de système consiste en une dérivation du bloc en plusieurs tours. De sorte que, $C=L||R$, F la fonction de transformation et K la sous-clef du tour,\\
 $\left\{
 \begin{array}{l}
@@ -1393,8 +1402,44 @@ Un réseau de Feistel où L et R sont de tailles différentes est appelé \texti
 \end{Warning}
 La clef de chiffrement pour chaque bloc est générée via un \textit{key schedule}. La génération de la sous-clef est primordiale pour garantir la sécurité du chiffrement.
 
-\subsubsection{Chiffrement par S-Box et P-Box}
-
+\subsubsection{AES}
+\begin{Define}{Cryptographie Symétrique!AES}
+Le chiffrement AES repose sur un nombre limité de \textit{rounds} qui est fonction de la taille initiale de la clef\footnote{10 \textit{rounds} pour 128 bits, 12 pour 192 bits, 14 pour 256 bits}. La clef est étendue par l'expansion de la clef à l'aide d'un algorithme de \textit{key schedule} de sorte que chaque round dispose d'une clef de 128 bits.\\
+Le plaintext est représenté sous la forme d'une matrice carrée de 16 octets (128 bits). Cette matrice représente le \textit{state} au cours de chaque opération.
+\end{Define}
+Lors du premier \textit{round}, la round key est XORé octet par octet avec le \textit{state}, tel que $a_{i,j}\oplus k_{i,j}=b_{i,j}$ où b est le nouvel état interne. Lors des étapes intermédiaires, le state subit les étapes suivantes\footnote{Ces étapes sont:\\\textcircled{1}SubBytes: Utilisation de la S(ubstitution)-Box\\\textcircled{2}ShiftRows: Permutation sur la ligne\\\textcircled{3}MixColumns: Utilisation d'une transformation par une matrice fixée\\\textcircled{4}AddRoundKey: XOR avec l'octet correspondant de la sous-clef} (considérant a comme l'état intermédiaire actuel, b comme l'état suivant et i et j comme les coordonnées au sein de la matrice d'état):\\
+$\left\{
+\begin{array}{l r}
+\forall i,j \in [[0,3]], a_{i,j}\rightarrow_{S-Box} b_{i,j} &\textcircled{1}\\
+\forall i,j \in [[0,3]], a_{i,j}\rightarrow  b_{i- j\pmod{4},j} &\textcircled{2}\\
+\forall j \in [[0,3]],
+\begin{bmatrix}
+2&3&1&1\\
+1&2&3&1\\
+1&1&2&3\\
+3&1&1&2
+\end{bmatrix}
+\begin{bmatrix}
+a_{0,j}\\
+a_{1,j}\\
+a_{2,j}\\
+a_{3,j}
+\end{bmatrix}
+=
+\begin{bmatrix}
+b_{0,j}\\
+b_{1,j}\\
+b_{2,j}\\
+b_{3,j}
+\end{bmatrix}
+in GF_{2^8} &\textcircled{3}\\
+\forall i,j \in [[0,3]], a_{i,j}\oplus k_{i,j}=b_{i,j} &\textcircled{4}
+\end{array}
+\right.$\\
+L'étape finale n'applique que 1,2 et 4.
+%\begin{Define}{Cryptographie Symétrique!AES key schedule}
+%Le chiffrement AES repose sur un nombre limité de \textit{rounds} qui est fonction de la taille initiale de la clef\footnote{10 \textit{rounds} pour 128 bits, 12 pour 192 bits, 14 pour 256 bits}. La clef est étendue par l'expansion de la clef à l'aide d'un algorithme de \textit{key schedule}
+%\end{Define}
 \subsection{Mode de chiffrement par blocs}
 
 \subsection{Chiffrement par flot}

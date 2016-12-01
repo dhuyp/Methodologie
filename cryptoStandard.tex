@@ -16,17 +16,26 @@
 \newcommand{\blockrecosizeAnssi}{128\refAnnexeB\footnote{\`A partir de 2020, 64 bits est suffisant à ce jour}}
 \newcommand{\solidityrecosizeAnssi}{128\refAnnexeB\footnote{\`A partir de 2020, 100 bits est suffisant à ce jour}}
 
-%ECRYPT II
+%ECRYPT II & ENISA
 
 
 
 
 
 
-
-
-
-
+% EPC
+%http://www.europeanpaymentscouncil.eu/index.cfm/knowledge-bank/epc-documents/guidelines-on-cryptographic-algorithms-usage-and-key-management/epc342-08-v5-0-guidelines-on-cryptographic-algorithms-usage-and-key-management2/
+\newcommand{\EPCarraysecuritybits}{
+\begin{tabular}{| p{1cm} | p{3cm} |  p{4cm} |  p{3cm} | p{1cm} |}
+\hline
+$n$\footnote{$n$ bits de sécurité signifie qu'un attaquant aura besoin de $2^n$ opérations (une opération équivalent au temps de chiffrement) pour casser la sécurité} & Algorithme de chiffrement symétrique & Algorithme de condensat & RSA (ou tout algorithme basé sur $\mathbb{Z}/n\mathbb{Z}$) & ECC \\\hline
+80 & 2DES & SHA1 & 1024 & 160\\\hline
+112 & 3DES & SHA224 et SHA$3_{224}$ & 2048 & 224\\\hline
+128 & AES128 & SHA256 et SHA$3_{256}$ & 3072 & 256\\\hline
+192 & AES192 & SHA384 et SHA$3_{384}$ & 7680 & 384\\\hline
+256 & AES256 & SHA512 et SHA$3_{512}$ & 15360 & 512\\\hline
+\end{tabular}
+}
 
 
 
