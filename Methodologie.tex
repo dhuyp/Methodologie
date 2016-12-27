@@ -1067,7 +1067,7 @@ Le PRF de TLS est par défaut SHA-256, cependant SHA-384 doit être utilisé pou
 \gls{DH} est un protocole d'échange de clefs basé sur un groupe cyclique fini \gls{ZnZ}. Il consiste en la création d'une clef partagée en utilisant un secret commun. Du fait de la difficulté de factorisation d'un entier facteur de deux nombres premiers de grande taille, un attaquant passif ne pourrait pas déterminer la clef commune. Cependant un attaquant actif peut biaiser la communication en se faisant passer pour le destinataire final.\\
 C'est pour cette raison que les échanges \gls{DH} réalisés dans le contexte des communications \gls{HTTPS} sont signés par le serveur après la transmission du certificat, c'est le \textit{Server Key Exchange}.
 \end{Define}
-L'échange Diffie-Hellman se définit par la RFC2631, tel que:\\
+L'échange \gls{DHE} se définit par la RFC2631, tel que:\\
 \begin{tikzpicture}
 \draw (-3,4) -- (-3,-3);
 \draw (3,4) -- (3,-3);
@@ -1083,17 +1083,17 @@ L'échange Diffie-Hellman se définit par la RFC2631, tel que:\\
 \draw[->] (2.8,2.5) -- node[above] {\textbf{g},\textbf{n},$\textbf{A}\equiv \textbf{g}^\textit{a}\pmod{\textbf{n}}$,sig(A,g,n)} node[below] {\small \textit{Server Key Exchange}}  (-2.8,2.5);
 \draw[->] (-2.8,1) -- node[above] {$\textbf{B}\equiv \textbf{g}^\textit{b} \pmod{\textbf{n}}$}  node[below] {\small \textit{Client Key Exchange}}  (2.8,1);
 \end{tikzpicture} \\
-Le résultat de cette échange est le \textit{pre\_master\_secret}.\\
+Le résultat de cette échange est le \textit{pre\_master\_secret}. Dans le cas de \gls{DH}, les paramètres d'échange sont statiques et embarqués dans le certificat.\\
 Diffie-Hellman se décline sous trois versions:\begin{itemize}
-\item Anonymous Diffie-Hellman (ADH): Cette méthode n'offre aucune résistance face à une attaque dite de l'Homme-du-Milieu, il est recommandé de la désactiver.
-\item Diffie-Hellman standard (DH): Cette méthode utilise des paramètres DH définit dans le certificat.
-\item Diffie-Hellman Ephemeral (DHE): Cette méthode permet l'utilisation de paramètres DH temporaires signée par la clef maitre. Ainsi la compromission de la clef maitre du serveur ne met pas en danger les sessions passées, cette protection s'appelle le Perfect Forward Secrecy (PFS).
+\item \gls{ADH}): Cette méthode n'offre aucune résistance face à une attaque dite de l'Homme-du-Milieu, il est recommandé de la désactiver.
+\item \gls{DH}: Cette méthode utilise des paramètres DH définit dans le certificat.
+\item \gls{DHE}: Cette méthode permet l'utilisation de paramètres DH temporaires signée par la clef maitre. Ainsi la compromission de la clef maitre du serveur ne met pas en danger les sessions passées, cette protection s'appelle \gls{PFS}.
 \end{itemize}
 La sécurité de \gls{DH} reposant sur le groupe \gls{ZnZ}, les paramètres requis pour une bonne utilisation sont les mêmes que pour toute utilisation de ce groupe, c'est-à-dire concernant le chiffrement asymétrique (voir l'\hyperref[analCrypto]{Annexe Cryptologie}). Les recommandations de tailles sont l'utilisation d'un groupe de taille \DHrecosize bits. La recommandation actuelle de l'\gls{ANSSI} est de \DHrecosizeAnssi bits et celle du \gls{NIST} de \DHrecosizeNIST bits. La recommandation de la NSA pour sa Suite B (CNSA) et pour des échanges classifiés équivalents TSD est d'utiliser un groupe de taille \DHrecosizeCNSA bits.\\
-L'utilisation de DHE permet d'assurer une contre-mesure contre un pré-calcul des paramètres Diffie-Hellman. En effet pour une valeur donnée, il est possible de factoriser $n$. Cette attaque a été réalisée contre certains paramètres par défaut utilisés par Apache\footnote{\url{https://weakdh.org/imperfect-forward-secrecy-ccs15.pdf}}.\\
+L'utilisation de \gls{DHE} permet d'assurer une contre-mesure contre un pré-calcul des paramètres Diffie-Hellman. En effet pour une valeur donnée, il est possible de factoriser $n$. Cette attaque a été réalisée contre certains paramètres par défaut utilisés par Apache\footnote{\url{https://weakdh.org/imperfect-forward-secrecy-ccs15.pdf}}.\\
 Sur un espace faible ($<$\DHminsize bits), la factorisation de tous les $n$ possibles de cette taille peut être réalisée. Pour cette raison il est également recommandé d'utiliser des paramètres d'une taille supérieure ou égale à \DHrecosize.\\
 \begin{Define}{SSL/TLS!Elliptic Curve Diffie-Hellman}
-Elliptic Curve Diffie-Hellman (ECDH) est une implémentation de Diffie-Hellman utilisant la Cryptographie à Courbes Élliptique (ECC) comme primitive cryptographique. L'\gls{ECC} se base sur l'usage de paramètres de domaine pour définir une courbe élliptique.\\
+	\gls{ECDH} est une implémentation de Diffie-Hellman utilisant la \gls{ECC} comme primitive cryptographique. L'\gls{ECC} se base sur l'usage de paramètres de domaine pour définir une courbe élliptique.\\
 \end{Define}
 \begin{Warning}
 L'explication des courbes élliptiques figure en annexe.
@@ -1103,14 +1103,34 @@ La recommandation actuelle de l'\gls{ANSSI} est d'utiliser des courbes d'ordre \
 Il est à noter que la \gls{NSA} a émis en août 2015 un avis indiquant sa volonté de rendre désuette l'utilisation de l'ECC dans la Suite B au profit d'algorithmes de type \textit{\gls{PQC}}\footnote{http://blog.cryptographyengineering.com/2015/10/a-riddle-wrapped-in-curve.html}.
 
 \subsubsection{RSA}
+\begin{Define}{SSL/TLS!RSA key exchange algorithm}
+L'échange de clef peut reposer sur l'agorithme de chifffrement asymétrique RSA. Dans ce cas d'utilisation, le client génère de manière aléatoire et envoie le \textit{pre\_master\_secret} chiffré avec la clef publique du serveur. Cet algorithme reposant sur un système de clef publique/clef privée, l'authenticité du serveur est assuré par sa capacité à déchiffrer la clef. La validation de la clef de session est faite après dérivation lors de l'envoi du premier message chiffré.\\
+L'algorithme sert alors à la fois du \textit{Key exchange algorithm} et de l'\textit{Authentication algorithm}.
+\end{Define}
+\begin{Warning}
+Il est à noter que cet algorithme présente un manque inhérent de \gls{PFS}. En effet, le stockage de l'échange permettrait, en cas de compromission de la clef privée, de déchiffrer son contenu.
+\end{Warning}
 
-\FIXME{Chiffrement d'une valeur aléatoire choisie par le client, marche seulement si le certificat serveur n'interdit pas le chiffrement}
+L'échange RSA se définit par la RFC5246, tel que:\\
+\begin{tikzpicture}
+\draw (-3,4) -- (-3,1);
+\draw (3,4) -- (3,1);
+\draw (-3,5) node {Client};
+\draw (3,5) node {Serveur};
+\draw (-5,3.5) node {$\textit{pms=pre\_master\_secret}$};
+\draw (-5,3) node {\textbf{e},\textbf{n}};
+\draw (4.8,2) node {$\textit{pms}\equiv \textbf{C}^\textit{d} \pmod{\textbf{n}}$};
+\draw (4.8,3.5) node {\textbf{e},\textit{d},\textbf{n}};
+\draw[->] (-2.8,3) -- node[above] {$\textbf{C}\equiv \textit{pms}^\textbf{e} \pmod{\textbf{n}}$}  node[below] {\small 
+\textit{Client Key Exchange}}  (2.8,3);
+\end{tikzpicture} \\
+
+\begin{Stop}
+Cet algorithme n'est plus utilisé pour l'échange de clef à partir de TLS 1.3.
+\end{Stop}
 
 \subsubsection{Kerberos}
 \subsubsection{PSK/SRP}
-
-
-
 
 \subsection{SSL/TLS: Gestion des suites cryptographiques}
 \begin{Define}{SSL/TLS!Suites cryptographiques}
