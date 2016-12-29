@@ -91,7 +91,13 @@ L'étape finale n'applique que les formules 1,2 et 4.
 %\end{Define}
 %\subsection{Mode de chiffrement par blocs}
 
-%\subsection{Chiffrement par flot}
+\subsection{Chiffrement par flot}
+\begin{Define}{Cryptographie symétrique!Chiffrement par flot}
+	Les système de chiffrement par flot repose sur la génération de nombres pseudo-aléatoires à l'aide d'un \gls{PRNG}. Les nombres ainsi générés sont XORés bit à bit. La clef de chiffrement obtenue est appelée \textit{key stream}.
+\end{Define}
+
+Ce mode de chiffrement n'est plus recommandé aujourd'hui dans le chiffrement des communications HTTPS et est souvent délaissé au profit de mécanisme de chiffrement par bloc de manière générale. En effet, la source du PRNG peut être exposé à un biais. RC4 est un exemple connu d'exploitation de ce type de biais avec notamment des attaques comme \textit{Bar-Mitzvah}\index{Cryptographie (attaque)!Bar-Mitzvah}.\\
+
 
 \section{Cryptographie asymétrique}
 \subsection{Principes}
@@ -145,9 +151,36 @@ Il est à noter que la \gls{NSA} a émis en août 2015 un avis indiquant sa volo
 \section{Intégrité des données, stockage et signature}
 
 \section{Principe de Cryptographie}
-\subsection{PFS}
+\subsection{Perfect Forward Secrecy}
+\begin{Define}{Cryptographie!Forward Secrecy}
+En cryptographie, le principe de \gls{PFS} garantit que les clefs de sessions sont protégées contre la compromission des clefs de longue durée.
+\end{Define}
+Les clefs de longue durée sont le plus souvent basées sur une cryptographie à clef publique, ce qui signifie que la clef privée est utilisée pour signer les messages seulement et que sa compromission ne met pas en danger la \textbf{Confidentialité} des échanges précédents. De plus la compromission venant a posteriori de ces échanges, elle ne met en danger ni l'\textbf{Intégrité} ni l'\textbf{Authenticité} des messages qui sont des propriétés actives.\\
+Cependant, la compromission de la clef longue durée, permet de garantir la déniabilité des échanges. En effet, un message peut désormais être forgé à l'aide de la clef privée.
+\begin{Warning}
+Les clefs de longue durée peuvent aussi être basées sur un secret partagé. En ce cas le \gls{PFS} est conservé, si et seulement si, le \gls{PSK} n'est pas utilisé pour chiffrer les échanges mais en garantir l'authenticité.
+\end{Warning}
+\begin{Define}{Cryptographie!Forward Anonymity}
+?????? Principe de garde l'anonymat de l'échange a posteriori. Basé sur l'impossibilité d'associer une clef privée à une personne
+\end{Define}
+
+\subsection{Future Secrecy}
+\begin{Define}{Cryptographie!Future Secrecy}
+	Future Secrecy est un néologisme défini par la société Open Whisper. Il consiste à considérer que la révélation de l'\textit{ephemeral key} ne permettra pas de déterminer les \textit{ephemeral key} suivantes. Ce type de résultat s'obtient par une renégociation à chaque message de l'échange, cette méthode est appelé un \textit{ratchet}.
+\end{Define}
+On retrouve ce type de principe dans les implémentations de chiffrement des communications instantannés comme notamment \gls{OTR}, \gls{SCIMP} ou Signal/Pond (Axolot Ratchet)
+\subsection{Deniabilité et non répudiation}
 
 \section{Implémentaion Cryptographique}
+\subsection{GPG}
+\subsection{Ratchet Protocoles}
+\begin{Define}{Cryptographie!Ratchet}
+Un protocole utilisant un ratchet est un protocol renégociant la clef de chiffrement à chaque échange entre les correspondants. La nouvelle clef de chiffrement peut être dérivée de chaque côté via des fonctions injective (hash, bcrypt...) ou renégociée à chaque échange.
+\end{Define}
+Dans le cas d'\gls{OTR} une nouvelle clef est générée basée sur un Diffie-Hellman à chaque échange, dans le cas de \gls{SCIMP}, la clef est dérivée de la clef précédente par une fonction de hash.
+\subsubsection{OTR}
+\subsubsection{SCIMP}
+
 \subsection{TLS}
 \subsubsection{Fonctionnement d'un handshake TLSv1.2}
 \resizebox {\textwidth} {!} {
