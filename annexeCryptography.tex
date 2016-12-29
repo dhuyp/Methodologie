@@ -89,14 +89,22 @@ L'étape finale n'applique que les formules 1,2 et 4.
 %\begin{Define}{Cryptographie Symétrique!AES key schedule}
 %Le chiffrement AES repose sur un nombre limité de \textit{rounds} qui est fonction de la taille initiale de la clef\footnote{10 \textit{rounds} pour 128 bits, 12 pour 192 bits, 14 pour 256 bits}. La clef est étendue par l'expansion de la clef à l'aide d'un algorithme de \textit{key schedule}
 %\end{Define}
-%\subsection{Mode de chiffrement par blocs}
+
+\subsection{Mode de chiffrement par blocs}
+Dans le cas des modèles de chiffrement par bloc, le chiffrement passe par un mode de chiffrement. Ce mode de chiffrement permet de codifier les étapes de chiffrement et de déchiffrement d'un message de plusieurs blocs. Une approche naïve du chiffrement, considérerait qu'à un plaintext bloc en clair donné, $P$, correspondrait un chiffré $C$ tel que, $F_k$ étant la fonction de chiffrement: $C=F_k(P)$. Ce mode de chiffrement existe, il est appelé \gls{ECB} et est vulnérable à de nombreuses attaques, tel que \textit{\gls{CPA}}\index{Cryptographie (attaque)!Chosen-Plaintext Attack} ou des analyses statistiques.
+
+\subsubsection{CBC}
+\subsubsection{CFB}
+\subsubsection{GCM}
+\subsubsection{XTS}
+%le truc de télégram et quelques modernes tant qu'à faire :)
 
 \subsection{Chiffrement par flot}
 \begin{Define}{Cryptographie symétrique!Chiffrement par flot}
 	Les système de chiffrement par flot repose sur la génération de nombres pseudo-aléatoires à l'aide d'un \gls{PRNG}. Les nombres ainsi générés sont XORés bit à bit. La clef de chiffrement obtenue est appelée \textit{key stream}.
 \end{Define}
 
-Ce mode de chiffrement n'est plus recommandé aujourd'hui dans le chiffrement des communications HTTPS et est souvent délaissé au profit de mécanisme de chiffrement par bloc de manière générale. En effet, la source du PRNG peut être exposé à un biais. RC4 est un exemple connu d'exploitation de ce type de biais avec notamment des attaques comme \textit{Bar-Mitzvah}\index{Cryptographie (attaque)!Bar-Mitzvah}.\\
+Ce mode de chiffrement n'est plus recommandé aujourd'hui dans le chiffrement des communications TLS et est souvent délaissé au profit de mécanisme de chiffrement par bloc de manière générale. En effet, la source du PRNG peut être exposé à un biais. RC4 est un exemple connu d'exploitation de ce type de biais avec notamment des attaques comme \textit{Bar-Mitzvah}\index{Cryptographie (attaque)!Bar-Mitzvah}.\\
 
 
 \section{Cryptographie asymétrique}
@@ -150,7 +158,14 @@ Il est à noter que la \gls{NSA} a émis en août 2015 un avis indiquant sa volo
 
 \section{Intégrité des données, stockage et signature}
 
-\section{Principe de Cryptographie}
+\section{Principes et propriétés de Cryptographie}
+\begin{Pre}
+On peut considérer que la cryptographie s'organise autour de trois grands principes:\begin{itemize}
+\item[C]onfidentialité
+\item[I]ntégrité
+\item[A]uthenticité
+\end{itemize}
+\end{Pre}
 \subsection{Perfect Forward Secrecy}
 \begin{Define}{Cryptographie!Forward Secrecy}
 En cryptographie, le principe de \gls{PFS} garantit que les clefs de sessions sont protégées contre la compromission des clefs de longue durée.
@@ -170,7 +185,17 @@ Les clefs de longue durée peuvent aussi être basées sur un secret partagé. E
 \end{Define}
 On retrouve ce type de principe dans les implémentations de chiffrement des communications instantannés comme notamment \gls{OTR}, \gls{SCIMP} ou Signal/Pond (Axolot Ratchet)
 \subsection{Deniabilité et non répudiation}
-
+\begin{Define}{Cryptographie!Deniability}
+La \textit{Deniability} est un principe récurrent de la cryptographie. Il consiste à s'assurer que la communication soit possible à nier, a posteriori. Cet objectif doit pouvoir se faire sans exposer l'authenticité des échanges.
+\end{Define}
+Ce principe est utilisé notamment dans le protocole OTR dont les messages pourraient être forgés a posteriori. De même, il est aussi utilisé dans le chiffrement des postes de travail.
+\begin{Stop}
+Cette propriété n'a pas nécessairement une portée juridique forte et ne peut être utilisée comme telle.
+\end{Stop}
+\begin{Define}{Non-Répudiation}
+Le principe de \textit{non repudiation} est le pendant du principe de \textit{deniability}. Il permet de s'assurer de l'\textbf{Authenticité} d'un message sur une longue durée. Il est présent notamment dans les signatures cryptographiques.
+\end{Define}
+Ce principe est largement exploité dans la technologie des blockchains ou de la signature des mails. 
 \section{Implémentaion Cryptographique}
 \subsection{GPG}
 \subsection{Ratchet Protocoles}
@@ -178,6 +203,7 @@ On retrouve ce type de principe dans les implémentations de chiffrement des com
 Un protocole utilisant un ratchet est un protocol renégociant la clef de chiffrement à chaque échange entre les correspondants. La nouvelle clef de chiffrement peut être dérivée de chaque côté via des fonctions injective (hash, bcrypt...) ou renégociée à chaque échange.
 \end{Define}
 Dans le cas d'\gls{OTR} une nouvelle clef est générée basée sur un Diffie-Hellman à chaque échange, dans le cas de \gls{SCIMP}, la clef est dérivée de la clef précédente par une fonction de hash.
+
 \subsubsection{OTR}
 \subsubsection{SCIMP}
 
