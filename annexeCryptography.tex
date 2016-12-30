@@ -91,12 +91,17 @@ L'étape finale n'applique que les formules 1,2 et 4.
 %\end{Define}
 
 \subsection{Mode de chiffrement par blocs}
-Dans le cas des modèles de chiffrement par bloc, le chiffrement passe par un mode de chiffrement. Ce mode de chiffrement permet de codifier les étapes de chiffrement et de déchiffrement d'un message de plusieurs blocs. Une approche naïve du chiffrement, considérerait qu'à un plaintext bloc en clair donné, $P$, correspondrait un chiffré $C$ tel que, $F_k$ étant la fonction de chiffrement: $C=F_k(P)$. Ce mode de chiffrement existe, il est appelé \gls{ECB} et est vulnérable à de nombreuses attaques, tel que \textit{\gls{CPA}}\index{Cryptographie (attaque)!Chosen-Plaintext Attack} ou des analyses statistiques.
+Dans le cas des modèles de chiffrement par bloc, le chiffrement passe par un mode de chiffrement. Ce mode de chiffrement permet de codifier les étapes de chiffrement et de déchiffrement d'un message de plusieurs blocs. Une approche naïve du chiffrement, considérerait qu'à un plaintext bloc en clair donné, $P$, correspondrait un chiffré $C$ tel que, $F_k$ étant la fonction de chiffrement: $C=F_k(P)$. Ce mode de chiffrement existe, il est appelé \gls{ECB} et est vulnérable à de nombreuses attaques, tel que \textit{\gls{CPA}}\index{Cryptographie (attaque)!Chosen-Plaintext Attack} ou des analyses statistiques.\\
+D'autres problématiques existent également comme l'authentification des messages chiffrés au niveau du chiffrement avec notamment les modes de chiffrement de type \gls{AEAD}.
 
 \subsubsection{CBC}
 \subsubsection{CFB}
 \subsubsection{GCM}
 \subsubsection{XTS}
+\subsubsection{ICE}
+\subsubsection{CCM}
+\subsubsection{OCB}
+
 %le truc de télégram et quelques modernes tant qu'à faire :)
 
 \subsection{Chiffrement par flot}
