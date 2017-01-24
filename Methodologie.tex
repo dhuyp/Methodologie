@@ -1436,7 +1436,50 @@ EntitySQL implémente \gls{EDM}. Ce modèle permet de traiter les données en so
             }
         }
     }
-\end{Config}	
+\end{Config}
+
+Avec \textbf{Link-To-Entities}, il est également possible de réaliser des commande en utilisant un style pseudo-SQL (Query Syntax) ou en considérant la requête \MarginPar{\textbf{.NET}: Mapping relationnel}{0cm}comme un objet. Dans le cas de la \textit{Query Syntax}, tous les paramètres dynamiques c'est-à-dire ajouté par une variable seront automatiquement paramétrés dans la requête SQL résultante. Cependant une injection hardcodée (par exemple l'interprétation directe d'une phrase pouvant être modifié par un utilisateur) peut faire l'objet d'une injection. Dans le cas de la \textit{Method Syntax}, le développeur peut également utilisé une syntaxe SQL en utilisant \textbf{Dynamic Linq Syntax}. Cette option permet de réaliser des Linq injections. Pour éviter ce type d'attaque, il est nécessaire d'utiliser des \textit{placeholders}.
+
+\begin{Config}{csharp}{.NET: ORM avec Link-To-Entities}
+    // Query Syntax
+    var L2EQuery = from it in context.Store
+    	where it.Item == "craft"
+    	select it;
+    var item = L2EQuery.FirstOrDefault<item>();
+    
+    //Method Syntax avec Dynamic Linq Syntax
+    var L2EQuery = context.Store.where("i=>i.ItemName == \""+user_input+"\" and allowed == 1" );
+    var item = L2EQuery.FirstOrDefault<item>();
+    
+    //Method Syntax avec Dynamic Linq Syntax et placeholder
+    var L2EQuery = context.Store.where("i=>i.ItemName == @0 and allowed == 1", user_input );
+    var item = L2EQuery.FirstOrDefault<item>();
+\end{Config}
+
+\subsubsection{Protection par l'utilisation de procédures stockées}
+Il est possible d'utiliser des procédures stockées afin de protéger le code de l'injection à l'échelle de la base de données. Il est nécessaire pour cela de prendre en compte le fait que ce type de procédures doit être audité avec attention de même que leurs appels ne doivent pas laisser la possibilité de les contourner.
+
+Il est possible de réaliser des procédure en utilisant \gls{T-SQL}, le langage de programmation SQL des \textit{SQL Server}. \gls{T-SQL} offre deux fonctions native pour protéger les entrées utilisateurs: \textit{QUOTENAME} et \textit{sp\_executesql}.\\ \textit{QUOTENAME} permet d'échapper une chaine de caractère en accord avec le paramètre QUOTED\_IDENTIFIER. Si ce paramètre est positionné à \textit{on}, T-SQL respecte le standard SQL (double quote pour un objet, quote pour une chaine de caractère), s'il est positionné à \textit{off} il respecte la norme Microsoft (crochet pour un objet, double quote pour une chaine de caractères).
+
+\begin{Config}{tsql}{T-SQL: QUOTENAME()}
+SET @var=QUOTENAME(@variable);
+IF ISDATE(@var) = 1
+  SELECT * FROM blog WHERE date=@var;
+ELSE 
+  PRINT 'ERROR';
+\end{Config}
+\MarginPar{\textbf{T-SQL}: Procédure stockée}{0cm}
+\textit{sp\_executesql} permet de réaliser le casting d'une variable en un type donné.
+\begin{Config}{tsql}{T-SQL: sp\_executesql}
+DECLARE @SQL NVARCHAR(1000);
+SET @SQL = 'SELECT * FROM users WHERE user=@Field1';
+EXECUTE sp_executesql @SQL, N'@Field1 VARCHAR(10)', @user ;
+\end{Config}
+
+\subsection{Gestion des entrées utilisateurs: File Inclusion}
+\begin{Define}{LFI}
+Une \gls{LFI} est une inclusion de fichier local par l'utilisation d'un mécanisme de lecture présent dans le code, comme par exemple l'inclusion d'un paramètre GET d'un document à charger.
+\end{Define}
 
 \appendix
 \chapter{Cryptographie}
