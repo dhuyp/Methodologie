@@ -27,7 +27,12 @@
 
 %Sécurité web
 \newacronym{XSS}{XSS}{Cross-Site Scripting}
-\newacronym{CSRF}{CSRF}{Cross-Site Request Forgery}
+\newdualentry{CSRF}{CSRF}{Cross-Site Request Forgery}{Une CSRF est une attaque consistant à induire un utilisateur connecté à réaliser une action à son insu. Ce type d'attaque se réalise par la réalisation d'une requête par l'utilisateur. Elle peut se réaliser par un fichier HTML ou PDF malveillant, l'accès à une page web ou en utilisant une autre vulnérabilité (XSS, unvalidated redirection...).}
+\newglossaryentry{Referer}
+{
+  name={Referer},
+  description={Le Referer est un header envoyé par le navigateur indiquant la page de provenance de l'utilisateur. En fonction des proxys ou des mesures de sécurité activées, le referer peut indiquer l'URL complète, l'hostname d'origine ou n'être pas envoyé.}
+}
 \newacronym{CORS}{CORS}{Cross-Origin Ressource Sharing}
 \newacronym{LFI}{LFI}{Local File Inclusion}
 \newacronym{RFI}{RFI}{Remote File Inclusion}
