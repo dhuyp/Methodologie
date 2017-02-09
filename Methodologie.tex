@@ -1561,7 +1561,101 @@ Cette vérification peut s'exécuter en PHP avec la variable globale \textit{\$\
 \end{Config}
 
 \subsubsection{Implémentation d'un token anti-CSRF (en POST)}
-\subsubsection{Implémentation d'un token anti-CSRF (en cookie)}
+Le traitement normal contre les \gls{CSRF} consiste normalement en l'utilisation d'un \textit{token} aléatoire propre à chaque page. Ce \textit{token} est généralement nommé \textit{token anti-CSRF}. Il permet de garantir que la provenance d'une requête est bien celle attendue dans le cas d'un formulaire. Dans le cas d'un utilisateur authentifié, cela permet de garantir que l'utilisateur a bien rempli une page donnée avant d'effectuer cette requête. \\
+L'usage le plus courant consiste à utiliser un champ \textit{hidden} dans le formulaire. 
+
+\begin{Warning}
+Cette méthode peut poser des problèmes, notamment dans le cas d'une XSS. En effet, l'attaquant peut utiliser une XSS pour lire la DOM de la page et ainsi déterminer la valeur du  \textit{token}.
+\end{Warning}
+
+Il est possible de créer ce \textit{token} en utilisant une donnée difficile à deviner, comme par exemple, le \gls{SID} de l'utilisateur. Le SID étant normalement propre à une session (voir \hyperref[SessionManagement]{Gestion des sessions}) et complètement aléatoire, il s'agit d'une donnée particulièrement efficace pour ce type d'usage. Afin d'éviter le vol du SID, il est recommandé d'en réaliser le condensat voir d'y appliquer un sel.\\
+L'exemple suivant implémente la fonction en .NET.\\
+\begin{Config}{csharp}{.NET: Création d'un token anti-CSRF à partir du SID}
+Protected override OnInit(EventArgs e){
+	base.OnInit(e);
+	if (User.Identity.IsAuthenticated){
+		HashAlgorithm sha = new SHA1CryptoServiceProvider();
+		byte[] result = sha.ComputeHash(Session.SessionID);
+		Session["AntiCSRF"]=System.Convert.ToBase64String(result, 0, 15);
+	}
+\end{Config}
+
+La méthode précédente expose cependant à un problème majeur. En effet, la constance du \textit{token} sur la session fait que le vol du SID à un moment donné reste vrai pour toute la session. Il est recommandé quand c'est possible d'utiliser un \gls{CSPRNG} pour la source du \textit{token} ou une fonction native du framework.\\
+Le framework MVC en .NET permet d'intégrer le \textit{token} directement dans la génération de la page.
+
+\begin{Config}{aspx-cs}{ASP.NET: Intégration du token anti-CSRF dans un formulaire MVC}
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+	@Html.LabelFor(m => m.Status)
+	@Html.TextBoxFor(m => m.Status)
+	<input type="submit" value="Update Status" />
+}
+\end{Config}
+
+Le code ci-dessus génère un champ caché contenant le token anti-CSRF dans le code du formulaire et dans le cookie \textbf{\_\_RequestVerificationToken}. Le code .NET côté serveur nécessite l'utilisation de l'attribut \textbf{ValidateAntiForgeryToken}. Ainsi la fonction de vérification du \textit{token} sera de la forme suivante.
+\begin{Config}{csharp}{.NET: Vérification du token anti-CSRF de MVC}
+[HttpPost]
+[Authorize(Roles="Administrators")]
+[ValidateAntiForgeryToken]
+public ActionResult Index(model){
+	if(ModelState.IsValid){
+		//Le token anti-CSRF a été vérifié
+	}
+}
+\end{Config}
+La configuration du \textit{token} anti-CSRF doit se faire dans le fichier de configuration ASP.NET, \textbf{Global.asax.cs}. Il est recommandé de configurer l'utilisation de \gls{SSL} (\gls{HTTPS}) et de rajouter de l'entropie dans les sources de données: par exemple l'utilisation d'un fournisseur supplémentaire d'entropie complémentaire (utilisant l'interface \textit{IAntiForgeryAdditionalDataProvider}) ou d'une source supplémentaire (utilisant la classe \textit{ClaimTypes}).
+\begin{Config}{csharp}{.NET: Configuration du token anti-CSRF}
+//Global.asax.cs
+private static void ConfigureAntiForgeryTokens(){
+	AntiForgeryConfig.AdditionalDataProvider = myDataProvider;
+	AntiForgeryConfig.RequireSsl = true;
+	UniqueClaimeTypeIdentifier = ClaimTypes.country;
+}
+\end{Config}
+
+\subsubsection{Implémentation d'un token anti-CSRF (en AJAX)}
+
+Cependant cette méthode est inexploitable en AJAX. MVC fournit dans ce cas les fonctions \textit{AntiForgery.GetTokens} et \textit{AntiForgery.Validate}. De cette manière, le \textit{token} peut être transmis dans le header de transmission de fichier JSON. Dans l'exemple suivant, le header est d'abord créé en ASP.NET puis vérifié en .NET.
+\begin{Config}{aspx-cs}{ASP.NET: Intégration du token anti-CSRF dans une requête AJAX}
+@functions{
+	public string TokenHeaderValue(){
+		string cookieToken, formToken;
+		AntiForgery.GetTokens(null,out cookieToken, out formToken);
+		return cookieToken + ":" + formToken;
+	}
+}
+
+$.ajax({
+    type: "GET",
+    beforeSend: function (xhr, settings)
+    {
+        $.extend(settings, { headers: { "RequestVerificationToken", TokenHeaderValue() } });
+    },
+    url: url,
+    dataType: "json",
+    processData: false,
+    crossDomain: true
+});
+\end{Config}
+
+\begin{Config}{csharp}{.NET: Vérification du token anti-CSRF dans une requête AJAX}
+if (request.Headers.TryGetValues("RequestVerificationToken", out tokenHeaders)){
+	string tokens = tokenHeaders.First().Split(':');
+	if (tokens.Length == 2){
+		cookieToken = tokens[0].Trim();
+		formToken = tokens[1].Trim();
+	}
+}
+AntiForgery.Validate(cookieToken,formToken);
+\end{Config}
+
+\subsubsection{Recommandations complémentaires}
+D'autres solutions peuvent être utilisées pour renforcer le contrôle de provenance:\begin{itemize}
+\item Utilisation d'un champ de \gls{CAPTCHA}
+\item Ré-authentification ou une confirmation du mot de passe
+\item Envoi d'un \gls{OTP}
+\end{itemize}
 
 \appendix
 \chapter{Cryptographie}
