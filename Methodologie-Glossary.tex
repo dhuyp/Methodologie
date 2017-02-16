@@ -20,12 +20,24 @@
 %Général
 \newacronym{URL}{URL}{Uniform Ressource Locator}
 \newacronym{REGEX}{REGEX}{Regular Expression}
+
+%Langages
+\newacronym{T-SQL}{T-SQL}{Transact-SQL}
 \newacronym{J2EE}{Java EE}{Java Enterprise Edition}
 
 %Sécurité web
 \newacronym{XSS}{XSS}{Cross-Site Scripting}
-\newacronym{CSRF}{CSRF}{Cross-Site Request Forgery}
+\newdualentry{CSRF}{CSRF}{Cross-Site Request Forgery}{Une CSRF est une attaque consistant à induire un utilisateur connecté à réaliser une action à son insu. Ce type d'attaque se réalise par la réalisation d'une requête par l'utilisateur. Elle peut se réaliser par un fichier HTML ou PDF malveillant, l'accès à une page web ou en utilisant une autre vulnérabilité (XSS, unvalidated redirection...).}
+\newglossaryentry{Referer}
+{
+  name={Referer},
+  description={Le Referer est un header envoyé par le navigateur indiquant la page de provenance de l'utilisateur. En fonction des proxys ou des mesures de sécurité activées, le referer peut indiquer l'URL complète, l'hostname d'origine ou n'être pas envoyé.}
+}
 \newacronym{CORS}{CORS}{Cross-Origin Ressource Sharing}
+\newacronym{OTP}{OTP}{One Time Pad}
+\newacronym{CAPTCHA}{CAPTCHA}{\textit{Completely Automated Public Turing test to tell Computers and Humans Apart}}
+\newacronym{LFI}{LFI}{Local File Inclusion}
+\newacronym{RFI}{RFI}{Remote File Inclusion}
 \newacronym{HTTP}{HTTP}{HyperText Transfer Protocol}
 \newacronym{HTTPS}{HTTPS}{HyperText Transfer Protocol Secure}
 \newacronym{DNS}{DNS}{Domain Name System}
@@ -33,6 +45,7 @@
 \newacronym{SQL}{SQL}{Structured Query Language}
 \newacronym{ORM}{ORM}{Object-Relational Mapping}
 \newacronym{EDM}{EDM}{Entity Data Model}
+\newacronym{SID}{SID}{Session ID}
 \newglossaryentry{dorks}
 {
   name={dorks},
@@ -62,6 +75,10 @@
 \newacronym{RBAC}{RBAC}{Role-Based Acces Control}
 
 %Cryptographie
+\newacronym{PRNG}{PRNG}{Pseudo Random Number Generator}
+\newacronym{TRNG}{TRNG}{True Random Number Generator}
+\newacronym{CSPRNG}{CSPRNG}{Cryptographicaly Secure Pseudo Random Number Generator}
+
 %%algorithmes
 \newacronym{RSA}{RSA}{Rivest Shamir Adleman}
 \newacronym{DES}{DES}{Data Encryption Standard}
