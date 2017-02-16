@@ -69,7 +69,7 @@
 \newsavebox\ExampleBox
 
 %% Description
-\title{Formalisation de Méthodologie pour les audits de sécurité CTF}
+\title{Formalisation de Méthodologie pour les audits de sécurité}
 \author{Pierre d'Huy}
 \date{\today\\v0.2 alpha}
 
@@ -1067,7 +1067,7 @@ Le PRF de TLS est par défaut SHA-256, cependant SHA-384 doit être utilisé pou
 \gls{DH} est un protocole d'échange de clefs basé sur un groupe cyclique fini \gls{ZnZ}. Il consiste en la création d'une clef partagée en utilisant un secret commun. Du fait de la difficulté de factorisation d'un entier facteur de deux nombres premiers de grande taille, un attaquant passif ne pourrait pas déterminer la clef commune. Cependant un attaquant actif peut biaiser la communication en se faisant passer pour le destinataire final.\\
 C'est pour cette raison que les échanges \gls{DH} réalisés dans le contexte des communications \gls{HTTPS} sont signés par le serveur après la transmission du certificat, c'est le \textit{Server Key Exchange}.
 \end{Define}
-L'échange Diffie-Hellman se définit par la RFC2631, tel que:\\
+L'échange \gls{DHE} se définit par la RFC2631, tel que:\\
 \begin{tikzpicture}
 \draw (-3,4) -- (-3,-3);
 \draw (3,4) -- (3,-3);
@@ -1083,17 +1083,17 @@ L'échange Diffie-Hellman se définit par la RFC2631, tel que:\\
 \draw[->] (2.8,2.5) -- node[above] {\textbf{g},\textbf{n},$\textbf{A}\equiv \textbf{g}^\textit{a}\pmod{\textbf{n}}$,sig(A,g,n)} node[below] {\small \textit{Server Key Exchange}}  (-2.8,2.5);
 \draw[->] (-2.8,1) -- node[above] {$\textbf{B}\equiv \textbf{g}^\textit{b} \pmod{\textbf{n}}$}  node[below] {\small \textit{Client Key Exchange}}  (2.8,1);
 \end{tikzpicture} \\
-Le résultat de cette échange est le \textit{pre\_master\_secret}.\\
+Le résultat de cette échange est le \textit{pre\_master\_secret}. Dans le cas de \gls{DH}, les paramètres d'échange sont statiques et embarqués dans le certificat.\\
 Diffie-Hellman se décline sous trois versions:\begin{itemize}
-\item Anonymous Diffie-Hellman (ADH): Cette méthode n'offre aucune résistance face à une attaque dite de l'Homme-du-Milieu, il est recommandé de la désactiver.
-\item Diffie-Hellman standard (DH): Cette méthode utilise des paramètres DH définit dans le certificat.
-\item Diffie-Hellman Ephemeral (DHE): Cette méthode permet l'utilisation de paramètres DH temporaires signée par la clef maitre. Ainsi la compromission de la clef maitre du serveur ne met pas en danger les sessions passées, cette protection s'appelle le Perfect Forward Secrecy (PFS).
+\item \gls{ADH}): Cette méthode n'offre aucune résistance face à une attaque dite de l'Homme-du-Milieu, il est recommandé de la désactiver.
+\item \gls{DH}: Cette méthode utilise des paramètres DH définit dans le certificat.
+\item \gls{DHE}: Cette méthode permet l'utilisation de paramètres DH temporaires signée par la clef maitre. Ainsi la compromission de la clef maitre du serveur ne met pas en danger les sessions passées, cette protection s'appelle \gls{PFS}.
 \end{itemize}
 La sécurité de \gls{DH} reposant sur le groupe \gls{ZnZ}, les paramètres requis pour une bonne utilisation sont les mêmes que pour toute utilisation de ce groupe, c'est-à-dire concernant le chiffrement asymétrique (voir l'\hyperref[analCrypto]{Annexe Cryptologie}). Les recommandations de tailles sont l'utilisation d'un groupe de taille \DHrecosize bits. La recommandation actuelle de l'\gls{ANSSI} est de \DHrecosizeAnssi bits et celle du \gls{NIST} de \DHrecosizeNIST bits. La recommandation de la NSA pour sa Suite B (CNSA) et pour des échanges classifiés équivalents TSD est d'utiliser un groupe de taille \DHrecosizeCNSA bits.\\
-L'utilisation de DHE permet d'assurer une contre-mesure contre un pré-calcul des paramètres Diffie-Hellman. En effet pour une valeur donnée, il est possible de factoriser $n$. Cette attaque a été réalisée contre certains paramètres par défaut utilisés par Apache\footnote{\url{https://weakdh.org/imperfect-forward-secrecy-ccs15.pdf}}.\\
+L'utilisation de \gls{DHE} permet d'assurer une contre-mesure contre un pré-calcul des paramètres Diffie-Hellman. En effet pour une valeur donnée, il est possible de factoriser $n$. Cette attaque a été réalisée contre certains paramètres par défaut utilisés par Apache\footnote{\url{https://weakdh.org/imperfect-forward-secrecy-ccs15.pdf}}.\\
 Sur un espace faible ($<$\DHminsize bits), la factorisation de tous les $n$ possibles de cette taille peut être réalisée. Pour cette raison il est également recommandé d'utiliser des paramètres d'une taille supérieure ou égale à \DHrecosize.\\
 \begin{Define}{SSL/TLS!Elliptic Curve Diffie-Hellman}
-Elliptic Curve Diffie-Hellman (ECDH) est une implémentation de Diffie-Hellman utilisant la Cryptographie à Courbes Élliptique (ECC) comme primitive cryptographique. L'\gls{ECC} se base sur l'usage de paramètres de domaine pour définir une courbe élliptique.\\
+	\gls{ECDH} est une implémentation de Diffie-Hellman utilisant la \gls{ECC} comme primitive cryptographique. L'\gls{ECC} se base sur l'usage de paramètres de domaine pour définir une courbe élliptique.\\
 \end{Define}
 \begin{Warning}
 L'explication des courbes élliptiques figure en annexe.
@@ -1103,14 +1103,34 @@ La recommandation actuelle de l'\gls{ANSSI} est d'utiliser des courbes d'ordre \
 Il est à noter que la \gls{NSA} a émis en août 2015 un avis indiquant sa volonté de rendre désuette l'utilisation de l'ECC dans la Suite B au profit d'algorithmes de type \textit{\gls{PQC}}\footnote{http://blog.cryptographyengineering.com/2015/10/a-riddle-wrapped-in-curve.html}.
 
 \subsubsection{RSA}
+\begin{Define}{SSL/TLS!RSA key exchange algorithm}
+L'échange de clef peut reposer sur l'agorithme de chifffrement asymétrique RSA. Dans ce cas d'utilisation, le client génère de manière aléatoire et envoie le \textit{pre\_master\_secret} chiffré avec la clef publique du serveur. Cet algorithme reposant sur un système de clef publique/clef privée, l'authenticité du serveur est assuré par sa capacité à déchiffrer la clef. La validation de la clef de session est faite après dérivation lors de l'envoi du premier message chiffré.\\
+L'algorithme sert alors à la fois du \textit{Key exchange algorithm} et de l'\textit{Authentication algorithm}.
+\end{Define}
+\begin{Warning}
+Il est à noter que cet algorithme présente un manque inhérent de \gls{PFS}. En effet, le stockage de l'échange permettrait, en cas de compromission de la clef privée, de déchiffrer son contenu.
+\end{Warning}
 
-\FIXME{Chiffrement d'une valeur aléatoire choisie par le client, marche seulement si le certificat serveur n'interdit pas le chiffrement}
+L'échange RSA se définit par la RFC5246, tel que:\\
+\begin{tikzpicture}
+\draw (-3,4) -- (-3,1);
+\draw (3,4) -- (3,1);
+\draw (-3,5) node {Client};
+\draw (3,5) node {Serveur};
+\draw (-5,3.5) node {$\textit{pms=pre\_master\_secret}$};
+\draw (-5,3) node {\textbf{e},\textbf{n}};
+\draw (4.8,2) node {$\textit{pms}\equiv \textbf{C}^\textit{d} \pmod{\textbf{n}}$};
+\draw (4.8,3.5) node {\textbf{e},\textit{d},\textbf{n}};
+\draw[->] (-2.8,3) -- node[above] {$\textbf{C}\equiv \textit{pms}^\textbf{e} \pmod{\textbf{n}}$}  node[below] {\small 
+\textit{Client Key Exchange}}  (2.8,3);
+\end{tikzpicture} \\
+
+\begin{Stop}
+Cet algorithme n'est plus utilisé pour l'échange de clef à partir de TLS 1.3.
+\end{Stop}
 
 \subsubsection{Kerberos}
 \subsubsection{PSK/SRP}
-
-
-
 
 \subsection{SSL/TLS: Gestion des suites cryptographiques}
 \begin{Define}{SSL/TLS!Suites cryptographiques}
@@ -1676,235 +1696,7 @@ Une session est identifiée, côté serveur, par un \gls{SID}. Le SID est une in
 
 \appendix
 \chapter{Cryptographie}
-\section{Cryptographie symétrique}
-\subsection{Principes}
-\begin{Define}{Cryptographie symétrique}
-La cryptographie symétrique repose sur un système à clefs partagées garantissant la confidentialité de la communication. Le secret du chiffré repose entièrement sur le secret de la clef.
-\end{Define}
-La cryptographie symétrique repose sur le principe de la confidentialité parfaite de Shannon défini en 1949:\begin{itemize}
-\item \`A un texte chiffré donné la probabilité d'associer un clair donné doit être égale à la probabilité d'associer n'importe quel clair soit $P(M|C) = P(C)$.
-\item \textbf{Réciproquement}: \`A un texte clair donné la probabilité d'associer un chiffré donné doit être égale à la probabilité d'associer n'importe quel chiffré soit $P(C|M) = P(M)$.
-\end{itemize}
-
-\subsection{Chiffrement par bloc}
-\begin{Define}{Cryptographie symétrique!Chiffrement par bloc}
-Le chiffrement par bloc est une méthode de chiffrement consistant à chiffrer des blocs de taille fixe définie par l'algorithme. Ce chiffrement se fait en général en utilisant plusieurs tours (\textit{rounds}) de manière itérative durant lesquels le chiffré passe par des états internes (\textit{state}) intermédiaires avant d'être altéré par la sous-clef ou clef de tour.
-\end{Define}
-Ce type de chiffrement est le seul utilisé dans le cadre des connexions TLS à l'exception de RC4 qui est considéré comme déprécié. \\
-De nombreuses attaques ont été publiées contre les chiffrements par blocs de 64 bits qui impactent notamment l'implémentation Kasumi, 3DES et DES dont \textit{sweet32}\index{Cryptographie (attaque)!sweet32}. Un attaquant ayant connaissance de suffisamment de ciphertext sera en mesure de déterminer le plaintext en partant de la connaissance d'un bloc en clair. Depuis 2000, le standard initié par le concours AES requiert une taille de bloc de 128 bits. L'ANSSI recommande également une taille de bloc de \blockrecosizeAnssi bits.\\
-L'attaque de moindre complexité pour AES consiste en une attaque par brute-force, la difficulté de l'attaque est donc fonction de la taille de la clef avec une complexité cryptographique de 128 bits pour AES-128 et 256 bits pour AES-256. La complexité cryptographique de DES est de 80 pour 2DES (ou \textit{2TDEA}) soit une clef de 112 bits et 112 pour 3DES soit une clef de 168 bits. Cependant cette complexité est calculée basée sur la connaissance par l'attaquant d'un faible volume de correspondance de \textit{ciphertext} et \textit{plaintext} ($<2^{40}$). L'ANSSI recommande une solidité de clef supérieure à \solidityrecosizeAnssi.
-
-\begin{Define}{Cryptographie symétrique!key schedule}
-Les système de chiffrement par bloc reposent sur un algorithme de cadencement de clé (\textit{key schedule}) pour dériver la clef en sous-clefs utilisables aux états internes intermédiaires successifs. Le \textit{key schedule} est dépendant de l'algorithme de chiffrement utilisé.
-\end{Define}
-
-\subsubsection{Réseau de Feistel}
-\begin{Define}{Cryptographie!Réseau de Feistel}
-Les réseaux de Fesitel (\textit{Feistel cipher}) sont utilisés par de nombreux systèmes de chiffrement par bloc (DES, Camelia, Blowfish, Kasumi...). Ce type de système consiste en une dérivation du bloc en plusieurs tours. De sorte que, $C=L||R$, F la fonction de transformation et K la sous-clef du tour,\\
-$\left\{
-\begin{array}{l}
-  R_i \rightarrow L_{i+1} \\
-  L_i \oplus F(R_{i}, K_{i})\rightarrow R_{i+1}
-\end{array}
-\right.$\\
-Le déchiffrement s'effectue alors par (en fonction,\\
-$\left\{
-\begin{array}{l}
-  L_{i+1} \rightarrow R_{i} \\
-  R_{i+1} \oplus F(L_{i+1}, K_{i+1})\rightarrow L_{i}
-\end{array}
-\right.$\\
-\end{Define}
-\begin{Warning}
-Un réseau de Feistel où L et R sont de tailles différentes est appelé \textit{unbalanced}.
-\end{Warning}
-La clef de chiffrement pour chaque bloc est générée via un \textit{key schedule}. La génération de la sous-clef est primordiale pour garantir la sécurité du chiffrement.
-
-\subsubsection{Chiffrement par S-Box et P-Box}
-
-\subsection{Mode de chiffrement par blocs}
-
-\subsection{Chiffrement par flot}
-
-\section{Cryptographie asymétrique}
-\subsection{Principes}
-\begin{Define}{Cryptographie asymétrique}
-La cryptographie asymétrique repose sur un système à clefs publiques garantissant authenticité et confidentialité. Il existe deux types clefs dans ces systèmes:\begin{itemize}
-\item Une clef publique permettant de chiffrer les données accessibles par tous les destinataires.
-\item Une clef privée permettant de déchiffrer les données chiffrées avec la clef publique.
-\end{itemize}
-La clef publique peut aussi servir à déchiffrer des données chiffrées avec la clef privée. La clef privée étant par essence, propre à un individu, cela permet d'authentifier un message.
-\end{Define}
-\begin{Warning}
-Le chiffrement asymétrique est coûteux en temps, il est généralement utilisé pour chiffrer des petits blocs. Ainsi lors de l'envoi d'un message chiffré, le message est chiffré par chiffrement symétrique et la clef de déchiffrement, idéalement de 512 bits, est chiffrée par un chiffrement asymétrique. De même l'authentification du message se fait par le chiffrement asymétrique d'un condensat du message.
-\end{Warning}
-
-\subsection{Rivest Shamir Adleman (RSA)}
-\begin{Define}{Cryptographie asymétrique!RSA}
-\gls{RSA} est un algorithme de chiffrement asymétrique défini en 1977 par Rivest Shamir et Adleman. Il repose sur les propriétés du groupe $\mathbb{Z}/n\mathbb{Z}$. L'ordre du groupe est défini par le produit de deux premiers ($p$ et $q$) tel que $n=pq$ et $\phi_n=(p-1)(q-1)$.\\
-La clef privée $d$ se choisit telle que $d \in \mathbb{N}$, $d<\phi_n$ et $gcd(d,\phi_n)=1$. Une fois la clef privée choisie, on génère la clef publique par $e\equiv d^{-1} \pmod{\phi_n}$.\\
-Certaines recommandations existent concernant les tailles des différents exposants.\\
-La clef publique est le couple $(e,n)$. La clef privée est le couple $(d,n)$.
-\end{Define}
-La chiffrement et le déchiffrement se réalisent par l'opération:\\
-$\left\{
-\begin{array}{l}
-  C \equiv M^e \pmod n\\
-  M \equiv C^d \pmod n
-\end{array}
-\right.$\\
-La solidité de la clef repose sur la taille de $n$. Si $n$ est facilement factorisable, un attaquant pourrait obtenir l'exposant privé à partir de l'exposant publique.\\
-L'\gls{ANSSI} recommande l'utilisation d'un exposant public de taille supérieure à \ZnZeAnssi et d'un exposant privé de taille proche de $n$ ou d'au moins \ZnZdAnssi. La taille de $n$ recommandée est de \ZnZnAnssi. Ces recommandations s'appliquent à l'ensemble des algorithmes de chiffrement reposant sur ces principes.\\
-
-\subsection{Elliptic Curve Cryptography (ECC)\label{ECC}}
-\begin{Define}{Cryptographie asymétrique!Elliptic Curve Cryptography}
-Une courbe élliptique définie sur le corps premier fini $\mathbb{F}_p$ et utilisant les paramètres de domaine $(p,a,b,G,n,h)$ se définira par l'équation $E: y^2 \equiv x^3 + a.x + b \pmod p$ de sorte que $p$ et $n$ soient premiers, $n$ l'ordre du sous-groupe cyclique de $\mathbb{F}_p$ définit par $G(x_G,y_G)$, $h$ représente le cofacteur définit par $h=\frac{|E(\mathbb{F}_p)|}{n}$ avec $h<4$ et $a,b \in \mathbb{F}_p$.\\
-Dans le cas de courbe définie sur le corps fini binaire $\mathbb{F}_{2^m}$ et utilisant les paramètres de domaine $(m,f,a,b,G,n,h)$ se définira par l'équation de courbe de Koblitz $E: y^2 + xy = x^3 + a.x + b$ avec $b \ne 0$, $f$ la représentation polynomiale de $\mathbb{F}_{2^m}$ et $m \in {163, 233, 239, 283, 409, 571}$. Les autres paramètres sont similaires à ceux définis pour les corps premiers finis. 
-\end{Define}
-Du fait de l'importance de ces paramètres, un certain nombre de courbes appartenant à $\mathbb{F}_p$ (non binaire) et à $\mathbb{F}_{2^m}$ ont été prédéfinies et recommandées par:\begin{itemize}
-\item le \gls{NIST} (\ECCNIST)
-\item le \gls{SECG}, groupe créé par Certicom en 1998 et dont les groupes sont approuvés par le \gls{NIST} (\ECCSECG)
-\item ECC Brainpool, groupe de travail essentiellement allemand constitué d'universités et d'entreprises privées (\ECCBP)
-\item Curve25519 proposée par Bernstein pour la réalisation d'un ECDH et d'une sécurité équivalente à P-256 \footnote{Curve25519 s'appuie sur un corps premier $\mathbb{F}_p$ avec $p=2^{255}-19$, une courbe de Montgomery de type $y^2=x^3+486662x^2+x$ et un point de base égale à 9}.
-\end{itemize}
-Le problème de ce type de cryptographie est son manque de confiance due à la preuve mathématique\footnote{Cette thématique est abordé par le groupe ECC Brainpool dans \url{http://www.ecc-brainpool.org/download/Domain-parameters.pdf}}.\\
-Les recommandations d'usage sont:\begin{itemize}
-\item Pour l'\gls{ANSSI}: \ECDHrecosizeAnssi
-\item Pour le \gls{NIST}: \ECDHrecosizeNIST
-\item Pour la Suite B de la \gls{NSA}: \ECDHrecosizeCNSA
-\end{itemize}
-Il est à noter que la \gls{NSA} a émis en août 2015 un avis indiquant sa volonté de rendre désuette l'utilisation de l'\gls{ECC} dans la Suite B au profit d'algorithmes de type \textit{\gls{PQC}}\footnote{http://blog.cryptographyengineering.com/2015/10/a-riddle-wrapped-in-curve.html}.
-
-\section{Intégrité des données, stockage et signature}
-
-\section{Principe de Cryptographie}
-\subsection{PFS}
-
-\section{Implémentaion Cryptographique}
-\subsection{TLS}
-\subsubsection{Fonctionnement d'un handshake TLSv1.2}
-\resizebox {\textwidth} {!} {
-\begin{tikzpicture}
-  \tikzstyle{state} = [draw, very thick, fill=white, rectangle, minimum height=3em, minimum width=7em, node distance=8em, font={\sffamily\bfseries}]
-  \tikzstyle{stateEdgePortion} = [black,thick];
-  \tikzstyle{authServEdgePortion} = [ForestGreen,thick];
-  \tikzstyle{authClientEdgePortion} = [red, thick];
-  \tikzstyle{stateEdge} = [stateEdgePortion,->];
-  \tikzstyle{authServEdge} = [authServEdgePortion,->];
-  \tikzstyle{authClientEdge} = [authClientEdgePortion,->];
-  \tikzstyle{edgeLabel} = [pos=0.5, text centered, font={\sffamily\small}];
-  \node[state, name=closedStart] {CLOSED};
-  \node[state, name=ciphersuitscomp, below of=closedStart] {Ouverture de connexion};
-  \node[state, name=authenticationServer, below of=ciphersuitscomp] {Requête pour authentifier le Serveur};
-  \node[state, name=authServer, below of=authenticationServer, right of=authenticationServer, xshift=7em] {Serveur Authentifié};
-  \node[state, name=anonServer, below of=authenticationServer, left of=authenticationServer, xshift=-7em] {Serveur Anonyme};
-  \node[state, name=authenticationClient, below of=authenticationServer, node distance=14em] {Requête pour authentifier le Client};
-  \node[state, name=authClient, below of=authenticationClient, right of=authenticationClient, xshift=7em] {Authentification du client};
-  \node[state, name=dhClient, below of=authenticationClient, left of=authenticationClient, xshift=-4em, yshift=-7em] {DH du Client};
-  \node[state, name=endDHClient, below of=dhClient] {Fin du DH du Client};
-  \node[state, name=endClient, below of=endDHClient] {Fin des messages du Client};
-  \node[state, name=endServer, below of=endClient, text width=14em] {Fin des messages du Serveur\\Connexion établie};
-  \draw ($(closedStart.south) + (-.5em,0)$) 
-      edge[stateEdge] node[edgeLabel, xshift=-3em]{\textit{Client\_Hello}} 
-      ($(ciphersuitscomp.north) + (-.5em,0)$); 
-  \draw ($(ciphersuitscomp.north) + (.5em,0)$) 
-      edge[stateEdge] node[edgeLabel, xshift=4em]{\textbf{Handshake\_Failure}} 
-      ($(closedStart.south) + (.5em,0)$);
-  \draw ($(ciphersuitscomp.south) + (-.5em,0)$) 
-      edge[stateEdge] node[edgeLabel, xshift=4em]{\textbf{Server\_Hello}} 
-      ($(authenticationServer.north) + (-.5em,0)$);
-   \draw ($(authenticationServer.south) + (-1em,0)$) 
-      edge[stateEdge, bend left=22.5] node[edgeLabel, xshift=-5em, yshift=1em]{ADH: \textbf{Server\_Key\_Exchange}} node[edgeLabel, xshift=1em, yshift=3em]{\textbf{Non}}
-      ($(anonServer.east) + (0,1em)$);
-  \draw ($(authenticationServer.south) + (1em,0)$) 
-      edge[stateEdge, bend right=22.5] node[edgeLabel, xshift=2em, yshift=1em]{\textbf{Certificate}} node[edgeLabel, xshift=-1em, yshift=3em]{\textbf{Oui}}
-      ($(authServer.west) + (0,1em)$);
-  \draw ($(authServer.west) + (0,-1em)$) 
-      edge[authServEdge, bend right=22.5] node[edgeLabel, xshift=-4em, yshift=1.5em]{DHE: \textbf{Server\_Key\_Exchange}} 
-      ($(authenticationClient.north)$);
-  \draw ($(authServer.south)$) 
-      edge[authServEdge, bend left=22.5, dashed,->] node[edgeLabel, xshift=4em, yshift=-2em]{DH: (Paramètre du certificat)} 
-      ($(authenticationClient.east)$);
-  \draw ($(authenticationClient.south)$) 
-      edge[authServEdge, bend right=22.5] node[edgeLabel, xshift=5em, yshift=1em,text width=5em]{\textbf{Certificate\_Request}\\\textbf{Server\_Hello\_Done}} node[edgeLabel, xshift=-1em, yshift=3em]{\textbf{Oui}}
-      ($(authClient.west)$);
-  \draw ($(authenticationClient.west)$) 
-      edge[authServEdge, bend right=22.5] node[edgeLabel, xshift=4em, yshift=-2em,text width=5em]{\textbf{Server\_Hello\_Done}} node[edgeLabel, xshift=1em, yshift=5em]{\textbf{Non}}
-      ($(dhClient.north)$);
-   \draw ($(anonServer.south)$) 
-      edge[stateEdge, bend left=5] node[edgeLabel, xshift=-5em, yshift=3em]{\textbf{Server\_Hello\_Done}} 
-      ($(dhClient.north)$);
-  \draw ($(authClient.south)$) 
-      edge[authClientEdge, bend left=22.5] node[edgeLabel, xshift=0em, yshift=1.5em]{\textit{Certificate}} 
-      ($(dhClient.east)$);
-  \coordinate (HF2A) at ($(authClient.east) + (2em,0.5em)$);
-  \coordinate (HF2B) at ($(closedStart.north -| authClient.east) + (2em,1em)$);
-  \coordinate (HF2C) at ($(closedStart.north) + (0.5em,1em)$);
-  \draw ($(authClient.east) + (0em,0.5em)$)  edge[authClientEdgePortion] (HF2A);
-  \draw (HF2A) edge[authClientEdgePortion] node[edgeLabel,xshift=1.5em, yshift=-4em, rotate=-90]{\textit{Client\_Key\_Exchange} $\Rightarrow$ \textbf{Handshake\_Failure}} (HF2B);
-  \draw (HF2B) edge[authClientEdgePortion] (HF2C);
-  \draw (HF2C) edge[authClientEdge] ($(closedStart.north) + (0.5em,0)$);
-  \coordinate (HF3A) at ($(authClient.east) + (6em,-0.5em)$);
-  \coordinate (HF3B) at ($(closedStart.north -| authClient.east) + (6em,1em)$);
-  \coordinate (HF3C) at ($(closedStart.north) + (0.5em,1em)$);
-  \draw ($(authClient.east) + (0em,-0.5em)$) edge[authClientEdgePortion] (HF3A);
-  \draw (HF3A) edge[authClientEdgePortion] node[edgeLabel,xshift=1.5em, yshift=-4em, rotate=-90]{Invalid \textit{Certificate} $\Rightarrow$ \textbf{Handshake\_Failure}} (HF3B);
-  \draw (HF3B) edge[authClientEdgePortion] (HF3C);
-  \draw (HF3C) edge[authClientEdge] ($(closedStart.north) + (0.5em,0)$);
-  \draw ($(dhClient.south)+ (-1em,0)$) 
-      edge[stateEdge] node[edgeLabel, xshift=5em, yshift=0em, text width=5em]{\textit{Client\_Key\_Exchange\\\textcolor{red}{Certificate\_Verify}}} 
-      ($(endDHClient.north)+ (-1em,0)$);
-  \draw ($(dhClient.south)$) 
-      edge[authServEdge]
-      ($(endDHClient.north)$);
-  \draw ($(dhClient.south)+ (1em,0)$) 
-      edge[authClientEdge]
-      ($(endDHClient.north)+ (1em,0)$);
-  \draw ($(endDHClient.south)+ (-1em,0)$) 
-      edge[stateEdge] node[edgeLabel, xshift=5em, yshift=0em, text width=5em]{\textit{Change\_Cipher\_Spec\\Finished}} 
-      ($(endClient.north)+ (-1em,0)$);
-  \draw ($(endDHClient.south)$) 
-      edge[authServEdge]
-      ($(endClient.north)$);
-  \draw ($(endDHClient.south)+ (1em,0)$) 
-      edge[authClientEdge]
-      ($(endClient.north)+ (1em,0)$);
-  \draw ($(endClient.south)+ (-1em,0)$) 
-      edge[stateEdge] node[edgeLabel, xshift=5em, yshift=0em, text width=5em]{\textbf{Change\_Cipher\_Spec\\Finished}} 
-      ($(endServer.north)+ (-1em,0)$);
-  \draw ($(endClient.south)$) 
-      edge[authServEdge]
-      ($(endServer.north)$);
-  \draw ($(endClient.south)+ (1em,0)$) 
-      edge[authClientEdge]
-      ($(endServer.north)+ (1em,0)$);
-  \coordinate (SIDA) at ($(ciphersuitscomp.west) + (-17em,0)$);
-  \coordinate (SIDB) at ($(endClient.west -| ciphersuitscomp.west) + (-17em,1em)$);
-  \draw (ciphersuitscomp.west) edge[stateEdgePortion,dashed,-] (SIDA);
-  \draw (SIDA) edge[stateEdgePortion, black,dashed,-] node[edgeLabel,xshift=-1.5em, yshift=4em, rotate=90]{\textit{(Client\_Hello.session\_id)}} (SIDB);
-  \draw (SIDB) edge[stateEdge,dashed,->] ($(endClient.west) + (0,1em)$);
-  \coordinate (HRA) at ($(endServer.west) + (-6.5em,0)$);
-  \coordinate (HRB) at ($(closedStart.north -| endServer.west) + (-6.5em,1em)$);
-  \coordinate (HRC) at ($(closedStart.north) + (-0.5em,1em)$);
-  \draw (endServer.west) edge[stateEdgePortion] (HRA);
-  \draw (HRA) edge[stateEdgePortion] node[edgeLabel,xshift=-1.5em, yshift=2em, rotate=90]{\textbf{Hello\_Request}} (HRB);
-  \draw (HRB) edge[stateEdgePortion] (HRC);
-  \draw (HRC) edge[stateEdge] ($(closedStart.north) + (-0.5em,0)$);
-
-  \begin{pgfonlayer}{background}
-    \draw [join=round,black,dotted] ($(endDHClient.east) + (7em, 0em)$) rectangle ($(endDHClient.east) + (28em, -7em)$);
-    \coordinate (LEGA) at ($(endDHClient.east) + (13em, -1em)$);
-    \coordinate (LEGB) at ($(endDHClient.east) + (13em, -2.5em)$);
-    \coordinate (LEGC) at ($(endDHClient.east) + (13em, -4em)$);
-    \coordinate (LEGD) at ($(endDHClient.east) + (13em, -5.5em)$);
-    \draw (LEGA) node[xshift=5em]{\textit{Paquet du Client}} ;
-    \draw (LEGB) node[xshift=4.6em]{\textbf{Paquet du Serveur}} ;
-    \draw (LEGC) node[xshift=4.6em]{\textcolor{ForestGreen}{\'Echanges après authentification du serveur}} ;
-    \draw (LEGD) node[xshift=4.6em]{\textcolor{red}{\'Echanges après authentification du client}} ;
-  \end{pgfonlayer}
-\end{tikzpicture}
-}
-
+\input{annexeCryptography}
 
 \clearpage
 \addcontentsline{toc}{chapter}{Index}

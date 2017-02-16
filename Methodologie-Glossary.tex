@@ -81,12 +81,16 @@
 
 %%algorithmes
 \newacronym{RSA}{RSA}{Rivest Shamir Adleman}
+\newacronym{PSK}{PSK}{Pre-Shared Key}
 \newacronym{DES}{DES}{Data Encryption Standard}
 \newacronym{3DES}{3DES}{Triple Data Encryption Algorithm}
 \newacronym{AES}{AES}{Advanced Encryption Standard}
 \newacronym{SHA}{SHA}{Secure Hash Algorithm}
 
+
+
 %%mode de chiffrement
+\newacronym{AEAD}{AEAD}{Authentified Encryption with Associated Data}
 \newacronym{ECB}{ECB}{Electronic CodeBook}
 \newacronym{CBC}{CBC}{Cipher Block Chaining}
 \newacronym{PCBC}{PCBC}{Propagating Cipher Block Chaining/Plaintext-Cipher Block Chaining}
@@ -95,6 +99,10 @@
 \newacronym{CTR}{CTR}{Counter Mode}
 \newacronym{GCM}{GCM}{Galois-Counter Mode}
 \newacronym{CCM}{CCM}{Counter with CBC-MAC}
+
+%%Propriété
+\newacronym{FS}{FS}{Forward Secrecy}
+\newdualentry{PFS}{PFS}{Perfect Forward Secrecy}{Le Perfect Forward Secrecy, appelé parfois \gls{FS}, est une propriété d'un mécanisme de chiffrement permettant de garantir la confidentialité pérenne d'un échange même après la compromission de la clef rivée. C'est notamment le cas de \gls{DHE} et de \gls{ECDHE}}
 
 %%Institut et autorité
 \newdualentry{NIST} % label
@@ -107,8 +115,8 @@
 \newdualentry{FIPS}{FIPS}{Federal Information Processing Standards}{Standards définis par le \gls{NIST} décrivant notamment l'usage d'AES, DES ou les courbes élliptiques}
 \newdualentry{SECG}{SECG}{Standards for Efficient Cryptography Group}{Consortium pour la standardisation de la cryptographie fondé par Certicom en 1998 incluant notamment le \gls{NIST} et Visa}
 \newdualentry{NSA}{NSA}{National Security Agency}{Organisation gouvernementale américaine pour la collecte de renseignements à l'étranger et la sécurisation des communications gouvernementales. La NSA fournit notamment des recommandations en cryptographie (le CNSA) pour les contractuels du gouvernement américain}
-\newdualentry{ANSSI}{ANSSI}{Agence Nationale de la Sécurité des Systèmes d'Information}{Service du gouvernement français dépendant du Ministère de la Défense et se positionnant en autorité sur la sécurité des Systèmes d'Informations de la France}
-
+\newdualentry{ANSSI}{ANSSI}{Agence Nationale de la Sécurité des Systèmes d'Information}{Service du gouvernement français dépendant du Secrétariat Général de la Défense et de la Sécurité Nationale et se positionnant en autorité sur la sécurité des Systèmes d'Informations de la France}
+\newdualentry{EPC}{EPC}{European Payments Council}{Le Conseil Européen des paiements est une initiative pan-européenne pour facilité la mise en place des échanges dans la zone euro (SEPA). C'est un interlocuteur priviligié avec les instances de l'Union Européenne.}
 %% Concept mathématiques
 \newglossaryentry{ZnZ}
 {
@@ -116,15 +124,25 @@
   description={Groupe fini cyclique d'ordre n, dans le contexte de la cryptographie, n est le produit de deux premiers. On utilise $\mathbb{Z}/p\mathbb{Z}$ pour les groupes cycliques premiers, il s'agit alors d'un corps premier fini},
   sort=ZnZ
 }
+\newacronym{PRNG}{PRNG}{Pseudo Random Number Generator}
 
 %% Protocole et Famille
+\newacronym{ADH}{ADH}{Anonymous Diffie-Hellman}
+\newacronym{ECDHE}{ECDHE}{Elliptic Curve Diffie-Hellman Ephemeral}
+\newacronym{ECC}{ECC}{Cryptographie à Courbes Éliptiques}
 \newacronym{DH}{DH}{Diffie-Hellman}
-\newacronym{DHE}{DHE}{Diffie-Hellman Ephemeral}
+\newdualentry{DHE}{DHE}{Diffie-Hellman Ephemeral}{Diffie-Hellman dont les paramètres serveurs sont modifiés à chaque connexion, parfois nommé \gls{EDH}}
+\newacronym{EDH}{EDH}{Diffie-Hellman Ephemeral}
 \newacronym{PQC}{PQC}{Post-Quantum Cryptography}
 \newacronym{ECDH}{ECDH}{Eliptic Curve Diffie-Hellman}
-\newacronym{ECC}{ECC}{Eliptic Curve Cryptography}
 \newacronym{SSL}{SSL}{Secure Sockets Layer}
 \newacronym{TLS}{TLS}{Transport Layer Security}
+\newacronym{OTR}{OTR}{Off The Record}
+\newacronym{SCIMP}{SCIMP}{Silence Circle Instant Messaging Protocol}
+
+%% Attaques
+\newacronym{CPA}{CPA}{Chosen-Plaintext Attack}
+\newacronym{CCA}{CCA}{Chosen-Ciphertext Attack}
 
 
 \glsresetall
