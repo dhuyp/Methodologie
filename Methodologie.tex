@@ -1317,7 +1317,7 @@ Ce comportement est géré nativement en ASP.NET via l'utilisation de blocs de c
 \end{Config}
 
 \subsection{Gestion des entrées utilisateurs: Injection de code}
-\begin{Define}{Injection de code}
+\begin{Define}{Vulnérabilités!Injection de code}
 Une injection de code est une attaque consistant à injecter du code au sein d'une entrée utilisateur afin d'exécuter un code du côté du serveur. \`A l'inverse des injections XSS, ce type d'attaque vise le serveur afin de lire des données, d'exécuter des commandes à distance ou à rebondir vers des serveurs internes.\\
 Ce type d'attaque se divise en trois catégories:\begin{itemize}
 \item Injection en base de données: Ce type d'injection utilise le mauvais traitement d'entrée utilisateur pour faire exécuter du code par une base de données. Ce code peut permettre de faire fuir des données, d'injecter d'autres données, ou même d'injecter du code en cas de mauvaise configuration du \gls{SGDB}. Le code injecté s'exécutera dans le même contexte que la \gls{SGDB}.
@@ -1476,8 +1476,10 @@ SET @SQL = 'SELECT * FROM users WHERE user=@Field1';
 EXECUTE sp_executesql @SQL, N'@Field1 VARCHAR(10)', @user ;
 \end{Config}
 
+%% Manque injection Xpath et commande
+
 \subsection{Gestion des entrées utilisateurs: File Inclusion}
-\begin{Define}{LFI}
+\begin{Define}{Vulnérabilités!LFI}
 Une \gls{LFI} est une inclusion de fichier local par l'utilisation d'un mécanisme de lecture présent dans le code, comme par exemple l'inclusion d'un paramètre GET d'un document à charger. Cela peut servir à lire des fichiers locaux propres aux systèmes d'exploitation ou au serveur web comme par exemple, les fichiers .htaccess sur debian ou web.config sur IIS.
 \end{Define}
 
@@ -1496,7 +1498,7 @@ Par exemple, en ASP.NET, le fichier web.config permet de restreindre les accès 
 </system.web>
 \end{Config}
 
-\begin{Define}{RFI}
+\begin{Define}{Vulnérabilités!RFI}
 Une \gls{RFI} est une inclusion d'un fichier distant par l'utilisation d'un mécanisme de lecture présent dans le code, comme par exemple l'inclusion d'un paramètre GET d'un document à charger. Cela peut servir notamment à inclure un code javascript malveillant exécuté par l'utilisateur ou un code exécuté par le serveur.
 \end{Define}
 
@@ -1521,7 +1523,7 @@ if (!db.WhiteListURLs.Where(u => u.URL == url).Any()){
 \end{Config}
 
 \subsection{Gestion des sessions: CSRF}
-\begin{Define}{CSRF}
+\begin{Define}{Vulnérabilités!CSRF}
 Une \gls{CSRF} est une attaque consistant à induire un utilisateur connecté à réaliser une action à son insu. Ce type d'attaque se réalise par la réalisation d'une requête par l'utilisateur. Elle peut se réaliser par un fichier HTML ou PDF malveillant, l'accès à une page web ou en utilisant une autre vulnérabilité (\gls{XSS}, unvalidated redirection...).
 Une \gls{CSRF} peut se contre en utilisant:\begin{itemize}
 \item Une vérification de l'origine du visiteur
@@ -1656,6 +1658,19 @@ D'autres solutions peuvent être utilisées pour renforcer le contrôle de prove
 \item Ré-authentification ou une confirmation du mot de passe
 \item Envoi d'un \gls{OTP}
 \end{itemize}
+
+La mise en place d'un CAPTCHA peut se faire aisément en utilisant les bibliothèques consacrées comme reCAPTCHA.
+
+\subsection{Gestion des sessions: fixation, injection, vol}
+\begin{Define}{Vulnérabilités!SID}
+Une session est identifiée, côté serveur, par un \gls{SID}. Le SID est une information partagé entre le navigateur et le serveur et permet à un navigateur de se faire reconnaitre auprès du serveur. Il peut prendre différente forme: cookie, données POST, dans l'URL... La meilleure implémentation consiste cependant à transmettre cette donnée dans un cookie de session. Du fait de l'importance du \gls{SID}, de nombreuses protections doivent être mis en place contre son vol ou son usage par un tiers.
+\end{Define}
+
+\subsubsection{Injection de SID}
+\subsubsection{Fixation de SID}
+\subsubsection{Vol de session}
+%utilisation de cookie secure en plus des notes initailes
+
 
 \appendix
 \chapter{Cryptographie}
