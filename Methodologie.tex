@@ -1662,12 +1662,34 @@ D'autres solutions peuvent être utilisées pour renforcer le contrôle de prove
 La mise en place d'un CAPTCHA peut se faire aisément en utilisant les bibliothèques consacrées comme reCAPTCHA.
 
 \subsection{Gestion des sessions: fixation, injection, vol}
-\begin{Define}{Vulnérabilités!SID}
+\begin{Define}{SID}
 Une session est identifiée, côté serveur, par un \gls{SID}. Le SID est une information partagé entre le navigateur et le serveur et permet à un navigateur de se faire reconnaitre auprès du serveur. Il peut prendre différente forme: cookie, données POST, dans l'URL... La meilleure implémentation consiste cependant à transmettre cette donnée dans un cookie de session. Du fait de l'importance du \gls{SID}, de nombreuses protections doivent être mis en place contre son vol ou son usage par un tiers.
 \end{Define}
 
 \subsubsection{Injection de SID}
+\begin{Define}{Vulnérabilités!SID (Injection)}
+Une injection de \gls{SID} consiste en la capacité par l'attaquant de paramétrer le SID de la victime au sein du site. Cela peut se faire par l'utilisation du SID dans l'URL, dans une requête POST ou dans le cookie si celui-ci n'est pas protégé correctement contre les attaques XSS. Une fois injecté, l'attaquant pourra accéder aux informations de la victime quand elle se connecte.
+\end{Define}
+Pour se protéger de ce type d'attaque, il est recommandé d'utiliser un index de tous les SIDs actifs. Cette protection permet d'éviter l'utilisation de SID forgé par l'attaquant et évite que celui-ci injecte ses propres SID dans les données du site. \\
+En ce cas l'attaquant peut utiliser un SID qu'il aura généré en se connectant lui-même au site. Une fois, la victime injectée, le serveur ne pourra pas facilement identifier un utilisateur injecté d'un autre, cette attaque s'appelle une \textbf{fixation de session}. Il est alors possible d'utiliser l'adresse IP de l'utilisateur pour déterminer si les données de session reste cohérente.\\
+
+Cependant ce type d'information s'oppose à la création de session longue durée pour les terminaux mobiles qui peuvent utiliser de multiples points d'accès.
 \subsubsection{Fixation de SID}
+\begin{Define}{Vulnérabilités!SID (Fixation)}
+Une fixation de session consiste en la capacité par l'attaquant d'exploiter le mécanisme du site pour fournir à la victime un SID statique de son choix. Il s'agit d'un type particulier d'injection de SID.
+\end{Define}
+Afin d'éviter les attaques par fixation de session, il est nécessaire de changer le SID après la connexion d'un utilisateur. En effet, si le SID reste constant, l'utilisateur peut utiliser sans le savoir le SID d'un attaquant. 
+\begin{Config}{csharp}{.NET: Protection contre la fixation de session}
+//pre_login.cs
+Session.Abandon();
+Response.Redirect("login.aspx");
+
+//login.aspx
+@if(Session.isNewSession()==false)
+	throw new ApplicationException("Session Fixation Attack")
+\end{Config}
+
+
 \subsubsection{Vol de session}
 %utilisation de cookie secure en plus des notes initailes
 
