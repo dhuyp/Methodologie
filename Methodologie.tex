@@ -1692,6 +1692,38 @@ Response.Redirect("login.aspx");
 
 \subsubsection{Vol de session}
 %utilisation de cookie secure en plus des notes initailes
+Afin de protéger le cookie contre d'éventuels vols de données, celui-ci doit être paramétré 
+
+\subsection{URL: Direct Access Reference et Unvalidated Redirection}
+\subsubsection{Unvalidated Redirection}
+\begin{Define}{Vulnérabilités!Unvalidated Redirection}
+Une \textit{Unvalidated Redirection} est une attaque consistant à utiliser un mécanisme de redirection du site en modifiant l'adresse cible via une entrée utilisateur. Ce type d'attaque peut permettre de conduire des campagnes de phishing. En effet, la redirection est transparente pour l'utilisateur et celui-ci peut croire être sur un site légitime là où l'attaquant l'a redirigé vers une copie. De plus dans certains cas, des informations peuvent être transmises lors de la redirection comme les identifiants ou mot de passe.
+\end{Define}
+
+Les attaques de ce type exploitent en général les URLs du type \url{http://example.com/login?ReturnURL=/Admin} en substituant le \textit{/Admin} par l'adresse choisie par l'attaquant. Par exemple, l'attaquant pourra envoyer l'adresse suivante à l'utilisateur: \url{http://example.com/login?ReturnURL=http://evil.com/login} avec une interface imitant l'interface de login.
+
+Différentes mesures existent pour se prémunir de ce type d'attaque de la même manière que contre les \gls{LFI}s ou les \gls{RFI}s. Par exemple si l'adresse est relative, le code peut vérifier qu'elle le reste:
+\begin{Config}{csharp}{.NET: Vérification d'URI relative}
+var uri= Request.QueryString["Uri"];
+if (!Uri.IsWellFormedUriString(uri,UriKind.Relative)){
+	throw new ApplicationException("URI not allowed");
+}
+\end{Config}
+
+Si le code nécessite de rediriger vers une page externe, le code peut vérifier que celle-ci appartient bien à une liste blanche en utilisant la classe \textbf{DbContext}.
+\begin{Config}{csharp}{.NET: Vérification par liste blanche}
+//var db = new DbContext();
+// [...]
+var uri= Request.QueryString["Uri"];
+if (!db.WhiteListURLs.Where(u => u.URL == url).Any()){
+	throw new ApplicationException("Redirection not allowed");
+}
+\end{Config}
+
+Enfin une notification peut être affichée à l'utilisateur en cas de sortie du site.
+
+
+\subsubsection{Direct Access Reference}
 
 
 \appendix
