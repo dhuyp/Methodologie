@@ -1228,7 +1228,7 @@ Cette étape permet d'étudier le code fourni et de réaliser des constatations 
 Une \gls{XSS} est une attaque consistant à injecter un code HTML, Javascript ou VB au sein d'une page web, visant à le faire exécuter par le navigateur du client de sorte d'induire un comportement anormal ou d'exploiter une vulnérabilité du-dit navigateur.\\Une XSS peut être:\begin{itemize}
 \item \textbf{Réfléchie}(\textit{Volatil}): Une XSS réfléchie est une XSS apparaissant dans un contexte particulier et temporaire avec, par exemple, une requête présente dans les données envoyées via POST ou GET. Elle s'exécute seulement après la requête et est fournie par le serveur.
 \item \textbf{Stockée} (\textit{Stored}): Une XSS stockée est une XSS archivée sur le site au sein d'une base de données ou insérée dans le code source. Elle s'exécute à chaque chargement de la page et est fournie par le serveur.
-\item \textbf{Locale} (\textit{DOM based XSS}): Une XSS locale est une XSS déclenchée purement côté navigateur car chargée par le code côté client (information au sein de l'URL). Ce type d'attaque est invisible côté serveur et du à un manque de traitement côté client. Elle s'exécute seulement après la requête craftée et est fournie par le client.
+\item \textbf{Locale} (\textit{DOM based XSS}): Une XSS locale est une XSS déclenchée purement côté navigateur car chargée par le code côté client (information au sein de l'URL). Ce type d'attaque est invisible côté serveur et dû à un manque de traitement côté client. Elle s'exécute seulement après la requête craftée et est fournie par le client.
 \end{itemize}
 \end{Define}
 
@@ -1325,6 +1325,17 @@ Ce type d'attaque se divise en trois catégories:\begin{itemize}
 \item Injection XPath
 \end{itemize}
 \end{Define}
+\subsubsection{Protection de l'entrée utilisateur}
+En PHP, la librairie native fournit des fonctions de traitements des entrées pour éviter les injections à partir d'une entrée utilisateur en échappant les caractères qui peuvent être interprété. Cette fonction est intégré dans le driver PDO de connexion à la base de donnée.
+\begin{Config}{php}{PHP: Échappement de l'entrée utilisateur}
+<?php
+$driver = new PDO('sqlite:/home/Methodologie/name.sql3');
+$string = "Pierre d'Huy `Admin`";
+print $driver->quote($string) . "\n";
+?>
+\end{Config}
+
+En .NET et en Java, aucune fionction de ce type n'existe avec une préférence pour les requêtes paramétrées. Cependant ce code peut être réalisé facilement à l'aide de fonction du type \textbf{\gls{REGEX}} ou \textit{Replace}.
 
 \subsubsection{Utilisation de Prepared Statements contre les injections en Base de données}
 \begin{Warning}
@@ -1456,6 +1467,31 @@ Avec \textbf{Link-To-Entities}, il est également possible de réaliser des comm
     var item = L2EQuery.FirstOrDefault<item>();
 \end{Config}
 
+En PHP, il est possible de réaliser l'interfaçage ORM à l'aide de la librairie externe \textbf{Doctrine}
+\begin{Config}{php}{PHP: Inititation ORM avec Doctrine}
+<?php
+class Users extends Doctrine_Record
+{
+    public function setTableDefinition()
+    {
+    	$this->setTableName('users');
+	$this->hasColumn('id', 'integer', 42, array('primary' => true, 'autoincrement' => true));
+	$this->hasColumn('Name', 'string', 100);
+	$this->hasColumn('Roles', 'string', 100);
+    }
+}
+?>
+\end{Config}
+\begin{Config}{php}{PHP: Utilisation ORM avec Doctrine}
+<?php
+$myUsers = new Users();
+$myUsers->Name = "Pierre d'Huy"; 
+$myUsers->Roles = 'Admin';
+$myUsers->save();
+?>
+\end{Config}
+Doctrine échappe la chaine de caractère pour l'insérer. Cependant Doctrine seul ne garantit pas une protection complète contre les injections SQL. Sa documentation officielle recommande d'utiliser en complément les fonctions de Prepared Statement.
+
 \subsubsection{Protection par l'utilisation de procédures stockées}
 Il est possible d'utiliser des procédures stockées afin de protéger le code de l'injection à l'échelle de la base de données. Il est nécessaire pour cela de prendre en compte le fait que ce type de procédures doit être audité avec attention de même que leurs appels ne doivent pas laisser la possibilité de les contourner.
 
@@ -1474,6 +1510,17 @@ ELSE
 DECLARE @SQL NVARCHAR(1000);
 SET @SQL = 'SELECT * FROM users WHERE user=@Field1';
 EXECUTE sp_executesql @SQL, N'@Field1 VARCHAR(10)', @user ;
+\end{Config}
+
+Il également possible de réaliser ce filtrage avec MySQL.
+\begin{Config}{mysql}{MySQL: QUOTE()}
+CREATE PROCEDURE escaperequest(in variable text)
+BEGIN    
+    SET @s = CONCAT('INSERT INTO `users` (`details`) VALUES(\'', QUOTE(variable), '\')');
+    PREPARE stmt FROM @s;
+    EXECUTE stmt;
+    COMMIT;
+END;
 \end{Config}
 
 %% Manque injection Xpath et commande
@@ -1525,7 +1572,7 @@ if (!db.WhiteListURLs.Where(u => u.URL == url).Any()){
 \subsection{Gestion des sessions: CSRF}
 \begin{Define}{Vulnérabilités!CSRF}
 Une \gls{CSRF} est une attaque consistant à induire un utilisateur connecté à réaliser une action à son insu. Ce type d'attaque se réalise par la réalisation d'une requête par l'utilisateur. Elle peut se réaliser par un fichier HTML ou PDF malveillant, l'accès à une page web ou en utilisant une autre vulnérabilité (\gls{XSS}, unvalidated redirection...).
-Une \gls{CSRF} peut se contre en utilisant:\begin{itemize}
+Une \gls{CSRF} peut se contrer en utilisant:\begin{itemize}
 \item Une vérification de l'origine du visiteur
 \item Un \textit{token} anti-CSRF
 \item Une double validation
@@ -1663,7 +1710,7 @@ La mise en place d'un CAPTCHA peut se faire aisément en utilisant les biblioth�
 
 \subsection{Gestion des sessions: fixation, injection, vol}
 \begin{Define}{SID}
-Une session est identifiée, côté serveur, par un \gls{SID}. Le SID est une information partagé entre le navigateur et le serveur et permet à un navigateur de se faire reconnaitre auprès du serveur. Il peut prendre différente forme: cookie, données POST, dans l'URL... La meilleure implémentation consiste cependant à transmettre cette donnée dans un cookie de session. Du fait de l'importance du \gls{SID}, de nombreuses protections doivent être mis en place contre son vol ou son usage par un tiers.
+Une session est identifiée, côté serveur, par un \gls{SID}. Le SID est une information partagée entre le navigateur et le serveur et permet à un navigateur de se faire reconnaitre auprès du serveur. Il peut prendre différentes formes: cookie, données POST, dans l'URL... La meilleure implémentation consiste cependant à transmettre cette donnée dans un cookie de session. Du fait de l'importance du \gls{SID}, de nombreuses protections doivent être mises en place contre son vol ou son usage par un tiers.
 \end{Define}
 
 \subsubsection{Injection de SID}
@@ -1710,7 +1757,7 @@ MyCookie.HttpOnly = true; // Secure Cookie against JS Injection
 MyCookie.Secure = true; // Secure Cookie against HTTP Interception
 Response.Cookies.Add(MyCookie);
 \end{Config}
-
+\MarginPar{\textbf{.NET}: Protection des cookies}{0cm}
 \begin{Config}{XML}{web.config: Configuration des cookies de sessions et configuration générale}
 <system.web>
 	<httpCookies httpOnlyCookies="true" requireSSL="true" />
@@ -1722,11 +1769,26 @@ Response.Cookies.Add(MyCookie);
 </system.web>
 \end{Config}
 
+En PHP, les flags \textit{Secure} et \textit{HttpOnly} ne sont pas activé par défaut, il est alors recommandé de les activer si le cookie \textbf{PHPSESSID} est utilisé.
+\begin{Config}{ini}{php.ini: Configuration des cookies de sessions et configuration générale}
+[PHP]
+; ...
+session.cookie_secure = 1 
+session.cookie_httponly = 1 
+; Non géré par défaut 
+session.use_strict_mode = 1
+; Par défaut cette option est à 0, cependant sa configuration à 1 empêche l'injection de SID forgé
+session.use_cookies = 1
+session.use_only_cookies = 1
+;Par défaut
+; ...
+\end{Config}
+
 
 \subsection{URL: Direct Access Reference et Unvalidated Redirection}
 \subsubsection{Unvalidated Redirection}
 \begin{Define}{Vulnérabilités!Unvalidated Redirection}
-Une \textit{Unvalidated Redirection} est une attaque consistant à utiliser un mécanisme de redirection du site en modifiant l'adresse cible via une entrée utilisateur. Ce type d'attaque peut permettre de conduire des campagnes de phishing. En effet, la redirection est transparente pour l'utilisateur et celui-ci peut croire être sur un site légitime là où l'attaquant l'a redirigé vers une copie. De plus dans certains cas, des informations peuvent être transmises lors de la redirection comme les identifiants ou mot de passe.
+Une \textit{Unvalidated Redirection} est une attaque consistant à utiliser un mécanisme de redirection du site en modifiant l'adresse cible via une entrée utilisateur. Ce type d'attaque peut permettre de conduire des campagnes de phishing. En effet, la redirection est transparente pour l'utilisateur et celui-ci peut croire être sur un site légitime, là où l'attaquant l'a redirigé vers une copie. De plus, dans certains cas, des informations peuvent être transmises lors de la redirection comme les identifiants ou mot de passe.
 \end{Define}
 
 Les attaques de ce type exploitent en général les URLs du type \url{http://example.com/login?ReturnURL=/Admin} en substituant le \textit{/Admin} par l'adresse choisie par l'attaquant. Par exemple, l'attaquant pourra envoyer l'adresse suivante à l'utilisateur: \url{http://example.com/login?ReturnURL=http://evil.com/login} avec une interface imitant l'interface de login.
@@ -1739,7 +1801,7 @@ if (!Uri.IsWellFormedUriString(uri,UriKind.Relative)){
 }
 \end{Config}
 
-Si le code nécessite de rediriger vers une page externe, le code peut vérifier que celle-ci appartient bien à une liste blanche en utilisant la classe \textbf{DbContext}.
+Si le processus nécessite de rediriger vers une page externe, le code peut vérifier que celle-ci appartient bien à une liste blanche en utilisant la classe \textbf{DbContext}.
 \begin{Config}{csharp}{.NET: Vérification par liste blanche}
 //var db = new DbContext();
 // [...]
@@ -1752,7 +1814,61 @@ if (!db.WhiteListURLs.Where(u => u.URL == url).Any()){
 Enfin une notification peut être affichée à l'utilisateur en cas de sortie du site.
 
 
-\subsubsection{Direct Access Reference}
+\subsubsection{Direct Object Reference}
+\begin{Define}{Vulnérabilités!Direct Object Reference}
+Une attaque par \textit{Insecure Direct Object Reference} consiste en un accès direct à une ressource ou une fonction du serveur sans restriction de contrôle d'accès, c'est-à-dire qu'un utilisateur disposant de droits insuffisants et/ou anonyme pourrait être en mesure d'accéder à des fonctions privilégiées par la seule connaissance de l'adresse direct de la fonction.
+\end{Define}
+Ce type de vulnérabilité se retrouve fréquemment sur les sites Web avec l'accès à des fonctions d'APIs permettant d'ajouter des utilisateurs ou de les énumérer simplement en faisant varier des paramètres ou en devinant une URL prédictible du type "/AddUser.php".\\
+Les protections contre ce type de vulnérabilité repose sur un meilleur contrôle d'accès des utilisateurs.\\
+
+En .NET, pour éviter l'accès à des zones non-autorisée, il est possible de contrôler les utilisateurs par rôles, nom ou type avec IIS. L'authentification est à différencier de la gestion par session. En effet le cookie de session ne contient que la session, tandis que le cookie d'authentification contient plus d'informations comme les informations de groupes auquel appartient le user. Il est recommandé de protéger ce cookie par l'utilisation du flag \textbf{protection} qui chiffre le cookie.
+\begin{Config}{XML}{web.config: Authentication et Authorization}
+  <authentication mode="Forms">
+    <forms loginUrl="Login.aspx"
+           protection="All" timeout="30"  name=".ASPXAUTH" path="/"
+           requireSSL="true" slidingExpiration="true" defaultUrl="default.aspx"
+           cookieless="false" enableCrossAppRedirects="false" />
+  </authentication>
+  <roleManager 
+   defaultProvider="SQL"enabled="true" 
+   cacheRolesInCookie="true" >
+ </roleManager>
+  <authorization>
+    <deny users="?" />
+  </authorization>
+  
+  <credentials passwordFormat="SHA1" >
+    <user name="Mercure"
+          password="07B7F3EE06F278DB966BE960E7CBBD103DF30CA6"/>
+  </credentials>
+\end{Config}
+Cette configuration permet d'utiliser un ticket protégé et chiffré au sein d'un cookie de session permettant d'associer un utilisateur à son profil. En outre, il permet également de gérer les autorisations de manière plus fine. Il est à noter que pour les identifiants stockés dans le fichier de configuration, SHA-1 est la meilleure méthode cryptographique de hachage. Avec \payloadhtml{<authentication mode="Forms" />}, il est possible d'utiliser les mécanismes d'authentification de Windows.\\
+En utilisant l'autentification de type \textit{Forms}, la page de login doit être configuré pour intégrer l'authentification Forms.
+\begin{Config}{csharp}{.NET: Code de script dans la page d'authentification}
+    void SubmitBtn_Click(Object Source, EventArgs e)
+    {
+        // Try to authenticate credentials supplied by user.
+        if (FormsAuthentication.Authenticate(UserName.Value, 
+                UserPassword.Value))
+        {
+            FormsAuthenticationTicket ticket = new 
+                FormsAuthenticationTicket(UserName.Value, false, 5000);
+                  
+            FormsAuthentication.RedirectFromLoginPage(UserName.Value,
+                Persist.Checked);
+        }
+    }
+\end{Config}
+
+Dans le cas d'un besoin d'intégration au sein d'une application legacy, le code suivant peut être utilisé:
+\begin{Config}{csharp}{.NET: Gestion des Forms Ticket dans un contexte legacy}
+FormsAuthenticationTicket tkt = 
+      new FormsAuthenticationTicket(1, username, 
+        DateTime.Now, DateTime.Now.AddMinutes(30), 
+        chkPersistCookie.Checked, "");
+HttpCookie ck = 
+      new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(tkt));
+\end{Config}
 
 
 \appendix
