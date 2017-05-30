@@ -1131,6 +1131,18 @@ Cet algorithme n'est plus utilisé pour l'échange de clef à partir de TLS 1.3.
 
 \subsubsection{Kerberos}
 \subsubsection{PSK/SRP}
+L'échange PSK se définit par la RFC4279, tel que:\\
+\begin{tikzpicture}
+\draw (-3,4) -- (-3,0);
+\draw (3,4) -- (3,0);
+\draw (-3,5) node {Client};
+\draw (3,5) node {Serveur};
+\draw (-6,3.5) node {\textit{$ pms=N\Vert 0*[N]\Vert N\Vert PSK $}};
+\draw (-5,2.5) node {\textit{$N=len(PSK)$}};
+\draw[<-] (-2.8,3) -- node[above] {PSK identity hint} node[below] {\small \textit{Server Key Exchange}} (2.8,3);
+\draw[->] (-2.8,1) -- node[above] {PSK identity} node[below] {\small \textit{Client Key Exchange}} (2.8,1);
+\draw (6,3.5) node {\textit{$ pms=N\Vert 0*[N]\Vert N\Vert PSK$}};
+\end{tikzpicture} \\
 
 \subsection{SSL/TLS: Gestion des suites cryptographiques}
 \begin{Define}{SSL/TLS!Suites cryptographiques}
