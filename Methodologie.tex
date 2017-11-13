@@ -123,11 +123,11 @@ Un audit doit être le résultat d'un programme suivant le schéma Plan Do Check
 \end{enumerate}
 
 \chapter{Test d'intrusion}
-\begin{Pre}Le consultant doit disposer d'une feuille d'autorisation en bonne et due forme signée. Sur cette feuille d'autorisation doit figurer le périmètre précis du test d'intrusion sous la forme d'une adresse réticulaire (\gls{URL}), un domaine, d'une adresse IP ou d'un range d'adresse IP. Le consultant devra vérifier l'appartenance de ces IPs au client avant d'y mener des tests offensifs (dans le Scope).\end{Pre}
+\begin{Pre}Le consultant doit disposer d'une feuille d'autorisation en bonne et due forme signée. Sur cette feuille d'autorisation doit figurer le périmètre précis du test d'intrusion sous la forme d'une adresse réticulaire (\gls{URL}), un domaine, d'une adresse IP ou d'un range d'adresse IP. Le consultant devra vérifier l'appartenance de ces IPs au client avant d'y mener des tests offensifs (dans le \hyperref[Scope]{Scope}).\end{Pre}
 \section{Méthodologie générale}
 Le test d'intrusion se caractérise en une procédure de 4 étapes:
 \begin{itemize}
-\item[\textbf{S}]cope: Dans cette phase, le consultant définit clairement le périmètre et les points d'entrée potentiels de l'attaque.
+\item[\textbf{S}]cope: Dans cette phase, le consultant définit clairement le périmètre et les points d'entrée potentiels de l'attaque\footnote{Dans le cas d'une attaque Red Team, cette première phase peut être séparée des autres}.
 \item[\textbf{A}]nalyse: Le consultant réalise ensuite une phase de recherche pour préparer les exploits connus de la cible.
 \item[\textbf{U}]sage: Cette phase se réalise souvent en parallèle de la précédente et peut conduire à la redéfinition du scope. Il s'agit de l'attaque à proprement parler.
 \item[\textbf{F}]ormalisation: Cette phase conclut le test d'intrusion et permet de rassembler les notes afférentes à la mission pour produire un rapport au client. 
@@ -140,11 +140,11 @@ Il existe différents approches du test d'intrusion:\begin{itemize}
 
 
 \section{Test d'intrusion externe}
-\subsection{Scope}
+\subsection{Scope}\label{Scope}
 \subsubsection{Analyse passive du périmètre}
 \begin{Define}{TIE@Test d'intrusion externe!Découverte passive} La découverte du périmètre doit se faire progressivement afin de s'assurer qu'aucun obstacle n'apparaisse pendant la mission. Il est donc nécessaire de vérifier que les données fournies par le client sont conformes et que les fiches d'autorisation sont conformes. Pour cela les consultants doivent contrôler l'appartenance de l'adresse réticulaire au client ainsi que si l'adresse IP sous-jacente est hébergée par le client ou qu'une fiche d'autorisation adéquate a été signée par le prestataire s'occupant de l'hébergement et/ou du nom de domaine.\end{Define}
 \begin{Stop} Attention si le consultant n'a pas la fiche d'autorisation adéquate, il doit arrêter le travail et en référer au responsable de mission qui en notifiera immédiatement le client.\end{Stop}
-	Une première vérification peut s'effectuer à l'aide de la commande \tool{whois}\footnote{whois est un programme disponible sur la plupart des distributions Linux, permettant de contacter la base RIPE.} ou directement en ligne sur des sites comme \url{https://whois.domaintools.com} \footnote{Ce site présente également l'avantage de proposer un petit Reverse IP lookup permettant de repérer une IP hébergeant plusieurs domaines, il s'agit en ce cas d'un serveur mutualisé et il est nécessaire d'obtenir l'autorisation du prestataire opérant le serveur}.\\
+	Une première vérification peut s'effectuer à l'aide de la commande \tool{whois}\footnote{whois est un programme disponible sur la plupart des distributions Linux, permettant de contacter la base RIPE. Cet outil ne renvoie malheureusement pas toujours des données cela est du à l'existence de base RIPE privée} ou directement en ligne sur des sites comme \url{https://whois.domaintools.com} \footnote{Ce site présente également l'avantage de proposer un petit Reverse IP lookup permettant de repérer une IP hébergeant plusieurs domaines, il s'agit en ce cas d'un serveur mutualisé et il est nécessaire d'obtenir l'autorisation du prestataire opérant le serveur}.\\
 
 \begin{Console}{Requête Whois\toolindex{whois} auprès de IANA}
 > whois dhuy.net
@@ -164,6 +164,8 @@ Registrant Email: yaa6be7ge9decfkd9gay@w.o-w-o.info
 [...]
 \end{Console}
 \MarginPar{\textbf{Whois}: Pour contôler le possesseur de la cible}{-4cm}
+La commande whois permet aussi d'obtenir les informations liées à une IP en donnant son propriétaire et sa localisation géographique. Dans le cas d'une IP appartenant à une plage plus large (prestataire fournisseur, entreprise importante), la plage sera fournie avec l'\gls{ASN} de la société gérant cette IP. \\
+Cette information est cruciale dans le cadre d'une phase de découverte externe de type Red Team. En effet, une société peut posséder un certain nombre d'ASN et ceux-ci peuvent permettre de découvrir les IPs possédées par l'entreprise en utilisant des outils en ligne\footnote{Les sites \url{ipinfo.io}, \url{bgpview.io} et \url{stat.ripe.net} permettent de réaliser ce type d'analyse. bgpview.io fourni en outre une visualisation par graphes intéressante.}. Ce type d'information peut également être la base de mécanismes de protection contre des attaques étatiques ou mafieuses.\\
 Dans le cas d'un site web, à cette étape le consultant peut également rechercher des informations sur la cible via un moteur de recherche en utilisant des \textbf{\gls{dorks}\toolindex{dork}}. Une liste assez complète des dorks google est disponible sur exploit-db\footnote{\url{https://www.exploit-db.com/google-hacking-database/}}.\\
 \begin{FlagConsole}{Dorks}
 	Il existe de nombreux dorks en fonction des moteurs de recherche.
@@ -174,7 +176,7 @@ Dans le cas d'un site web, à cette étape le consultant peut également recherc
 	site:example.com recherche sur le site example.com
 	\tcbsubtitle{Bing}
 	\texttt{> ip:173.194.40.111}\\
-	ip est une commande propre à bing permettant une recherche non basée sur une url mais sur une ip
+	ip est un dork propre à bing permettant une recherche non basée sur une url mais sur une ip
 \end{FlagConsole}
 Le consultant recherchera ensuite les enregistrements \gls{DNS} liés au site à l'aide d'outils standards tels que \tool{dig}\footnote{dig est un outil appartenant à la suite bind-tools sur Archlinux et dnsutils sur les Debian-like.} ou \tool{nslookup}\footnote{Il est à noter que nslookup est disponible sur Windows mais que le transfert de zones a été désactivé dessus.}. Ces outils serviront à tester trois aspects du site: la validation de l'adresse IP associée au dommaine et potentiellement la détection de load balancing au niveau DNS (\textbf{Requête DNS}), la détection de domaines différents du domaine enregistré (\textbf{DNS lookup}) et des noms de domaines dissimulés, voir la cartographie interne du réseau (\textbf{transfert de zones}).\\
 La résolution \gls{DNS}  et la requête de reverse DNS du nom de domaine peuvent se faire en utilisant vos DNS locaux, un DNS public\footnote{Par exemple les DNS de Google ou d'OpenDNS} ou le DNS de l'entreprise. Sur des sites à hautes fréquentations et disposant de plusieurs IPs derrière le nom de domaine, les résultats peuvent être différents. Il faudra dans ce cas réaliser une fixation de l'IP pendant les tests pour être sûr d'attaquer une même cible à l'aide du fichier /etc/hosts.\\
@@ -223,7 +225,15 @@ La requête de transfert de zones n'est utilisable que sur le serveur DNS de la 
 \end{Console}
 \MarginPar{\textbf{Dig}: Transfert de zones DNS}{-4cm}
 Sur l'exemple fictif ci-dessus l'intégralité du réseau interne a été révélée. C'est une situation très risquée.\\
-Ce dernier test permet d'ouvrir sur la section active de découverte du périmètre.
+
+Dans le cas d'une phase passive de découverte pour un audit de type Red Team, d'autres étapes peuvent être ajoutées. En effet au delà de la découverte des AS en charge d'une adresse IP donnée, l'objectif de ce type d'audit est la découverte discrète de l'intégralité des cibles d'une entreprise ou d'une de ses entités sur Internet. La seule information initiale dans ce type d'audit est le nom de l'entreprise ou de la filiale, éventuellement certains éléments complémentaires peuvent être fournis pour limiter l'audit.\\\MarginPar{\textbf{Red Team}\index{Red Team}}{-1cm}
+\begin{Pre}
+Un audit Red Team portant sur la phase de découverte ne nécessite aucune feuille d'autorisation. En effet, ces actions ne violent pas l'article 323 du code Pénal.
+\end{Pre}
+Le consultant va donc d'abord chercher l'entreprise via un moteur de recherche afin d'identifier des sites institutionnels appartenant à celle-ci.Le moteur de recherche peut être requêté en utilisant des programmes comme \tool{sublist3r}\footnote{\url{https://github.com/aboul3la/Sublist3r}}, \tool{theharvester}\footnote{\url{https://github.com/laramies/theHarvester}} et \tool{fierce}\footnote{\url{https://github.com/lanjelot/patator}}, en utilisant des moteurs de recherche (domainbigdata\footnote{\url{https://domainbigdata.com/}}, w3lookup\footnote{\url{http://w3lookup.net/}}) ou des bases de données tierces\footnote{\url{https://scans.io/study/sonar.fdns_v2}}.\\
+Les recherches peuvent être orientés vers la gestion des certificats ou les bases DNS publiques. Dans le cas de la gestion des certificats, la norme veut que les certificats soit tous déclarés auprès de registres publics. Cette mesure est une pratique de sécurité permettant d'éviter qu'un certificat soit dupliqué et présenté à la place du certificat légitime. En collatéral, tous les sites sont enregistrés dans des bases de données accessible via des bases offline ou des sites\footnote{\url{https://censys.io/}}. Le même type de problème apparait avec les zones DNSSEC et NSEC, celles-ci peuvent être énumérées en utilisant des outils comme \tool{ldns-walk}\footnote{\url{https://www.nlnetlabs.nl/projects/ldns/}} ou \tool{nesec3walker}\footnote{\url{https://dnscurve.org/nsec3walker.html}}.\\
+Une fois cette première phase réalisée, le consultant pourra réaliser une analyse passive sur le périmètre ainsi découvert. Le consultant pourra élargir ensuite la résolution de nom en tentant de résoudre des noms par dictionnaire (\tool{patator}\footnote{\url{https://github.com/lanjelot/patator}}, \tool{dnserecon}\footnote{\url{https://github.com/darkoperator/dnsrecon}}) ou par mutation (\tool{altdns}\footnote{\url{https://github.com/infosec-au/altdns}}).\\
+Une fois cette phase réalisée, le consultant peut utiliser des interfaces en ligne ayant réalisé des scans et les mettant à la disposition d'acteur tiers comme Shodan\footnote{\url{https://shodan.io/}}. Ce moteur de recherche supporte également des dorks.
 
 \subsubsection{Analyse active du périmètre}
 \begin{Define}{TIE@Test d'intrusion externe!Découverte active} L'analyse active du périmètre consiste en la découverte des services actifs de la cible, de leur version et de leur potentielles vulnérabilités. Il s'agit de réaliser un \textbf{fingerprint} complet de la cible avec des outils interagissants directement avec elle de manière plus ou moins visible.\end{Define}
@@ -326,9 +336,9 @@ Le rapport sert à expliciter les problèmes et à proposer des solutions compr�
 	Lors d'un test d'intrusion interne, la méthodologie s'approche grandement de la méthodologie du test d'intrusion externe. Quelques variations se produisent du fait de l'environnement particulier dans lequel le consultant se trouve. Ces différences seront abordées dans la partie suivante.
 \subsection{Scope}
 \subsubsection{Analyse passive du périmètre}
-Lors d'un test d'intrusion interne, l'analyse passive se réalise par écoute du réseau local. Cette écoute peut se réaliser à l'aide de l'outil \tool{tcpdump} ou l'outil \tool{wireshark}. \MarginPar{\textbf{Capture réseau}}{0cm}Cependant pour des raisons de sécurité, il est recommandé d'exécuter la capture et la lecture dans deux sessions différentes car les parseurs de wireshark sont susceptibles d'être vulnérables et une exécution en droit administrateur peut être assez dangereuse.\\
-	En fonction du périmètre de l'attaque, le consultant peut aussi être amené à auditer le réseau WiFi du client, là encore une écoute passive peut être réalisée avec \tool{tcpdump} ou la suite \tool{aircrack-ng}.
-\begin{FlagConsole}{Utilisation de la commande nmap}
+Lors d'un test d'intrusion interne, l'analyse passive se réalise par écoute du réseau local. Cette écoute peut se réaliser à l'aide de l'outil \tool{tcpdump}\footnote{\url{http://www.tcpdump.org/}} ou l'outil \tool{wireshark}\footnote{\url{http://wireshark.org/}}. \MarginPar{\textbf{Capture réseau}}{0cm}Cependant pour des raisons de sécurité, il est recommandé d'exécuter la capture et la lecture dans deux sessions différentes car les parseurs de wireshark sont susceptibles d'être vulnérables et une exécution en droit administrateur peut être assez dangereuse.\\
+	En fonction du périmètre de l'attaque, le consultant peut aussi être amené à auditer le réseau WiFi du client, là encore une écoute passive peut être réalisée avec \tool{tcpdump} ou la suite \tool{aircrack-ng}\footnote{\url{http://aircrack-ng.org/}}.
+\begin{FlagConsole}{Utilisation de la commande aircrack}
 	\tool*{airmon-ng start wlan0}[\#]\\
 	 \\
 	wlan0: L'interface réseau utilisé pour la capture.
