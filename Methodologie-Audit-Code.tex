@@ -461,6 +461,21 @@ private static void ConfigureAntiForgeryTokens(){
 }
 \end{Config}
 
+En Java, aucune solution native ne permet la mise en place d'un mécanisme Anti-CSRF. Cependant il est possible d'utiliser le mécanisme de la classe TokenInterceptor de Struts ou l'utilisation des ViewStates dans JSF.
+
+Il est fortement recommandé d'utiliser une version chiffrée du viewstate afin de se protéger de la divulgation d'information. Le chiffrement peut s'activer avec l'option:
+\begin{Config}{XML}{JSF: Web.xml configuration}
+<env-entry>
+	<env-entry-name>com.sun.faces.ClientStateSavingPassword</env-entry-name>
+	<env-entry-type>java.lang.String</env-entry-type>
+	<env-entry-value>
+		MyFabulousAndCompletelyRandomPassword
+	</env-entry-value>
+</env-entry>
+\end{Config}
+
+%FIXME: anti-CSRF java
+
 \subsubsection{Implémentation d'un token anti-CSRF (en AJAX)}
 
 Cependant cette méthode est inexploitable en AJAX. MVC fournit dans ce cas les fonctions \textit{AntiForgery.GetTokens} et \textit{AntiForgery.Validate}. De cette manière, le \textit{token} peut être transmis dans le header de transmission de fichier JSON. Dans l'exemple suivant, le header est d'abord créé en ASP.NET puis vérifié en .NET.
