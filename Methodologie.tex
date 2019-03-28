@@ -139,12 +139,12 @@ Il existe différents approches du test d'intrusion:\begin{itemize}
 \end{itemize}
 
 
-\section{Test d'intrusion externe}
+\section{Test d'intrusion applicatif}
 \subsection{Scope}\label{Scope}
 \subsubsection{Analyse passive du périmètre}
-\begin{Define}{TIE@Test d'intrusion externe!Découverte passive} La découverte du périmètre doit se faire progressivement afin de s'assurer qu'aucun obstacle n'apparaisse pendant la mission. Il est donc nécessaire de vérifier que les données fournies par le client sont conformes et que les fiches d'autorisation sont conformes. Pour cela les consultants doivent contrôler l'appartenance de l'adresse réticulaire au client ainsi que si l'adresse IP sous-jacente est hébergée par le client ou qu'une fiche d'autorisation adéquate a été signée par le prestataire s'occupant de l'hébergement et/ou du nom de domaine.\end{Define}
+\begin{Define}{TIE@Test d'intrusion applicatif!Découverte passive} La découverte du périmètre doit se faire progressivement afin de s'assurer qu'aucun obstacle n'apparaisse pendant la mission. Il est donc nécessaire de vérifier que les données fournies par le client sont conformes et que les fiches d'autorisation sont conformes. Pour cela les consultants doivent contrôler l'appartenance de l'adresse réticulaire au client ainsi que si l'adresse IP sous-jacente est hébergée par le client ou qu'une fiche d'autorisation adéquate a été signée par le prestataire s'occupant de l'hébergement et/ou du nom de domaine.\end{Define}
 \begin{Stop} Attention si le consultant n'a pas la fiche d'autorisation adéquate, il doit arrêter le travail et en référer au responsable de mission qui en notifiera immédiatement le client.\end{Stop}
-	Une première vérification peut s'effectuer à l'aide de la commande \tool{whois}\footnote{whois est un programme disponible sur la plupart des distributions Linux, permettant de contacter la base RIPE. Cet outil ne renvoie malheureusement pas toujours des données cela est du à l'existence de base RIPE privée} ou directement en ligne sur des sites comme \url{https://whois.domaintools.com} \footnote{Ce site présente également l'avantage de proposer un petit Reverse IP lookup permettant de repérer une IP hébergeant plusieurs domaines, il s'agit en ce cas d'un serveur mutualisé et il est nécessaire d'obtenir l'autorisation du prestataire opérant le serveur}.\\
+	Une première vérification peut s'effectuer à l'aide de la commande \tool{whois}\footnote{whois est un programme disponible sur la plupart des distributions Linux, permettant de contacter la base RIPE. Cet outil ne renvoie malheureusement pas toujours des données cela est du à l'existence de bases RIPE privées} ou directement en ligne sur des sites comme \url{https://whois.domaintools.com} \footnote{Ce site présente également l'avantage de proposer un petit Reverse IP lookup permettant de repérer une IP hébergeant plusieurs domaines, il s'agit en ce cas d'un serveur mutualisé et il est nécessaire d'obtenir l'autorisation du prestataire opérant le serveur}.\\
 
 \begin{Console}{Requête Whois\toolindex{whois} auprès de IANA}
 > whois dhuy.net
@@ -832,6 +832,7 @@ Au delà des politiques réseaux individuelles, les \gls{SGDB} doivent être sou
 \end{landscape}
 
 \chapter{Audit de configuration}\label{AuditConf}
+%To separe
 \begin{Pre}Le consultant devra demander au client les fichiers de configuration au client. Ceux-ci pourront être extrait par un script dédié fourni par le consultant.\end{Pre}
 \section{Règles générales}
 \begin{Define}{AC@Audit de configuration!Règles générales}
