@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{[PHP]}
+\PYG{c+c1}{; ...}
+\PYG{n+na}{session.cookie\PYGZus{}secure} \PYG{o}{=} \PYG{l+s}{1}
+\PYG{n+na}{session.cookie\PYGZus{}httponly} \PYG{o}{=} \PYG{l+s}{1}
+\PYG{c+c1}{; Non géré par défaut}
+\PYG{n+na}{session.use\PYGZus{}strict\PYGZus{}mode} \PYG{o}{=} \PYG{l+s}{1}
+\PYG{c+c1}{; Par défaut cette option est à 0, cependant sa configuration à 1 empêche l\PYGZsq{}injection de SID forgé}
+\PYG{n+na}{session.use\PYGZus{}cookies} \PYG{o}{=} \PYG{l+s}{1}
+\PYG{n+na}{session.use\PYGZus{}only\PYGZus{}cookies} \PYG{o}{=} \PYG{l+s}{1}
+\PYG{c+c1}{;Par défaut}
+\PYG{c+c1}{; ...}
+\end{Verbatim}

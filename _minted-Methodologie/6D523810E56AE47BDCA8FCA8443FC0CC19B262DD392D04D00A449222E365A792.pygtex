@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+@using (Html.BeginForm())
+\PYGZob{}
+	@Html.AntiForgeryToken()
+	@Html.LabelFor(m =\PYGZgt{} m.Status)
+	@Html.TextBoxFor(m =\PYGZgt{} m.Status)
+	\PYG{n+nt}{\PYGZlt{}input} \PYG{n+na}{type=}\PYG{l+s}{\PYGZdq{}submit\PYGZdq{}} \PYG{n+na}{value=}\PYG{l+s}{\PYGZdq{}Update Status\PYGZdq{}} \PYG{n+nt}{/\PYGZgt{}}
+\PYGZcb{}
+\end{Verbatim}

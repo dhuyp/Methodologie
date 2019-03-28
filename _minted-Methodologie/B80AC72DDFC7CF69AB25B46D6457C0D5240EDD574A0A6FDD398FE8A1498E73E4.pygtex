@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGZgt{} dig example.com @ns.example.com AXFR
+\PYG{o}{[}... résultat anonymisé ...\PYG{o}{]}
+  \PYG{l+m}{2800}\PYGZhy{}nowhere\PYGZhy{}10p.example.com. \PYG{l+m}{86400}   IN      A       \PYG{l+m}{192}.168.10.254
+  \PYG{l+m}{2800}\PYGZhy{}nowhere\PYGZhy{}14p.example.com. \PYG{l+m}{86400}   IN      A       \PYG{l+m}{192}.168.14.254
+  \PYG{l+m}{2800}\PYGZhy{}nowhere\PYGZhy{}3p.example.com.  \PYG{l+m}{86400}   IN      A       \PYG{l+m}{192}.168.3.254
+  \PYG{l+m}{2800}\PYGZhy{}nowhere\PYGZhy{}alarme.example.com.      \PYG{l+m}{86400}   IN      A       \PYG{l+m}{192}.168.50.252
+  \PYG{l+m}{2800}\PYGZhy{}nowhere\PYGZhy{}borne.example.com.       \PYG{l+m}{86400}   IN      A       \PYG{l+m}{192}.168.29.252
+  \PYG{l+m}{2800}\PYGZhy{}nowhere\PYGZhy{}reseau.example.com.      \PYG{l+m}{86400}   IN      A       \PYG{l+m}{192}.168.20.247
+  \PYG{l+m}{2800}\PYGZhy{}nowhere\PYGZhy{}wifi\PYGZhy{}wpa.example.com.    \PYG{l+m}{86400}   IN      A       \PYG{l+m}{192}.168.40.254
+  \PYG{l+m}{2800}\PYGZhy{}nowhere\PYGZhy{}wifi.example.com.        \PYG{l+m}{86400}   IN      A       \PYG{l+m}{192}.168.35.254
+\PYG{o}{[}...\PYG{o}{]}
+\end{Verbatim}

@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZlt{}?php}
+\PYG{k}{class} \PYG{n+nc}{Users} \PYG{k}{extends} \PYG{n+nx}{Doctrine\PYGZus{}Record}
+\PYG{p}{\PYGZob{}}
+    \PYG{k}{public} \PYG{k}{function} \PYG{n+nf}{setTableDefinition}\PYG{p}{()}
+    \PYG{p}{\PYGZob{}}
+    	\PYG{n+nv}{\PYGZdl{}this}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n+na}{setTableName}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}users\PYGZsq{}}\PYG{p}{);}
+	\PYG{n+nv}{\PYGZdl{}this}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n+na}{hasColumn}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}id\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}integer\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{42}\PYG{p}{,} \PYG{k}{array}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}primary\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{k}{true}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}autoincrement\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{k}{true}\PYG{p}{));}
+	\PYG{n+nv}{\PYGZdl{}this}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n+na}{hasColumn}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Name\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}string\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{100}\PYG{p}{);}
+	\PYG{n+nv}{\PYGZdl{}this}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n+na}{hasColumn}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Roles\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}string\PYGZsq{}}\PYG{p}{,} \PYG{l+m+mi}{100}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cp}{?\PYGZgt{}}
+\end{Verbatim}

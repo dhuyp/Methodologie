@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nt}{\PYGZlt{}system.web\PYGZgt{}}
+	\PYG{n+nt}{\PYGZlt{}httpCookies} \PYG{n+na}{httpOnlyCookies=}\PYG{l+s}{\PYGZdq{}true\PYGZdq{}} \PYG{n+na}{requireSSL=}\PYG{l+s}{\PYGZdq{}true\PYGZdq{}} \PYG{n+nt}{/\PYGZgt{}}
+	\PYG{n+nt}{\PYGZlt{}sessionState}
+		\PYG{n+na}{cookieless=}\PYG{l+s}{\PYGZdq{}false\PYGZdq{}}
+		\PYG{n+na}{regenerateExpiredSessionId=}\PYG{l+s}{\PYGZdq{}true\PYGZdq{}}
+		\PYG{n+na}{timeout=}\PYG{l+s}{\PYGZdq{}30\PYGZdq{}}
+	\PYG{n+nt}{/\PYGZgt{}}
+\PYG{n+nt}{\PYGZlt{}/system.web\PYGZgt{}}
+\end{Verbatim}

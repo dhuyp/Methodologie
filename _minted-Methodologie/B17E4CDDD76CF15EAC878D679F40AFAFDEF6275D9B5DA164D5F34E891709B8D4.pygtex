@@ -1,0 +1,26 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nt}{systemLog}\PYG{p}{:}
+   \PYG{n+nt}{destination}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{file}
+   \PYG{n+nt}{path}\PYG{p}{:} \PYG{l+s}{\PYGZdq{}/var/log/mongodb/mongod.log\PYGZdq{}}
+   \PYG{n+nt}{logAppend}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{true}
+\PYG{n+nt}{storage}\PYG{p}{:}
+   \PYG{n+nt}{journal}\PYG{p}{:}
+      \PYG{n+nt}{enabled}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{true}
+\PYG{n+nt}{processManagement}\PYG{p}{:}
+   \PYG{n+nt}{fork}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{true}
+\PYG{n+nt}{net}\PYG{p}{:}
+   \PYG{n+nt}{bindIp}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{127.0.0.1}
+   \PYG{n+nt}{port}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{27017}
+\PYG{+Error}{  }\PYG{n+nt}{ssl}\PYG{p}{:}
+    \PYG{n+nt}{sslOnNormalPorts}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{true}
+    \PYG{n+nt}{mode}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{requireSSL}
+    \PYG{n+nt}{PEMKeyFile}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{/etc/ssl/mongodb.pem}
+    \PYG{n+nt}{CAFile}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{/etc/ssl/ca.pem}
+    \PYG{n+nt}{AllowConnectionsWithoutCertificates}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{true}
+    \PYG{n+nt}{disabledProtocols}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{TLS1\PYGZus{}0,TLS1\PYGZus{}1}
+\PYG{n+nt}{security}\PYG{p}{:}
+   \PYG{n+nt}{authorization}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{enabled}
+   \PYG{n+nt}{javascriptEnabled}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{false}
+\PYG{n+nt}{setParameter}\PYG{p}{:}
+   \PYG{n+nt}{enableLocalhostAuthBypass}\PYG{p}{:} \PYG{l+lScalar+lScalarPlain}{false}
+\end{Verbatim}

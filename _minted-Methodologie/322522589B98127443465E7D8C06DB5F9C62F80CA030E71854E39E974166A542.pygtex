@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+na}{[HttpPost]}
+\PYG{n+na}{[Authorize(Roles=\PYGZdq{}Administrators\PYGZdq{})]}
+\PYG{n+na}{[ValidateAntiForgeryToken]}
+\PYG{k}{public} \PYG{n}{ActionResult} \PYG{n+nf}{Index}\PYG{p}{(}\PYG{n}{model}\PYG{p}{)\PYGZob{}}
+	\PYG{k}{if}\PYG{p}{(}\PYG{n}{ModelState}\PYG{p}{.}\PYG{n}{IsValid}\PYG{p}{)\PYGZob{}}
+		\PYG{c+c1}{//Le token anti\PYGZhy{}CSRF a été vérifié}
+	\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

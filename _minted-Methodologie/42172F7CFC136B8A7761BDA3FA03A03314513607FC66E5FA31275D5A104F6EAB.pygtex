@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZlt{}?php}
+\PYG{n+nv}{\PYGZdl{}myUsers} \PYG{o}{=} \PYG{k}{new} \PYG{n+nx}{Users}\PYG{p}{();}
+\PYG{n+nv}{\PYGZdl{}myUsers}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n+na}{Name} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}Pierre d\PYGZsq{}Huy\PYGZdq{}}\PYG{p}{;}
+\PYG{n+nv}{\PYGZdl{}myUsers}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n+na}{Roles} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}Admin\PYGZsq{}}\PYG{p}{;}
+\PYG{n+nv}{\PYGZdl{}myUsers}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n+na}{save}\PYG{p}{();}
+\PYG{c+cp}{?\PYGZgt{}}
+\end{Verbatim}

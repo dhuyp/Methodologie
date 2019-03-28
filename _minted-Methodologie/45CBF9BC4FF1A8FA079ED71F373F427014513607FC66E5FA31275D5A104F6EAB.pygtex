@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZlt{}?php}
+	\PYG{n+nv}{\PYGZdl{}str} \PYG{o}{=} \PYG{n+nv}{\PYGZdl{}\PYGZus{}POST}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}year\PYGZsq{}}\PYG{p}{];}
+	\PYG{n+nb}{preg\PYGZus{}match}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}/\PYGZbs{}d\PYGZob{}2,4\PYGZcb{}/\PYGZsq{}}\PYG{p}{,} \PYG{n+nv}{\PYGZdl{}str}\PYG{p}{,} \PYG{n+nv}{\PYGZdl{}matches}\PYG{p}{);}
+	\PYG{k}{if}\PYG{p}{(}\PYG{n+nv}{\PYGZdl{}matches}\PYG{p}{)\PYGZob{}}\PYG{k}{echo} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZdl{}str}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{\PYGZcb{}}
+\PYG{c+cp}{?\PYGZgt{}}
+\end{Verbatim}

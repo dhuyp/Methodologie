@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{using} \PYG{n+nn}{System.Text.RegularExpressions}\PYG{p}{;}
+\PYG{c+c1}{//Filtrage des caractères alphabétiques et symboles présent dans un nom}
+	\PYG{k}{if}\PYG{p}{(!}\PYG{n}{Regex}\PYG{p}{.}\PYG{n}{IsMatch}\PYG{p}{(}\PYG{n}{sender}\PYG{p}{.}\PYG{n}{name}\PYG{p}{,} \PYG{l+s}{@\PYGZdq{}\PYGZca{}[\PYGZbs{}p\PYGZob{}L\PYGZcb{} \PYGZbs{}.\PYGZbs{}\PYGZhy{}\PYGZbs{}\PYGZsq{}]+\PYGZdl{}\PYGZdq{}}\PYG{p}{))}
+		\PYG{k}{throw} \PYG{k}{new} \PYG{n+nf}{ApllicationException}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Input not allowed\PYGZdq{}}\PYG{p}{);}
+\end{Verbatim}

@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+  \PYG{n+nt}{\PYGZlt{}authentication} \PYG{n+na}{mode=}\PYG{l+s}{\PYGZdq{}Forms\PYGZdq{}}\PYG{n+nt}{\PYGZgt{}}
+    \PYG{n+nt}{\PYGZlt{}forms} \PYG{n+na}{loginUrl=}\PYG{l+s}{\PYGZdq{}Login.aspx\PYGZdq{}}
+           \PYG{n+na}{protection=}\PYG{l+s}{\PYGZdq{}All\PYGZdq{}} \PYG{n+na}{timeout=}\PYG{l+s}{\PYGZdq{}30\PYGZdq{}}  \PYG{n+na}{name=}\PYG{l+s}{\PYGZdq{}.ASPXAUTH\PYGZdq{}} \PYG{n+na}{path=}\PYG{l+s}{\PYGZdq{}/\PYGZdq{}}
+           \PYG{n+na}{requireSSL=}\PYG{l+s}{\PYGZdq{}true\PYGZdq{}} \PYG{n+na}{slidingExpiration=}\PYG{l+s}{\PYGZdq{}true\PYGZdq{}} \PYG{n+na}{defaultUrl=}\PYG{l+s}{\PYGZdq{}default.aspx\PYGZdq{}}
+           \PYG{n+na}{cookieless=}\PYG{l+s}{\PYGZdq{}false\PYGZdq{}} \PYG{n+na}{enableCrossAppRedirects=}\PYG{l+s}{\PYGZdq{}false\PYGZdq{}} \PYG{n+nt}{/\PYGZgt{}}
+  \PYG{n+nt}{\PYGZlt{}/authentication\PYGZgt{}}
+  \PYG{n+nt}{\PYGZlt{}roleManager}
+   \PYG{n+na}{defaultProvider=}\PYG{l+s}{\PYGZdq{}SQL\PYGZdq{}}\PYG{n+na}{enabled=}\PYG{l+s}{\PYGZdq{}true\PYGZdq{}}
+   \PYG{n+na}{cacheRolesInCookie=}\PYG{l+s}{\PYGZdq{}true\PYGZdq{}} \PYG{n+nt}{\PYGZgt{}}
+ \PYG{n+nt}{\PYGZlt{}/roleManager\PYGZgt{}}
+  \PYG{n+nt}{\PYGZlt{}authorization\PYGZgt{}}
+    \PYG{n+nt}{\PYGZlt{}deny} \PYG{n+na}{users=}\PYG{l+s}{\PYGZdq{}?\PYGZdq{}} \PYG{n+nt}{/\PYGZgt{}}
+  \PYG{n+nt}{\PYGZlt{}/authorization\PYGZgt{}}
+
+  \PYG{n+nt}{\PYGZlt{}credentials} \PYG{n+na}{passwordFormat=}\PYG{l+s}{\PYGZdq{}SHA1\PYGZdq{}} \PYG{n+nt}{\PYGZgt{}}
+    \PYG{n+nt}{\PYGZlt{}user} \PYG{n+na}{name=}\PYG{l+s}{\PYGZdq{}Mercure\PYGZdq{}}
+          \PYG{n+na}{password=}\PYG{l+s}{\PYGZdq{}07B7F3EE06F278DB966BE960E7CBBD103DF30CA6\PYGZdq{}}\PYG{n+nt}{/\PYGZgt{}}
+  \PYG{n+nt}{\PYGZlt{}/credentials\PYGZgt{}}
+\end{Verbatim}

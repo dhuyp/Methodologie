@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nx}{use} \PYG{n+nx}{admin}
+\PYG{n+nx}{db}\PYG{p}{.}\PYG{n+nx}{getUsers}\PYG{p}{()}
+\PYG{n+nx}{db}\PYG{p}{.}\PYG{n+nx}{getRoles}\PYG{p}{(}
+    \PYG{p}{\PYGZob{}}
+      \PYG{n+nx}{rolesInfo}\PYG{o}{:} \PYG{l+m+mi}{1}\PYG{p}{,}
+      \PYG{n+nx}{showPrivileges}\PYG{o}{:}\PYG{k+kc}{true}\PYG{p}{,}
+      \PYG{n+nx}{showBuiltinRoles}\PYG{o}{:} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{)}
+\end{Verbatim}

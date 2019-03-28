@@ -1,0 +1,15 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYG{k}{void} \PYG{n+nf}{SubmitBtn\PYGZus{}Click}\PYG{p}{(}\PYG{n}{Object} \PYG{n}{Source}\PYG{p}{,} \PYG{n}{EventArgs} \PYG{n}{e}\PYG{p}{)}
+    \PYG{p}{\PYGZob{}}
+        \PYG{c+c1}{// Try to authenticate credentials supplied by user.}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{FormsAuthentication}\PYG{p}{.}\PYG{n}{Authenticate}\PYG{p}{(}\PYG{n}{UserName}\PYG{p}{.}\PYG{n}{Value}\PYG{p}{,}
+                \PYG{n}{UserPassword}\PYG{p}{.}\PYG{n}{Value}\PYG{p}{))}
+        \PYG{p}{\PYGZob{}}
+            \PYG{n}{FormsAuthenticationTicket} \PYG{n}{ticket} \PYG{p}{=} \PYG{k}{new}
+                \PYG{n}{FormsAuthenticationTicket}\PYG{p}{(}\PYG{n}{UserName}\PYG{p}{.}\PYG{n}{Value}\PYG{p}{,} \PYG{k}{false}\PYG{p}{,} \PYG{l+m}{5000}\PYG{p}{);}
+
+            \PYG{n}{FormsAuthentication}\PYG{p}{.}\PYG{n}{RedirectFromLoginPage}\PYG{p}{(}\PYG{n}{UserName}\PYG{p}{.}\PYG{n}{Value}\PYG{p}{,}
+                \PYG{n}{Persist}\PYG{p}{.}\PYG{n}{Checked}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\end{Verbatim}

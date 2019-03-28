@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{using} \PYG{n+nn}{Ganss.XSS}\PYG{p}{;}
+
+	\PYG{k+kt}{var} \PYG{n}{input}\PYG{p}{=}\PYG{n}{sender}\PYG{p}{.}\PYG{n}{name}\PYG{p}{;}
+	\PYG{k+kt}{var} \PYG{n}{sanitizer} \PYG{p}{=} \PYG{k}{new} \PYG{n}{HtmlSanitizer}\PYG{p}{();}
+	\PYG{n}{field}\PYG{p}{.}\PYG{n}{Text}\PYG{p}{=}\PYG{n}{sanitize}\PYG{p}{.}\PYG{n}{Sanitize}\PYG{p}{(}\PYG{n}{input}\PYG{p}{);}
+\end{Verbatim}

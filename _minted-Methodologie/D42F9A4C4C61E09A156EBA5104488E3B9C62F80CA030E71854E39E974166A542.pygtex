@@ -1,0 +1,15 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYG{c+c1}{// Query Syntax}
+    \PYG{k+kt}{var} \PYG{n}{L2EQuery} \PYG{p}{=} \PYG{k}{from} \PYG{n}{it} \PYG{k}{in} \PYG{n}{context}\PYG{p}{.}\PYG{n}{Store}
+    	\PYG{k}{where} \PYG{n}{it}\PYG{p}{.}\PYG{n}{Item} \PYG{p}{==} \PYG{l+s}{\PYGZdq{}craft\PYGZdq{}}
+    	\PYG{k}{select} \PYG{n}{it}\PYG{p}{;}
+    \PYG{k+kt}{var} \PYG{n}{item} \PYG{p}{=} \PYG{n}{L2EQuery}\PYG{p}{.}\PYG{n}{FirstOrDefault}\PYG{p}{\PYGZlt{}}\PYG{n}{item}\PYG{p}{\PYGZgt{}();}
+
+    \PYG{c+c1}{//Method Syntax avec Dynamic Linq Syntax}
+    \PYG{k+kt}{var} \PYG{n}{L2EQuery} \PYG{p}{=} \PYG{n}{context}\PYG{p}{.}\PYG{n}{Store}\PYG{p}{.}\PYG{k}{where}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}i=\PYGZgt{}i.ItemName == \PYGZbs{}\PYGZdq{}\PYGZdq{}}\PYG{p}{+}\PYG{n}{user\PYGZus{}input}\PYG{p}{+}\PYG{l+s}{\PYGZdq{}\PYGZbs{}\PYGZdq{} and allowed == 1\PYGZdq{}} \PYG{p}{);}
+    \PYG{k+kt}{var} \PYG{n}{item} \PYG{p}{=} \PYG{n}{L2EQuery}\PYG{p}{.}\PYG{n}{FirstOrDefault}\PYG{p}{\PYGZlt{}}\PYG{n}{item}\PYG{p}{\PYGZgt{}();}
+
+    \PYG{c+c1}{//Method Syntax avec Dynamic Linq Syntax et placeholder}
+    \PYG{k+kt}{var} \PYG{n}{L2EQuery} \PYG{p}{=} \PYG{n}{context}\PYG{p}{.}\PYG{n}{Store}\PYG{p}{.}\PYG{k}{where}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}i=\PYGZgt{}i.ItemName == @0 and allowed == 1\PYGZdq{}}\PYG{p}{,} \PYG{n}{user\PYGZus{}input} \PYG{p}{);}
+    \PYG{k+kt}{var} \PYG{n}{item} \PYG{p}{=} \PYG{n}{L2EQuery}\PYG{p}{.}\PYG{n}{FirstOrDefault}\PYG{p}{\PYGZlt{}}\PYG{n}{item}\PYG{p}{\PYGZgt{}();}
+\end{Verbatim}

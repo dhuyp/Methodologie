@@ -1,0 +1,196 @@
+\glossarysection[\glossarytoctitle]{\glossarytitle}\glossarypreamble
+\begin{theglossary}\glossaryheader
+\glsgroupheading{A}\relax \glsresetentrylist %
+\glossentry{ACL}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{26}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{30}}}%
+\glossentry{ADH}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{46}}}%
+\glossentry{AEAD}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{78}}}%
+\glossentry{ANSSI}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{46\delimN 47}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{79\delimN 80}\delimN 
+		\glsseeformat[Glossaire:]{gls-ANSSI}{Z}}}%
+\glossentry{AS}{\glossaryentrynumbers{\relax 
+		\glsseeformat[Glossaire:]{gls-AS}{Z}}}%
+\glossentry{ASN}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{4}\delimN 
+		\glsseeformat[Glossaire:]{gls-ASN}{Z}}}\glsgroupskip
+\glsgroupheading{C}\relax \glsresetentrylist %
+\glossentry{CAPTCHA}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{68}}}%
+\glossentry{CBC}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{42}}}%
+\glossentry{CCM}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{44}}}%
+\glossentry{CMS}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{7}}}%
+\glossentry{CPA}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{78}}}%
+\glossentry{CSPRNG}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{66}}}%
+\glossentry{CSRF}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{65}\delimN 
+		\glsseeformat[Glossaire:]{gls-CSRF}{Z}}}\glsgroupskip
+\glsgroupheading{D}\relax \glsresetentrylist %
+\glossentry{DH}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{45\delimN 46}}}%
+\glossentry{DHE}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{45\delimN 46}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{48}\delimN 
+		\glsseeformat[Glossaire:]{gls-DHE}{Z}}}%
+\glossentry{DMZ}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{24}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{26}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{28}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{85}}}%
+\glossentry{DNS}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{5\delimN 6}}}\glsgroupskip
+\glsgroupheading{E}\relax \glsresetentrylist %
+\glossentry{ECB}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{78}}}%
+\glossentry{ECC}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{44}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{47}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{81}}}%
+\glossentry{ECDH}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{47}}}%
+\glossentry{EDM}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{61}}}%
+\glossentry{EPC}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{75}\delimN 
+		\glsseeformat[Glossaire:]{gls-EPC}{Z}}}\glsgroupskip
+\glsgroupheading{F}\relax \glsresetentrylist %
+\glossentry{FIPS}{\glossaryentrynumbers{\relax 
+		\glsseeformat[Glossaire:]{gls-FIPS}{Z}}}\glsgroupskip
+\glsgroupheading{G}\relax \glsresetentrylist %
+\glossentry{GCM}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{42}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{44}}}\glsgroupskip
+\glsgroupheading{H}\relax \glsresetentrylist %
+\glossentry{HTTP}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{65}}}%
+\glossentry{HTTPS}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{45}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{67}}}\glsgroupskip
+\glsgroupheading{I}\relax \glsresetentrylist %
+\glossentry{IANA}{\glossaryentrynumbers{\relax 
+		\glsseeformat[Glossaire:]{gls-IANA}{Z}}}%
+\glossentry{ICANN}{\glossaryentrynumbers{\relax 
+		\glsseeformat[Glossaire:]{gls-ICANN}{Z}}}%
+\glossentry{IDS}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{25}}}%
+\glossentry{IEEE}{\glossaryentrynumbers{\relax 
+		\glsseeformat[Glossaire:]{gls-IEEE}{Z}}}%
+\glossentry{IETF}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{44}\delimN 
+		\glsseeformat[Glossaire:]{gls-IETF}{Z}}}%
+\glossentry{IPS}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{25}}}\glsgroupskip
+\glsgroupheading{J}\relax \glsresetentrylist %
+\glossentry{J2EE}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{57}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{60}}}%
+\glossentry{JSON}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{41}}}\glsgroupskip
+\glsgroupheading{L}\relax \glsresetentrylist %
+\glossentry{LAN}{\glossaryentrynumbers{\relax 
+		\glsseeformat[Glossaire:]{gls-LAN}{Z}}}%
+\glossentry{LFI}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{63}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{71}}}\glsgroupskip
+\glsgroupheading{N}\relax \glsresetentrylist %
+\glossentry{NAT}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{25}}}%
+\glossentry{NIST}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{46\delimN 47}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{80}\delimN 
+		\glsseeformat[Glossaire:]{gls-NIST}{Z}}}%
+\glossentry{NSA}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{47}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{80}\delimN 
+		\glsseeformat[Glossaire:]{gls-NSA}{Z}}}\glsgroupskip
+\glsgroupheading{O}\relax \glsresetentrylist %
+\glossentry{ORM}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{61}}}%
+\glossentry{OTP}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{68}}}%
+\glossentry{OTR}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{82\delimN 83}}}\glsgroupskip
+\glsgroupheading{P}\relax \glsresetentrylist %
+\glossentry{PFS}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{46\delimN 47}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{81}\delimN 
+		\glsseeformat[Glossaire:]{gls-PFS}{Z}}}%
+\glossentry{PQC}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{47}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{81}}}%
+\glossentry{PRNG}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{78}}}%
+\glossentry{PSK}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{81}}}\glsgroupskip
+\glsgroupheading{R}\relax \glsresetentrylist %
+\glossentry{RBAC}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{42}}}%
+\glossentry{REGEX}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{56\delimN 57}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{59}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{63}}}%
+\glossentry{RFC}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{44}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{64}\delimN 
+		\glsseeformat[Glossaire:]{gls-RFC}{Z}}}%
+\glossentry{RFI}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{64}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{71}}}%
+\glossentry{RSA}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{48}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{79}}}\glsgroupskip
+\glsgroupheading{S}\relax \glsresetentrylist %
+\glossentry{SCIMP}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{82\delimN 83}}}%
+\glossentry{SECG}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{80}\delimN 
+		\glsseeformat[Glossaire:]{gls-SECG}{Z}}}%
+\glossentry{SGDB}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{32}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{36}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{40\delimN 41}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{58}}}%
+\glossentry{SID}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{66}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{68\delimN 69}}}%
+\glossentry{SQL}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{8}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{36}}}%
+\glossentry{SSL}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{44}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{67}}}\glsgroupskip
+\glsgroupheading{T}\relax \glsresetentrylist %
+\glossentry{T-SQL}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{62}}}%
+\glossentry{TLS}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{44}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{48}}}\glsgroupskip
+\glsgroupheading{U}\relax \glsresetentrylist %
+\glossentry{URL}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{3}}}\glsgroupskip
+\glsgroupheading{V}\relax \glsresetentrylist %
+\glossentry{VLAN}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{27}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{29\delimN 30}\delimN 
+		\glsseeformat[Glossaire:]{gls-VLAN}{Z}}}\glsgroupskip
+\glsgroupheading{W}\relax \glsresetentrylist %
+\glossentry{WAF}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{26}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{36}}}%
+\glossentry{WLAN}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{31}\delimN 
+		\glsseeformat[Glossaire:]{gls-WLAN}{Z}}}\glsgroupskip
+\glsgroupheading{X}\relax \glsresetentrylist %
+\glossentry{XSS}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{8}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{56}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{65}}}%
+\end{theglossary}\glossarypostamble

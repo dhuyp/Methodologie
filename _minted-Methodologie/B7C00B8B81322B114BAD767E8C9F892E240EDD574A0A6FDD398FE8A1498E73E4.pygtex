@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGZgt{} dig @8.8.8.8 example.com
+\PYG{o}{[}... La réponse comporte plusieurs sections ...\PYG{o}{]}
+\PYG{p}{;;} ANSWER SECTION:
+example.com.	\PYG{l+m}{67109} 	IN	A	\PYG{l+m}{93}.184.216.34
+\PYG{o}{[}...\PYG{o}{]}
+\end{Verbatim}

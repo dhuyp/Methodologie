@@ -1,0 +1,29 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYG{k+kt}{string} \PYG{n}{esqlQuery} \PYG{p}{=}
+        \PYG{l+s}{@\PYGZdq{}SELECT VALUE Contact FROM AdventureWorksEntities.Contacts}
+\PYG{l+s}{                    AS Contact WHERE Contact.LastName = @ln AND}
+\PYG{l+s}{                    Contact.FirstName = @fn\PYGZdq{}}\PYG{p}{;}
+
+    \PYG{k}{using} \PYG{p}{(}\PYG{n}{EntityCommand} \PYG{n}{cmd} \PYG{p}{=} \PYG{k}{new} \PYG{n}{EntityCommand}\PYG{p}{(}\PYG{n}{esqlQuery}\PYG{p}{,} \PYG{n}{conn}\PYG{p}{))}
+    \PYG{p}{\PYGZob{}}
+        \PYG{n}{EntityParameter} \PYG{n}{param1} \PYG{p}{=} \PYG{k}{new} \PYG{n}{EntityParameter}\PYG{p}{();}
+        \PYG{n}{param1}\PYG{p}{.}\PYG{n}{ParameterName} \PYG{p}{=} \PYG{l+s}{\PYGZdq{}ln\PYGZdq{}}\PYG{p}{;}
+        \PYG{n}{param1}\PYG{p}{.}\PYG{n}{Value} \PYG{p}{=} \PYG{l+s}{\PYGZdq{}Adams\PYGZdq{}}\PYG{p}{;}
+        \PYG{n}{EntityParameter} \PYG{n}{param2} \PYG{p}{=} \PYG{k}{new} \PYG{n}{EntityParameter}\PYG{p}{();}
+        \PYG{n}{param2}\PYG{p}{.}\PYG{n}{ParameterName} \PYG{p}{=} \PYG{l+s}{\PYGZdq{}fn\PYGZdq{}}\PYG{p}{;}
+        \PYG{n}{param2}\PYG{p}{.}\PYG{n}{Value} \PYG{p}{=} \PYG{l+s}{\PYGZdq{}Frances\PYGZdq{}}\PYG{p}{;}
+
+        \PYG{n}{cmd}\PYG{p}{.}\PYG{n}{Parameters}\PYG{p}{.}\PYG{n}{Add}\PYG{p}{(}\PYG{n}{param1}\PYG{p}{);}
+        \PYG{n}{cmd}\PYG{p}{.}\PYG{n}{Parameters}\PYG{p}{.}\PYG{n}{Add}\PYG{p}{(}\PYG{n}{param2}\PYG{p}{);}
+
+        \PYG{k}{using} \PYG{p}{(}\PYG{n}{DbDataReader} \PYG{n}{rdr} \PYG{p}{=} \PYG{n}{cmd}\PYG{p}{.}\PYG{n}{ExecuteReader}\PYG{p}{(}\PYG{n}{CommandBehavior}\PYG{p}{.}\PYG{n}{SequentialAccess}\PYG{p}{))}
+        \PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{// Iterate through the collection of Contact items.}
+            \PYG{k}{while} \PYG{p}{(}\PYG{n}{rdr}\PYG{p}{.}\PYG{n}{Read}\PYG{p}{())}
+            \PYG{p}{\PYGZob{}}
+                \PYG{n}{Console}\PYG{p}{.}\PYG{n}{WriteLine}\PYG{p}{(}\PYG{n}{rdr}\PYG{p}{[}\PYG{l+s}{\PYGZdq{}FirstName\PYGZdq{}}\PYG{p}{]);}
+                \PYG{n}{Console}\PYG{p}{.}\PYG{n}{WriteLine}\PYG{p}{(}\PYG{n}{rdr}\PYG{p}{[}\PYG{l+s}{\PYGZdq{}LastName\PYGZdq{}}\PYG{p}{]);}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\end{Verbatim}

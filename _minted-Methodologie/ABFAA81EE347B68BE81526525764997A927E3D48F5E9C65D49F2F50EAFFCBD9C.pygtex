@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nt}{\PYGZlt{}configuration\PYGZgt{}}
+    \PYG{n+nt}{\PYGZlt{}system.webServer\PYGZgt{}}
+        \PYG{n+nt}{\PYGZlt{}httpProtocol\PYGZgt{}}
+            \PYG{n+nt}{\PYGZlt{}customHeaders\PYGZgt{}}
+            	\PYG{n+nt}{\PYGZlt{}add} \PYG{n+na}{name=}\PYG{l+s}{\PYGZdq{}Strict\PYGZhy{}Transport\PYGZhy{}Security\PYGZdq{}} \PYG{n+na}{value=}\PYG{l+s}{\PYGZdq{}max\PYGZhy{}age=63072000\PYGZdq{}}\PYG{n+nt}{/\PYGZgt{}}
+            \PYG{n+nt}{\PYGZlt{}/customHeaders\PYGZgt{}}
+        \PYG{n+nt}{\PYGZlt{}/httpProtocol\PYGZgt{}}
+    \PYG{n+nt}{\PYGZlt{}/system.webServer\PYGZgt{}}
+\PYG{n+nt}{\PYGZlt{}/configuration\PYGZgt{}}
+\end{Verbatim}

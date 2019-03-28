@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{DECLARE}\PYG{+w}{ }\PYG{n+nv}{@SQL}\PYG{+w}{ }\PYG{n+nc}{NVARCHAR}\PYG{p}{(}\PYG{l+m+mi}{1000}\PYG{p}{);}
+\PYG{k}{SET}\PYG{+w}{ }\PYG{n+nv}{@SQL}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}SELECT * FROM users WHERE user=@Field1\PYGZsq{}}\PYG{p}{;}
+\PYG{k}{EXECUTE}\PYG{+w}{ }\PYG{n}{sp\PYGZus{}executesql}\PYG{+w}{ }\PYG{n+nv}{@SQL}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{N}\PYG{l+s+s1}{\PYGZsq{}@Field1 VARCHAR(10)\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nv}{@user}\PYG{+w}{ }\PYG{p}{;}
+\end{Verbatim}

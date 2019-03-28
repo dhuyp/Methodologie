@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{HTTP}\PYG{o}{/}\PYG{l+m}{1.1} \PYG{l+m}{200} \PYG{n+ne}{OK}
+\PYG{n+na}{Content\PYGZhy{}Encoding}\PYG{o}{:} \PYG{l}{gzip}
+\PYG{n+na}{Content\PYGZhy{}Type}\PYG{o}{:} \PYG{l}{text/html}
+\PYG{n+na}{Date}\PYG{o}{:} \PYG{l}{Tue, 22 Dec 2015 15:55:46 GMT}
+\PYG{n+na}{Last\PYGZhy{}Modified}\PYG{o}{:} \PYG{l}{Tue, 08 Dec 2015 14:19:06 GMT}
+\PYG{n+na}{Public\PYGZhy{}Key\PYGZhy{}Pins}\PYG{o}{:} \PYG{l}{pin\PYGZhy{}sha256=\PYGZdq{}87jMIxsCzrxEBjUR1ns9kwKJx1w0KIggqupv1ctrwkU=\PYGZdq{}; max\PYGZhy{}age=2592000}
+\PYG{n+na}{Server}\PYG{o}{:} \PYG{l}{nginx/1.6.2}
+\PYG{n+na}{X\PYGZhy{}Content\PYGZhy{}Type\PYGZhy{}Options}\PYG{o}{:} \PYG{l}{nosniff}
+\end{Verbatim}

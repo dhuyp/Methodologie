@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{GET} \PYG{n+nn}{https://en.wikipedia.org/wiki/Test} \PYG{k+kr}{HTTP}\PYG{o}{/}\PYG{l+m}{1.1}
+\PYG{n+na}{Accept}\PYG{o}{:} \PYG{l}{text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8}
+\PYG{n+na}{Accept\PYGZhy{}Encoding}\PYG{o}{:} \PYG{l}{gzip, deflate, sdch, br}
+\PYG{n+na}{Accept\PYGZhy{}Language}\PYG{o}{:} \PYG{l}{fr\PYGZhy{}FR,fr;q=0.8,en\PYGZhy{}US;q=0.6,en;q=0.4}
+\PYG{n+na}{Cookie}\PYG{o}{:} \PYG{l}{WMF\PYGZhy{}Last\PYGZhy{}Access=18\PYGZhy{}Brum\PYGZhy{}VIII}
+\PYG{n+na}{Referer}\PYG{o}{:} \PYG{l}{https://www.google.fr/}
+\PYG{n+na}{Upgrade\PYGZhy{}Insecure\PYGZhy{}Requests}\PYG{o}{:} \PYG{l}{1}
+\PYG{n+na}{User\PYGZhy{}Agent}\PYG{o}{:} \PYG{l}{Mozilla/5.0 (Windows NT 10.0; Win64; x64)}
+\end{Verbatim}

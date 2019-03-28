@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{//pre\PYGZus{}login.cs}
+\PYG{n}{Session}\PYG{p}{.}\PYG{n}{Abandon}\PYG{p}{();}
+\PYG{n}{Response}\PYG{p}{.}\PYG{n}{Redirect}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}login.aspx\PYGZdq{}}\PYG{p}{);}
+
+\PYG{c+c1}{//login.aspx}
+\PYG{n}{@if}\PYG{p}{(}\PYG{n}{Session}\PYG{p}{.}\PYG{n}{isNewSession}\PYG{p}{()==}\PYG{k}{false}\PYG{p}{)}
+	\PYG{k}{throw} \PYG{k}{new} \PYG{n+nf}{ApplicationException}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Session Fixation Attack\PYGZdq{}}\PYG{p}{)}
+\end{Verbatim}

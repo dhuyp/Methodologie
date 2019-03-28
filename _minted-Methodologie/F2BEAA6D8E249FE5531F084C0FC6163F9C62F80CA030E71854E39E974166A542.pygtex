@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{//var db = new DbContext();}
+\PYG{c+c1}{// [...]}
+\PYG{k+kt}{var} \PYG{n}{uri}\PYG{p}{=} \PYG{n}{Request}\PYG{p}{.}\PYG{n}{QueryString}\PYG{p}{[}\PYG{l+s}{\PYGZdq{}Uri\PYGZdq{}}\PYG{p}{];}
+\PYG{k}{if} \PYG{p}{(!}\PYG{n}{db}\PYG{p}{.}\PYG{n}{WhiteListURLs}\PYG{p}{.}\PYG{n}{Where}\PYG{p}{(}\PYG{n}{u} \PYG{p}{=\PYGZgt{}} \PYG{n}{u}\PYG{p}{.}\PYG{n}{URL} \PYG{p}{==} \PYG{n}{url}\PYG{p}{).}\PYG{n}{Any}\PYG{p}{())\PYGZob{}}
+	\PYG{k}{throw} \PYG{k}{new} \PYG{n+nf}{ApplicationException}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}URI not allowed\PYGZdq{}}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

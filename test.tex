@@ -1,0 +1,83 @@
+\documentclass[twoside,a4paper,12pt,titlepage]{book}
+\usepackage[french]{babel}
+
+\usepackage{ifxetex}
+
+\ifxetex
+  \usepackage{fontspec}
+\else
+   \usepackage[utf8]{inputenc}
+\fi
+
+
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{dingbat}
+\usepackage{amsfonts}
+\usepackage[outer=3cm, bottom=2cm, inner=2cm, heightrounded, marginparwidth=2.5cm, marginparsep=0.25cm]{geometry}
+\usepackage{graphicx}
+\usepackage[table,usenames,dvipsnames]{xcolor}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage[final]{pdfpages}
+\usepackage[minted,listings,xparse]{tcolorbox}
+\usepackage{afterpage}
+\usepackage{pdflscape}
+\usepackage{makeidx}
+\usepackage{framed}
+\usepackage{ifthen}
+\usepackage[yyyymmdd]{datetime}
+\usepackage{marginnote}
+\usepackage{multirow}
+\usepackage{tikz}
+\usetikzlibrary{mindmap,decorations.pathmorphing,calc,shadows.blur,shadings,shapes,backgrounds}
+\tcbuselibrary{skins,raster}
+\tcbuselibrary{xparse,breakable}
+
+%% Glossary
+\input{Methodologie-Glossary.tex}
+
+%% Paper Style
+\input{Paper-Style.tex}
+
+%% Definition of standard updated
+\input{cryptoStandard.tex}
+
+% Style d'encart et commande
+\input{Methodologie-Encarts.tex}
+
+%% Index
+\makeindex
+
+%%FIXME Commande
+\newcommand{\FIXME}[1]{{\huge\textbf{FIXME: #1}}}
+
+%% Itemize
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\cdot$}
+\renewcommand{\labelitemiii}{$\diamond$}
+\renewcommand{\labelitemiv}{$\ast$}
+
+%% Fancy
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\newcommand{\MarginPar}[2]{\marginnote{\scriptsize #1}[#2]}
+\renewcommand{\dateseparator}{}
+
+%% Graphics
+\newsavebox\SchematicsBox
+\newsavebox\ExampleBox
+
+%% Description
+\title{Formalisation de Méthodologie pour les audits de sécurité}
+\author{Pierre d'Huy}
+\date{\today\\v0.2 alpha}
+
+\begin{document}
+configurer le temps d'inactivité avant verrouillage de session,  le nombre de tentatives de connexions autorisées et le temps de verrouillage d'un compte utilisateur. Si la machine fait partie d'un domaine \textbf{Active Directory}, ces poliques peuvent être distribuées par \textbf{GPO}.\\
+Localement elles peuvent aussi être configurées avec l'outil \textbf{Stratégie de sécurité locale} dans \textbf{Paramètres de sécurité} puis \textbf{Stratégies de comptes}.\\
+La configuration peut être récupérée avec l'outil \pshell{secedit.exe} en utilisant la commande suivante: \pshell{secedit /export /CFG secedit.txt}.\\
+On peut aussi récupérer la configuration en accèdant à la clé de registre correspondante:\\
+\begin{center}HKEY\_LOCAL\_MACHINE\textbackslash SYSTEM\textbackslash CurrentControlSet\textbackslash Services\textbackslash Netlogon\textbackslash Parameters\end{center}% changer la police (monospace)
+
+\end{document}

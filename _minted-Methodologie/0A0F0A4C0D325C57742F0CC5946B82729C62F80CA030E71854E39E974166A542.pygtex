@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{if} \PYG{p}{(}\PYG{n}{request}\PYG{p}{.}\PYG{n}{Headers}\PYG{p}{.}\PYG{n}{TryGetValues}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}RequestVerificationToken\PYGZdq{}}\PYG{p}{,} \PYG{k}{out} \PYG{n}{tokenHeaders}\PYG{p}{))\PYGZob{}}
+	\PYG{k+kt}{string} \PYG{n}{tokens} \PYG{p}{=} \PYG{n}{tokenHeaders}\PYG{p}{.}\PYG{n}{First}\PYG{p}{().}\PYG{n}{Split}\PYG{p}{(}\PYG{l+s+sc}{\PYGZsq{}:\PYGZsq{}}\PYG{p}{);}
+	\PYG{k}{if} \PYG{p}{(}\PYG{n}{tokens}\PYG{p}{.}\PYG{n}{Length} \PYG{p}{==} \PYG{l+m}{2}\PYG{p}{)\PYGZob{}}
+		\PYG{n}{cookieToken} \PYG{p}{=} \PYG{n}{tokens}\PYG{p}{[}\PYG{l+m}{0}\PYG{p}{].}\PYG{n}{Trim}\PYG{p}{();}
+		\PYG{n}{formToken} \PYG{p}{=} \PYG{n}{tokens}\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{].}\PYG{n}{Trim}\PYG{p}{();}
+	\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{n}{AntiForgery}\PYG{p}{.}\PYG{n}{Validate}\PYG{p}{(}\PYG{n}{cookieToken}\PYG{p}{,}\PYG{n}{formToken}\PYG{p}{);}
+\end{Verbatim}

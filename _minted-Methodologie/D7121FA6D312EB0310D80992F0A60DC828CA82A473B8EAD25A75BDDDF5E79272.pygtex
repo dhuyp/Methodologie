@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{CREATE} \PYG{k}{PROCEDURE} \PYG{n+nf}{escaperequest}\PYG{p}{(}\PYG{k}{in} \PYG{n}{variable} \PYG{k+kt}{text}\PYG{p}{)}
+\PYG{n}{BEGIN}
+    \PYG{k+kt}{SET} \PYG{o}{@}\PYG{n}{s} \PYG{o}{=} \PYG{n+nf}{CONCAT}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}INSERT INTO `users` (`details`) VALUES(\PYGZbs{}\PYGZsq{}\PYGZsq{}}\PYG{p}{,} \PYG{n+nf}{QUOTE}\PYG{p}{(}\PYG{n}{variable}\PYG{p}{),} \PYG{l+s+s1}{\PYGZsq{}\PYGZbs{}\PYGZsq{})\PYGZsq{}}\PYG{p}{);}
+    \PYG{n}{PREPARE} \PYG{n}{stmt} \PYG{k}{FROM} \PYG{o}{@}\PYG{n}{s}\PYG{p}{;}
+    \PYG{n}{EXECUTE} \PYG{n}{stmt}\PYG{p}{;}
+    \PYG{n}{COMMIT}\PYG{p}{;}
+\PYG{n}{END}\PYG{p}{;}
+\end{Verbatim}

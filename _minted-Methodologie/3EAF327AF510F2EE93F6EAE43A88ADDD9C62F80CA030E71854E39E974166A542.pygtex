@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{string} \PYG{n}{cmd}\PYG{p}{=}\PYG{l+s}{\PYGZdq{}SELECT * FROM users WHERE userid=@login AND password=@pass\PYGZdq{}}\PYG{p}{;}
+\PYG{n}{SqlCommand} \PYG{n}{c} \PYG{p}{=} \PYG{k}{new} \PYG{n}{SqlCommand}\PYG{p}{(}\PYG{n}{cmd}\PYG{p}{,} \PYG{n}{connection}\PYG{p}{);}
+\PYG{n}{c}\PYG{p}{.}\PYG{n}{Parameters}\PYG{p}{.}\PYG{n}{Add}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}@login\PYGZdq{}}\PYG{p}{,} \PYG{n}{SqlDbType}\PYG{p}{.}\PYG{n}{Int}\PYG{p}{);}
+\PYG{n}{c}\PYG{p}{.}\PYG{n}{Parameters}\PYG{p}{[}\PYG{l+s}{\PYGZdq{}@login\PYGZdq{}}\PYG{p}{].}\PYG{n}{Value} \PYG{p}{=} \PYG{n}{userID}\PYG{p}{;}
+\PYG{n}{c}\PYG{p}{.}\PYG{n}{Parameters}\PYG{p}{.}\PYG{n}{Add}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}@pass\PYGZdq{}}\PYG{p}{,} \PYG{n}{SqlDbType}\PYG{p}{.}\PYG{n}{Int}\PYG{p}{);}
+\PYG{n}{c}\PYG{p}{.}\PYG{n}{Parameters}\PYG{p}{[}\PYG{l+s}{\PYGZdq{}@pass\PYGZdq{}}\PYG{p}{].}\PYG{n}{Value} \PYG{p}{=} \PYG{n}{password}\PYG{p}{;}
+\PYG{n}{SqlDataReader} \PYG{n}{reader} \PYG{p}{=} \PYG{n}{command}\PYG{p}{.}\PYG{n}{ExecuteReader}\PYG{p}{();}
+\end{Verbatim}

@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{Header} always set Public\PYGZhy{}Key\PYGZhy{}Pins \PYG{l+s+s2}{\PYGZdq{}pin\PYGZhy{}sha256=b64hash=; max\PYGZhy{}age=2592000\PYGZdq{}}
+\end{Verbatim}

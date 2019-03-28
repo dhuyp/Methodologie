@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZlt{}?php}
+\PYG{n+nv}{\PYGZdl{}driver} \PYG{o}{=} \PYG{k}{new} \PYG{n+nx}{PDO}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}sqlite:/home/Methodologie/name.sql3\PYGZsq{}}\PYG{p}{);}
+\PYG{n+nv}{\PYGZdl{}string} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}Pierre d\PYGZsq{}Huy `Admin`\PYGZdq{}}\PYG{p}{;}
+\PYG{k}{print} \PYG{n+nv}{\PYGZdl{}driver}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n+na}{quote}\PYG{p}{(}\PYG{n+nv}{\PYGZdl{}string}\PYG{p}{)} \PYG{o}{.} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{;}
+\PYG{c+cp}{?\PYGZgt{}}
+\end{Verbatim}

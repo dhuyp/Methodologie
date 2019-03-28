@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{String} \PYG{n}{query} \PYG{o}{=}
+	\PYG{l+s}{\PYGZdq{}SELECT * FROM users WHERE userid =\PYGZsq{}\PYGZdq{}}\PYG{o}{+} \PYG{n}{userid} \PYG{o}{+} \PYG{l+s}{\PYGZdq{}\PYGZsq{}\PYGZdq{}} \PYG{o}{+} \PYG{l+s}{\PYGZdq{} AND password=\PYGZsq{}\PYGZdq{}} \PYG{o}{+} \PYG{n}{password} \PYG{o}{+} \PYG{l+s}{\PYGZdq{}\PYGZsq{}\PYGZdq{}}\PYG{o}{;}
+\PYG{n}{PreparedStatement} \PYG{n}{stmt} \PYG{o}{=} \PYG{n}{connection}\PYG{o}{.}\PYG{n+na}{prepareStatement}\PYG{o}{(}\PYG{n}{query}\PYG{o}{);}
+\PYG{n}{ResultSet} \PYG{n}{rs} \PYG{o}{=} \PYG{n}{stmt}\PYG{o}{.}\PYG{n+na}{executeQuery}\PYG{o}{();}
+\end{Verbatim}

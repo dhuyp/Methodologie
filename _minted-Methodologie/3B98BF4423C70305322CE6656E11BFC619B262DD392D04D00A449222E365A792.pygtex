@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nt}{\PYGZlt{}form} \PYG{n+na}{id=}\PYG{l+s}{\PYGZdq{}form1\PYGZdq{}} \PYG{n+na}{runat=}\PYG{l+s}{\PYGZdq{}server\PYGZdq{}}\PYG{n+nt}{\PYGZgt{}}
+	\PYG{n+nt}{\PYGZlt{}asp:TextBox} \PYG{n+na}{ID=}\PYG{l+s}{\PYGZdq{}Month\PYGZdq{}} \PYG{n+na}{runat=}\PYG{l+s}{\PYGZdq{}server\PYGZdq{}}\PYG{n+nt}{/\PYGZgt{}}
+	\PYG{n+nt}{\PYGZlt{}asp:RegularExpressionValidator}
+		\PYG{n+na}{ID=}\PYG{l+s}{\PYGZdq{}regexpDate\PYGZdq{}} \PYG{n+na}{runat=}\PYG{l+s}{\PYGZdq{}server\PYGZdq{}} \PYG{n+na}{ErrorMessage=}\PYG{l+s}{\PYGZdq{}Month\PYGZhy{}Year\PYGZdq{}}
+		\PYG{n+na}{ControlToValidate=}\PYG{l+s}{\PYGZdq{}Month\PYGZdq{}} \PYG{n+na}{ValidationExpression=}\PYG{l+s}{\PYGZdq{}\PYGZca{}\PYGZbs{}d\PYGZob{}2\PYGZcb{}\PYGZhy{}\PYGZbs{}d\PYGZob{}4\PYGZcb{}\PYGZdl{}\PYGZdq{}} \PYG{n+nt}{/\PYGZgt{}}
+\PYG{n+nt}{\PYGZlt{}/form\PYGZgt{}}
+\end{Verbatim}

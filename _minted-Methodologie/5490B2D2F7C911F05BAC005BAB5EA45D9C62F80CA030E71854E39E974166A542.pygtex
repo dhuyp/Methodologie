@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{Protected} \PYG{k}{override} \PYG{n+nf}{OnInit}\PYG{p}{(}\PYG{n}{EventArgs} \PYG{n}{e}\PYG{p}{)\PYGZob{}}
+	\PYG{k}{base}\PYG{p}{.}\PYG{n}{OnInit}\PYG{p}{(}\PYG{n}{e}\PYG{p}{);}
+	\PYG{k}{if} \PYG{p}{(}\PYG{n}{User}\PYG{p}{.}\PYG{n}{Identity}\PYG{p}{.}\PYG{n}{IsAuthenticated}\PYG{p}{)\PYGZob{}}
+		\PYG{n}{HashAlgorithm} \PYG{n}{sha} \PYG{p}{=} \PYG{k}{new} \PYG{n}{SHA1CryptoServiceProvider}\PYG{p}{();}
+		\PYG{k+kt}{byte}\PYG{p}{[]} \PYG{n}{result} \PYG{p}{=} \PYG{n}{sha}\PYG{p}{.}\PYG{n}{ComputeHash}\PYG{p}{(}\PYG{n}{Session}\PYG{p}{.}\PYG{n}{SessionID}\PYG{p}{);}
+		\PYG{n}{Session}\PYG{p}{[}\PYG{l+s}{\PYGZdq{}AntiCSRF\PYGZdq{}}\PYG{p}{]=}\PYG{n}{System}\PYG{p}{.}\PYG{n}{Convert}\PYG{p}{.}\PYG{n}{ToBase64String}\PYG{p}{(}\PYG{n}{result}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{,} \PYG{l+m}{15}\PYG{p}{);}
+	\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

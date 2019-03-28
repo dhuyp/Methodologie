@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+	//Deux examples d\PYGZsq{}implémentation de blocs en ASP.NET/Razor
+	@sender.name
+	
+	\PYG{n+nt}{\PYGZlt{}\PYGZpc{}}\PYG{p}{:}\PYG{n}{sender}\PYG{p}{.}\PYG{n}{name} \PYG{n+nt}{\PYGZpc{}\PYGZgt{}}
+\end{Verbatim}

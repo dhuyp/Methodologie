@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nt}{\PYGZlt{}location} \PYG{n+na}{path=}\PYG{l+s}{\PYGZdq{}upload/\PYGZdq{}} \PYG{n+nt}{\PYGZgt{}}
+\PYG{n+nt}{\PYGZlt{}system.web\PYGZgt{}}
+	\PYG{n+nt}{\PYGZlt{}security\PYGZgt{}}
+		\PYG{n+nt}{\PYGZlt{}authorization\PYGZgt{}}
+			\PYG{n+nt}{\PYGZlt{}add} \PYG{n+na}{accessType=}\PYG{l+s}{\PYGZdq{}Deny\PYGZdq{}} \PYG{n+na}{roles=}\PYG{l+s}{\PYGZdq{}*\PYGZdq{}} \PYG{n+na}{verbs=}\PYG{l+s}{\PYGZdq{}PUT\PYGZdq{}}\PYG{n+nt}{\PYGZgt{}}
+		\PYG{n+nt}{\PYGZlt{}/authorization\PYGZgt{}}
+	\PYG{n+nt}{\PYGZlt{}/security\PYGZgt{}}
+\PYG{n+nt}{\PYGZlt{}/system.web\PYGZgt{}}
+\end{Verbatim}

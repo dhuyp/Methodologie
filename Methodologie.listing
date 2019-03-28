@@ -1,0 +1,6 @@
+FormsAuthenticationTicket tkt =
+      new FormsAuthenticationTicket(1, username,
+        DateTime.Now, DateTime.Now.AddMinutes(30),
+        chkPersistCookie.Checked, "");
+HttpCookie ck =
+      new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(tkt));

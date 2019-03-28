@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{Pattern} \PYG{n}{pattern} \PYG{o}{=} \PYG{n}{Pattern}\PYG{o}{.}\PYG{n+na}{compile} \PYG{o}{(}\PYG{l+s}{\PYGZdq{}\PYGZca{}\PYGZbs{}\PYGZbs{}w+@[a\PYGZhy{}z]+\PYGZbs{}\PYGZbs{}.[a\PYGZhy{}z]\PYGZob{}2,4\PYGZcb{}\PYGZdl{}\PYGZdq{}}\PYG{o}{);}
+\PYG{n}{Matcher} \PYG{n}{matcher} \PYG{o}{=} \PYG{n}{pattern}\PYG{o}{.}\PYG{n+na}{matcher} \PYG{o}{(}\PYG{l+s}{\PYGZdq{}test@example.com\PYGZdq{}}\PYG{o}{);}
+\end{Verbatim}

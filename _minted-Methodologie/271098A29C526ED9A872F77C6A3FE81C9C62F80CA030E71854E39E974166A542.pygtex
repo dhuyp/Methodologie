@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{var} \PYG{n}{referer} \PYG{p}{=} \PYG{n}{request}\PYG{p}{.}\PYG{n}{UrlReferrer}\PYG{p}{;}
+\PYG{k}{if} \PYG{p}{(}\PYG{n}{referer} \PYG{p}{==} \PYG{k}{null} \PYG{p}{||} \PYG{n}{referer}\PYG{p}{.}\PYG{n}{Host} \PYG{p}{!=} \PYG{n}{Request}\PYG{p}{.}\PYG{n}{Url}\PYG{p}{.}\PYG{n}{Host} \PYG{p}{)}
+	\PYG{k}{throw} \PYG{k}{new} \PYG{n+nf}{ApplicationException}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Erroneous referer\PYGZdq{}}\PYG{p}{);}
+\end{Verbatim}

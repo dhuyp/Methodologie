@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{//Global.asax.cs}
+\PYG{k}{private} \PYG{k}{static} \PYG{k}{void} \PYG{n+nf}{ConfigureAntiForgeryTokens}\PYG{p}{()\PYGZob{}}
+	\PYG{n}{AntiForgeryConfig}\PYG{p}{.}\PYG{n}{AdditionalDataProvider} \PYG{p}{=} \PYG{n}{myDataProvider}\PYG{p}{;}
+	\PYG{n}{AntiForgeryConfig}\PYG{p}{.}\PYG{n}{RequireSsl} \PYG{p}{=} \PYG{k}{true}\PYG{p}{;}
+	\PYG{n}{UniqueClaimeTypeIdentifier} \PYG{p}{=} \PYG{n}{ClaimTypes}\PYG{p}{.}\PYG{n}{country}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

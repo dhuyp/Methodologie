@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nt}{\PYGZlt{}configuration\PYGZgt{}}
+	\PYG{n+nt}{\PYGZlt{}system.web\PYGZgt{}}
+		\PYG{n+nt}{\PYGZlt{}compilation} \PYG{n+na}{debug=}\PYG{l+s}{\PYGZdq{}false\PYGZdq{}} \PYG{n+na}{targetFramework=}\PYG{l+s}{\PYGZdq{}4.5\PYGZdq{}} \PYG{n+nt}{/\PYGZgt{}}
+		\PYG{n+nt}{\PYGZlt{}httpRuntime} \PYG{n+na}{targetFramework=}\PYG{l+s}{\PYGZdq{}4.5\PYGZdq{}}
+			\PYG{n+na}{encoderType=}\PYG{l+s}{\PYGZdq{}System.Web.security.AntiXss.AntiXssEncoder\PYGZdq{}}\PYG{n+nt}{/\PYGZgt{}}
+	\PYG{n+nt}{\PYGZlt{}/system.web\PYGZgt{}}
+\PYG{n+nt}{\PYGZlt{}/configuration\PYGZgt{}}
+\end{Verbatim}

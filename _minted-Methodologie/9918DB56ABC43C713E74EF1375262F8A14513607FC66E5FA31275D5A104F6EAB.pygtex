@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZlt{}?php}
+\PYG{c+cm}{/* Execute a prepared statement by passing an array of values */}
+\PYG{n+nv}{\PYGZdl{}sth} \PYG{o}{=} \PYG{n+nv}{\PYGZdl{}dbh}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n+na}{prepare}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}SELECT name, colour, calories}
+\PYG{l+s+s1}{    FROM fruit}
+\PYG{l+s+s1}{    WHERE calories \PYGZlt{} ? AND colour = ?\PYGZsq{}}\PYG{p}{);}
+\PYG{n+nv}{\PYGZdl{}sth}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n+na}{execute}\PYG{p}{(}\PYG{k}{array}\PYG{p}{(}\PYG{l+m+mi}{150}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}red\PYGZsq{}}\PYG{p}{));}
+\PYG{n+nv}{\PYGZdl{}result} \PYG{o}{=} \PYG{n+nv}{\PYGZdl{}sth}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n+na}{fetchAll}\PYG{p}{();}
+\PYG{c+cp}{?\PYGZgt{}}
+\end{Verbatim}

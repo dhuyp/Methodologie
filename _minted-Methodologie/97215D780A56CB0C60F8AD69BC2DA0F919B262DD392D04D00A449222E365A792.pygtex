@@ -1,0 +1,21 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+@functions\PYGZob{}
+	public string TokenHeaderValue()\PYGZob{}
+		string cookieToken, formToken;
+		AntiForgery.GetTokens(null,out cookieToken, out formToken);
+		return cookieToken + \PYGZdq{}:\PYGZdq{} + formToken;
+	\PYGZcb{}
+\PYGZcb{}
+
+\PYGZdl{}.ajax(\PYGZob{}
+    type: \PYGZdq{}GET\PYGZdq{},
+    beforeSend: function (xhr, settings)
+    \PYGZob{}
+        \PYGZdl{}.extend(settings, \PYGZob{} headers: \PYGZob{} \PYGZdq{}RequestVerificationToken\PYGZdq{}, TokenHeaderValue() \PYGZcb{} \PYGZcb{});
+    \PYGZcb{},
+    url: url,
+    dataType: \PYGZdq{}json\PYGZdq{},
+    processData: false,
+    crossDomain: true
+\PYGZcb{});
+\end{Verbatim}

@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGZgt{} dig \PYGZhy{}x \PYG{l+m}{173}.194.40.127
+\PYG{o}{[}...\PYG{o}{]}
+\PYG{p}{;;} ANSWER SECTION:
+\PYG{l+m}{127}.40.194.173.in\PYGZhy{}addr.arpa.	\PYG{l+m}{66765}	IN	PTR	par10s09\PYGZhy{}in\PYGZhy{}f31.1e100.net.
+\PYG{o}{[}...\PYG{o}{]}
+\end{Verbatim}

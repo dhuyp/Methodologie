@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{HTTP}\PYG{o}{/}\PYG{l+m}{1.1} \PYG{l+m}{301} \PYG{n+ne}{Moved Permanently}
+\PYG{n+na}{Server}\PYG{o}{:} \PYG{l}{nginx/1.6.2}
+\PYG{n+na}{Date}\PYG{o}{:} \PYG{l}{Tue, 22 Dec 2015 15:59:25 GMT}
+\PYG{n+na}{Content\PYGZhy{}Type}\PYG{o}{:} \PYG{l}{text/html}
+\PYG{n+na}{Content\PYGZhy{}Length}\PYG{o}{:} \PYG{l}{184}
+\PYG{n+na}{Connection}\PYG{o}{:} \PYG{l}{keep\PYGZhy{}alive}
+\PYG{n+na}{Location}\PYG{o}{:} \PYG{l}{https://example.com}
+\PYG{n+na}{Strict\PYGZhy{}Transport\PYGZhy{}Security}\PYG{o}{:} \PYG{l}{max\PYGZhy{}age=63072000; includeSubdomains; preload}
+\PYG{n+na}{X\PYGZhy{}Content\PYGZhy{}Type\PYGZhy{}Options}\PYG{o}{:} \PYG{l}{nosniff}
+\end{Verbatim}

@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nx}{use} \PYG{n+nx}{admin}
+\PYG{n+nx}{db}\PYG{p}{.}\PYG{n+nx}{createUser}\PYG{p}{(}
+  \PYG{p}{\PYGZob{}}
+    \PYG{n+nx}{user}\PYG{o}{:} \PYG{l+s+s2}{\PYGZdq{}myAdmin\PYGZdq{}}\PYG{p}{,}
+    \PYG{n+nx}{pwd}\PYG{o}{:} \PYG{l+s+s2}{\PYGZdq{}abc123\PYGZdq{}}\PYG{p}{,}
+    \PYG{n+nx}{roles}\PYG{o}{:} \PYG{p}{[} \PYG{p}{\PYGZob{}} \PYG{n+nx}{role}\PYG{o}{:} \PYG{l+s+s2}{\PYGZdq{}userAdminAnyDatabase\PYGZdq{}}\PYG{p}{,} \PYG{n+nx}{db}\PYG{o}{:} \PYG{l+s+s2}{\PYGZdq{}admin\PYGZdq{}} \PYG{p}{\PYGZcb{},}\PYG{l+s+s2}{\PYGZdq{}clusterAdmin\PYGZdq{}} \PYG{p}{]}
+  \PYG{p}{\PYGZcb{}}
+\PYG{p}{)}
+\end{Verbatim}

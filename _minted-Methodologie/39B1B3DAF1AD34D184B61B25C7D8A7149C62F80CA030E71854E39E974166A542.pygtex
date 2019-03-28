@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{var} \PYG{n}{uri}\PYG{p}{=} \PYG{n}{Request}\PYG{p}{.}\PYG{n}{QueryString}\PYG{p}{[}\PYG{l+s}{\PYGZdq{}Uri\PYGZdq{}}\PYG{p}{];}
+\PYG{k}{if} \PYG{p}{(!}\PYG{n}{Uri}\PYG{p}{.}\PYG{n}{IsWellFormedUriString}\PYG{p}{(}\PYG{n}{uri}\PYG{p}{,}\PYG{n}{UriKind}\PYG{p}{.}\PYG{n}{Relative}\PYG{p}{))\PYGZob{}}
+	\PYG{k}{throw} \PYG{k}{new} \PYG{n+nf}{ApplicationException}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}URI not allowed\PYGZdq{}}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

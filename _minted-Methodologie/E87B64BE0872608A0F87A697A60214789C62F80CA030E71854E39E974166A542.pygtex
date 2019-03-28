@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{using} \PYG{n+nn}{System.Web.Security.AntiXss}\PYG{p}{;}
+
+	\PYG{k+kt}{var} \PYG{n}{input}\PYG{p}{=}\PYG{n}{sender}\PYG{p}{.}\PYG{n}{name}\PYG{p}{;}
+	\PYG{n}{field}\PYG{p}{.}\PYG{n}{Text}\PYG{p}{=} \PYG{n}{AntiXssEncoder}\PYG{p}{.}\PYG{n}{HtmlEncode}\PYG{p}{(}\PYG{n}{input}\PYG{p}{,} \PYG{k}{true}\PYG{p}{);}
+\end{Verbatim}

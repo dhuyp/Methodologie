@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{SET}\PYG{+w}{ }\PYG{n+nv}{@var}\PYG{o}{=}\PYG{n+nf}{QUOTENAME}\PYG{p}{(}\PYG{n+nv}{@variable}\PYG{p}{);}
+\PYG{k}{IF}\PYG{+w}{ }\PYG{n+nf}{ISDATE}\PYG{p}{(}\PYG{n+nv}{@var}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}
+\PYG{+w}{  }\PYG{k}{SELECT}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{k}{FROM}\PYG{+w}{ }\PYG{n}{blog}\PYG{+w}{ }\PYG{k}{WHERE}\PYG{+w}{ }\PYG{n+nc}{date}\PYG{o}{=}\PYG{n+nv}{@var}\PYG{p}{;}
+\PYG{k}{ELSE}
+\PYG{+w}{  }\PYG{k}{PRINT}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}ERROR\PYGZsq{}}\PYG{p}{;}
+\end{Verbatim}

@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nt}{\PYGZlt{}env\PYGZhy{}entry\PYGZgt{}}
+	\PYG{n+nt}{\PYGZlt{}env\PYGZhy{}entry\PYGZhy{}name\PYGZgt{}}com.sun.faces.ClientStateSavingPassword\PYG{n+nt}{\PYGZlt{}/env\PYGZhy{}entry\PYGZhy{}name\PYGZgt{}}
+	\PYG{n+nt}{\PYGZlt{}env\PYGZhy{}entry\PYGZhy{}type\PYGZgt{}}java.lang.String\PYG{n+nt}{\PYGZlt{}/env\PYGZhy{}entry\PYGZhy{}type\PYGZgt{}}
+	\PYG{n+nt}{\PYGZlt{}env\PYGZhy{}entry\PYGZhy{}value\PYGZgt{}}
+		MyFabulousAndCompletelyRandomPassword
+	\PYG{n+nt}{\PYGZlt{}/env\PYGZhy{}entry\PYGZhy{}value\PYGZgt{}}
+\PYG{n+nt}{\PYGZlt{}/env\PYGZhy{}entry\PYGZgt{}}
+\end{Verbatim}

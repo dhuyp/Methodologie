@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{HttpCookie} \PYG{n}{MyCookie} \PYG{p}{=} \PYG{k}{new} \PYG{n}{HttpCookie}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}SuperSecret\PYGZdq{}}\PYG{p}{);}
+\PYG{n}{MyCookie}\PYG{p}{.}\PYG{n}{Value} \PYG{p}{=} \PYG{l+s}{\PYGZdq{}No Security through Obscurity\PYGZdq{}}\PYG{p}{;}
+\PYG{n}{MyCookie}\PYG{p}{.}\PYG{n}{Expires} \PYG{p}{=} \PYG{n}{now}\PYG{p}{.}\PYG{n}{AddHours}\PYG{p}{(}\PYG{l+m}{1}\PYG{p}{);}
+\PYG{n}{MyCookie}\PYG{p}{.}\PYG{n}{HttpOnly} \PYG{p}{=} \PYG{k}{true}\PYG{p}{;} \PYG{c+c1}{// Secure Cookie against JS Injection}
+\PYG{n}{MyCookie}\PYG{p}{.}\PYG{n}{Secure} \PYG{p}{=} \PYG{k}{true}\PYG{p}{;} \PYG{c+c1}{// Secure Cookie against HTTP Interception}
+\PYG{n}{Response}\PYG{p}{.}\PYG{n}{Cookies}\PYG{p}{.}\PYG{n}{Add}\PYG{p}{(}\PYG{n}{MyCookie}\PYG{p}{);}
+\end{Verbatim}

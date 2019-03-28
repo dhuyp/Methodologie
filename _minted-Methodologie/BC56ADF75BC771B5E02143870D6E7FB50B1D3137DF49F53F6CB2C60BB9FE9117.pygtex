@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{add\PYGZus{}header} \PYG{l+s}{Strict\PYGZhy{}Transport\PYGZhy{}Security} \PYG{l+s}{\PYGZdq{}max\PYGZhy{}age=63072000}\PYG{p}{;} \PYG{k}{includeSubdomains}\PYG{p}{;} \PYG{k}{preload\PYGZdq{}}\PYG{p}{;}
+\end{Verbatim}

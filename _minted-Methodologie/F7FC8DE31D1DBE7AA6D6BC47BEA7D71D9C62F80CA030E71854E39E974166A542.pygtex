@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{FormsAuthenticationTicket} \PYG{n}{tkt} \PYG{p}{=}
+      \PYG{k}{new} \PYG{n+nf}{FormsAuthenticationTicket}\PYG{p}{(}\PYG{l+m}{1}\PYG{p}{,} \PYG{n}{username}\PYG{p}{,}
+        \PYG{n}{DateTime}\PYG{p}{.}\PYG{n}{Now}\PYG{p}{,} \PYG{n}{DateTime}\PYG{p}{.}\PYG{n}{Now}\PYG{p}{.}\PYG{n}{AddMinutes}\PYG{p}{(}\PYG{l+m}{30}\PYG{p}{),}
+        \PYG{n}{chkPersistCookie}\PYG{p}{.}\PYG{n}{Checked}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{p}{);}
+\PYG{n}{HttpCookie} \PYG{n}{ck} \PYG{p}{=}
+      \PYG{k}{new} \PYG{n+nf}{HttpCookie}\PYG{p}{(}\PYG{n}{FormsAuthentication}\PYG{p}{.}\PYG{n}{FormsCookieName}\PYG{p}{,} \PYG{n}{FormsAuthentication}\PYG{p}{.}\PYG{n}{Encrypt}\PYG{p}{(}\PYG{n}{tkt}\PYG{p}{));}
+\end{Verbatim}
