@@ -20,7 +20,8 @@
 {\lstinline[language=HTML,keywordstyle=\color{blue!35!white}\bfseries]^#1^}
 
 %% La commande \pwrshl affiche le promt powershell
-%\DeclareTotalTCBox{\pwrshl}{ s O{1} v O{>} }
+\DeclareTotalTCBox{\pshell}{ v }{verbatim,colupper=white,colback=blue!75!white,colframe=blue}
+{\textcolor{white}{\ttfamily\bfseries PS > }\lstinline[language=powershell,keywordstyle=\color{green!35!white}\bfseries]^#1^}
 
 %% Exemple code et exemple commande
 %% Encart Jaune Vert
