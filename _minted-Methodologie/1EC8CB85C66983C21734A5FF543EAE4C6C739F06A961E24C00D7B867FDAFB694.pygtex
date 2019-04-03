@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{reg} \PYG{n}{query} \PYG{l+s+s2}{\PYGZdq{}HKLM\PYGZbs{}SOFTWARE\PYGZbs{}Policies\PYGZbs{}Microsoft\PYGZbs{}WindowsFirewall\PYGZdq{}}
+\end{Verbatim}

@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{Get\PYGZhy{}ChildItem} \PYG{n}{HKLM}\PYG{err}{:}\PYG{p}{\PYGZbs{}}\PYG{n}{SOFTWARE}\PYG{p}{\PYGZbs{}}\PYG{n}{Policies}\PYG{p}{\PYGZbs{}}\PYG{n}{Microsoft}\PYG{p}{\PYGZbs{}}\PYG{n}{WindowsFirewall}
+\end{Verbatim}

@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{secedite}\PYG{p}{.}\PYG{n}{exe} \PYG{p}{/}\PYG{n}{export} \PYG{p}{/}\PYG{n}{areas} \PYG{n}{SECURITYPOLICY} \PYG{p}{/}\PYG{n}{cfg} \PYG{n}{filename}\PYG{p}{.}\PYG{n}{txt}
+\end{Verbatim}

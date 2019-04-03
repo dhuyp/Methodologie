@@ -1044,23 +1044,86 @@ Dans la version Enterprise et avec le moteur wiredTiger, L'option \textbf{enable
 \subsection{GNU/Linux}
 \subsection{Microsoft Windows}
 
+\textbf{Microsoft Windows} est un groupe de système d'exploitation développé et commercialisé par \textbf{Microsft}. Les systèmes Windows dominent actuellement le marché mondial. En effet, 90\% des ordinateurs personnels tournent sous Windows. Leurs systèmes peuvent se diviser en deux familles:
+\begin{itemize}
+	\item \textbf{Windows Embedded} : Une famille dédiée aux systèmes embarqués comme les smartphone.
+	\item \textbf{Windows NT} : Une famille de systèmes dédiés à un usage multiprocesseur et multi-utilisateurs. Elle peut elle-même être divisée en deux parties; les systèmes dédiés aux poste de travail (Windows Xp, Vista, 7, 8 et 10) et les serveurs (Windows server 2012, 2012 R2, 2016, 2019).
+\end{itemize}
+Cette partie traite uniquement de la famille \textbf{Windows NT}.
+% Parler des recommendations du NIST
+
+\subsubsection{Base de registre}
+La configuration des systèmes Windows est en grande partie stockée dans la base de registre Windows (ou Registre Windows), une base de donnée interne au système. Cette base de donnée est divisée
+% fichier de la base de donnée stocké dans %SystemRoot%\System32\config
+
 \subsubsection{Politique des comptes utilisateurs}
 La gestion des comptes utilisateurs est un point important de tout système d'exploitation. La gestion des comptes passe d'abord par la gestion de leurs mots de passe. Il est recommandé de forcer l'utilisateur à choisir un mot de passe fort, étant différent des précédant mots de passe et dont l'usage doit être limité à une période de temps. Ces contraintes minimisent le risque qu'un attaquant  réussisse à découvrir le mot de passe par attaque par brute-force. La politique de blocage des comptes est un autre point important de la gestion des comptes. Il faut notamment configurer le temps d'inactivité avant verrouillage de session,  le nombre de tentatives de connexions autorisées et le temps de verrouillage d'un compte utilisateur. Si la machine fait partie d'un domaine \textbf{Active Directory}, ces poliques peuvent être distribuées par \textbf{GPO}.\\
 Localement elles peuvent aussi être configurées avec l'outil \textbf{Stratégie de sécurité locale} dans \textbf{Paramètres de sécurité} puis \textbf{Stratégies de comptes}.\\
-La configuration peut être récupérée avec l'outil \pshell{secedit.exe} en utilisant la commande suivante: \pshell{secedit /export /CFG secedit.txt}.\\
+La configuration peut être récupérée avec l'outil \tool{secedit.exe} en utilisant la commande suivante: \pshell{secedit /export /CFG secedit.txt}.\\
 On peut aussi récupérer la configuration en accèdant à la clé de registre correspondante:\\
 \begin{center}\bfseries \footnotesize HKEY\_LOCAL\_MACHINE\textbackslash SYSTEM\textbackslash CurrentControlSet\textbackslash Services\textbackslash Netlogon\textbackslash Parameters\end{center}% changer la police (monospace)
 
 \subsubsection{Attribution des droits d'utilisateur}
 Les droits accordés aux utilisateurs doivent être restreint au maximum, pour minimiser la capacité d'un attaquant à faire une élévation de privilèges lors d'une compromission d'un compte ou d'une machine. L'accès distant depuis le réseau ou la connection via des services comme \textbf{Remote Desktop Service} doit être réservée au compte \textbf{Administrateur}. De même pour les fonctionnalité du système, par exemple le changement d'heure du système affecte la journalisation et doit donc aussi être restreint à l'administrateur. L'utilisateur \textbf{Guests} même si il n'est pas activé par défaut, doit avoir les droits les plus restreints possible. Toutes ces configurations sont distribuables par \textbf{GPO}. Locallement cette politique peut être modifié avec l'outil \textbf{Stratégie de sécurité locale} dans \textbf{Paramètres de sécurité} puis \textbf{Stratégies de comptes}.\\
 
-Les configurations sur la politique des comptes utilisateurs sont accessibles avec l'outil  \textbf{secedit.exe} en utilisant la commande suivante:\\ \pshell{secedit /export /areas USER_RIGHTS /cfg policies.txt}.\\
+Les configurations sur la politique des comptes utilisateurs sont accessibles avec l'outil  \tool{secedit.exe} en utilisant la commande suivante:\\ \pshell{secedit /export /areas USER_RIGHTS /cfg policies.txt}.\\
 
 \subsubsection{Pare-feu}
+Le pare-feu Windows appelé \textbf{Windows Defender FireWall} depuis \textbf{Windows 10} est un composant majeur de Windows. Il est présent depuis  \textbf{Windows XP} et  \textbf{Windows Server 2003} et permet de gérer le trafic réseau entrant et sortant. Une mauvaise configuration du pare-feu a des répercussions graves sur la sécurité. Par exemple, un pare-feu mal configuré peu  faciliter la propagation d'un malware en cas de compromission.
+Il convient donc de s'assurer que le pare-feu est bien activé pour le profil de Domaine, le profil privé et le profil public. La stratégie par défaut doit bloquer les paquets entrants et autoriser les paquets sortant. Un autre point important, est le monitorage des connexions réussies et échouées. La taille maximale recommendée du fichier de \textbf{logs} est de 16,384 KB ou plus.
 
-\subsubsection{Gestion des logs}
+La configuration du pare-feu est accessible dans la clé de registre correspondante, la commande suivante permet d'y accèder:\\
+\pshell{reg query "HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall"}\\
+Ou en powershell pur:\\
+\pshell{Get-ChildItem HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall}\\
+Enfin, l'outil \tool{netsh}, permet aussi d'obtenir cette configuration. La commande suivante montre l'état du pare-feu pour tous les profils réseaux:\\
+\pshell{netsh advfirewall show allprofile}% ajouter une boite pour expliquer l'outil netsh
+\begin{FlagConsole}{Affichage du profil Public avec netsh }
+\pshell{netsh advfirewall show public}
+\tcblower
+advfirewall : Modification pour le contexte du pare-feu\\
+show : Affiche les informations\\
+public : le profil a afficher\\
+\end{FlagConsole}
+
+\subsubsection{Stratégie de journalisation}
+% monitorer les connexions échouées ou réussies et déconnexion des comptes
+Sur tout système d'information, la journalisation des évènements est essentielle pour contrôler l'état de santé de son système et pouvoir investiguer en cas d'incidents. Les principaux évènements à journaliser sur un Windows sont les suivants:
+\begin{itemize}
+	\item Création, changement, suppression, activation, bloquage d'un compte
+	\item Changement d'un mot de passe d'un utilisateur
+	\item Connexion échouées ou réussies
+	\item Appel à l'API de vérification de la politique des mots de passe ou accès au mot de passe hashé d'un compte
+	\item Création, modification ou suppression d'un groupe de securité (l'échec et la résussite)
+	\item Insertion d'un périphérique externe (Windows 10 et Windows server 2016 ou supérieur requis)
+	\item L'accès à un fichier sur un périphérique externe (lecture, écriture, exécution)
+	\item La création d'un processus
+	\item L'accès à un object \textbf{Active Directory Domain Services (AD DS)}
+	\item Changement dans la politique d'authentification
+\end{itemize}
+
+Pour récupérer la politique de journalistaion ou \textbf{legacy audit policy}, elle est récupérable avec l'outil \tool{secedit.exe} avec la commande suivante:\\
+\pshell{secedite.exe /export /areas SECURITYPOLICY /cfg filename.txt}\\
+
+La politique de journalisation avancée est récupérable avec l'outil \tool{audipol.exe} et la commande:\\
+\pshell{auditpol.exe /get /category:*}
+
+Pour savoir laquelle des deux politique est active, la commande:\\
+\pshell{reg query HKLM\System\CurrentControlSet\Control\Lsa}\\
+Nous donne la valeur \textbf{SCENoApplyLegacyAuditPolicy}. Si cette valeur vaut enabled/1 la politique de journalisation avancée est active, si la valeur est à disabled/0 c'est la  \textbf{legacy audit policy} qui est active.
 
 \subsubsection{Composants Windows}
+% Prendre en compte tous les composants aditionnels
+% Bitlocker
+%
+
+\subsubsection{Outils d'analyse automatique}
+Cette section présente les outils d'audit de configuration sur lesquels un consultant peu s'appuyer pour réaliser l'audit de configuration.
+% introduire les outils principaux pour analyser sa configuration
+% boite pour l'outil netsh
+% boite pour l'outil reg.exe
+% secedit.exe
+% audipol.exe
 
 \section{Chiffrement des communications}
 \begin{Warning}
