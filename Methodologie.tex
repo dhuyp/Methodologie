@@ -31,6 +31,7 @@
 \usepackage{marginnote}
 \usepackage{multirow}
 \usepackage{tikz}
+\usepackage[font=small,labelfont=bf]{caption}
 \usetikzlibrary{mindmap,decorations.pathmorphing,calc,shadows.blur,shadings,shapes,backgrounds}
 \tcbuselibrary{skins,raster}
 \tcbuselibrary{xparse,breakable}
@@ -1142,13 +1143,52 @@ Pour savoir laquelle des deux politique est active, la commande:\\
 \pshell{reg query HKLM\System\CurrentControlSet\Control\Lsa}\\
 Nous donne la valeur \textbf{SCENoApplyLegacyAuditPolicy}. Si cette valeur vaut enabled/1 la politique de journalisation avancée est active, si la valeur est à disabled/0 c'est la  \textbf{legacy audit policy} qui est active.
 
-\subsubsection{Outils d'analyse automatique}
-Cette section présente les outils d'audit de configuration sur lesquels un consultant peu s'appuyer pour réaliser un audit de configuration Windows.
-% introduire les outils principaux pour analyser sa configuration
-% boite pour l'outil netsh
-% boite pour l'outil reg.exe
-% secedit.exe
-% audipol.exe
+\subsubsection{Outil d'analyse automatique}
+Récupérer et analyser la configuration manuellement est parfois fastidieux. C'est pourquoi il existe des outils pour extraire la configuration d'un poste Windows et l'analyser. L'outil actuellement le plus complet et gratuit est le \textbf{Security Compliance Toolkit (SCT)} développé par \textbf{Microsoft}. Il fonctionne en standalone et doit être exécuté localement, il ne peut pas analyser la configuration d'un Windows à distance.\\
+Le SCT contient plusieurs sous-outils. Pour l'extraction des \textbf{Group Policy Object (GPO)} nous utilisons \tool{LGPO.exe}. Pour l'analyse de la configuration nous utilisons le \tool{PolicyAnalyze}. Il permet de comparer un ensemble de GPO avec les politiques locales actuelles et avec les registres locaux, en mettant en évidence les différences.
+
+% extraction de la configuration avec l'outil LGPO
+
+\begin{LongFlagConsole}{Analyse d'une configuration Windows 7}
+\tcbsubtitle{Extraction de la configuration}
+\pshell{LGPO.exe /b C:\output_dir}\\\\
+Les GPOs sont extraitent avec \tool{LGPO.exe} dans le répertoire passé en paramètre. Le chemin du répertoire doit être absolue. L'outil va créer un répertoire au nom aléatoire contenant les GPOs.
+
+\tcbsubtitle{Importation de la configuration}
+Une fois la configuration extraite, il faut l'importer dans l'outil \tool{PolicyAnalyzer}
+
+\begin{center}
+	\includegraphics[width=.9\textwidth]{img/conf_windows/import_gpo.PNG}
+	\label{fig:import_gpo}
+	\captionof{figure}{Import des GPOs}
+\end{center}
+
+On ajoute le répertoire contenant les GPOs, puis on fait \textbf{Import} qui permet de créer le fichier \textbf{POLICYRULES}.
+\begin{center}
+	\includegraphics[width=.9\textwidth]{img/conf_windows/add_files_import_gpo.PNG}
+	\label{ref:add_files_import_gpo}
+	\captionof{figure}{Ajout des GPOs}
+\end{center}
+
+Si on a bien importé le fichier \textbf{POLICYRULES} dans le dossier \textbf{SamplePolicyRules}, il apparaît maintenant dans l'outil \tool{PolicyAnalyzer}.
+\begin{center}
+	\includegraphics[width=.9\textwidth]{img/conf_windows/my_gpos_added.PNG}
+	\label{ref:my_gpos_added}
+	\captionof{figure}{Nouvelles GPOs importées}
+\end{center}
+
+\tcbsubtitle{Analyse de la configuration}
+Maintenant que nous avons importé dans l'outil les GPOs de la machine, nous pouvons comparer les GPOs extraitent et une des recommendations fournies avec l'outil. Pour cela, il suffit de cocher la checkbox de nos GPOs et la recommendation adéquate (ici \textbf{SCM-Win7}), puis d'appuyer sur \textbf{View / Compare}. L'outil compare les ensembles sélectionnés et met en évidence les différences. Pour chaque configurations, un texte détaille la configuration et donne les valeurs conseillées et obtenues.\\
+
+\begin{center}
+	\includegraphics[width=.9\textwidth]{img/conf_windows/compare_view_gpos.PNG}
+	\label{ref:compare_view_gpos}
+	\captionof{figure}{Vue comparative des GPOs}
+\end{center}
+
+\end{LongFlagConsole}
+
+% petite phrase pour expliquer comment on interprète les résultats (pour les cas non traitée avec les recommendations fournis par ex)
 
 \section{Chiffrement des communications}
 \begin{Warning}
