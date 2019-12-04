@@ -146,17 +146,17 @@ string cmd="SELECT * FROM users WHERE userid=@login AND password=@pass";
 SqlCommand c = new SqlCommand(cmd, connection);
 c.Parameters.Add("@login", SqlDbType.Int);
 c.Parameters["@login"].Value = userID;
-c.Parameters.Add("@pass", SqlDbType.Int);
+c.Parameters.Add("@pass", SqlDbType.VarChar, 30);
 c.Parameters["@pass"].Value = password;
 SqlDataReader reader = command.ExecuteReader();
 \end{Config}	
 \MarginPar{\textbf{.NET}: Prepared Statement}{0cm}La bibliothèque \textit{OleDbCommand} ne supporte pas les paramètres nommés, cependant il est possible de les nommer pour la facilité d'usage. Les noms seront associés dans l'ordre d'apparition de la requête.
 \begin{Config}{csharp}{.NET: Prepared Statements avec marqueurs (OleDbCommand)}
 string cmd="SELECT * FROM users WHERE userid=? AND password=?";
-OleDblCommand c = new SqlCommand(cmd, connection);
+OleDblCommand c = new OleDbCommand(cmd, connection);
 c.Parameters.Add("@p2", SqlDbType.Int);
 c.Parameters["@p2"].Value = userID;
-c.Parameters.Add("@p1", SqlDbType.Int);
+c.Parameters.Add("@p1", SqlDbType.VarChar, 30);
 c.Parameters["@p1"].Value = password;
 OleDbDataReader reader = command.ExecuteReader();
 \end{Config}	\newline\newline
